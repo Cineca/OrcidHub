@@ -1,0 +1,246 @@
+<!--
+
+    This file is part of huborcid.
+
+    huborcid is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    huborcid is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with huborcid.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<div>
+
+    <h2 translate="huborcidApp.application.home.title">Applications</h2>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <button class="btn btn-primary" data-toggle="modal" data-target="#saveApplicationModal" ng-click="clear()">
+                    <span class="glyphicon glyphicon-flash"></span> <span translate="huborcidApp.application.home.createLabel">Create a new Application</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="saveApplicationModal" tabindex="-1" role="dialog" aria-labelledby="myApplicationLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form name="editForm" role="form" novalidate ng-submit="save()">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                                ng-click="clear()">&times;</button>
+                        <h4 class="modal-title" id="myApplicationLabel" translate="huborcidApp.application.home.createOrEditLabel">Create or edit a Application</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>ID</label>
+                            <input type="text" class="form-control" name="id"
+                                   ng-model="application.id" readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label translate="huborcidApp.application.applicationID">ApplicationID</label>
+                            <input type="text" class="form-control" name="applicationID"
+                                   ng-model="application.applicationID">
+
+                        </div>
+                        <div class="form-group">
+                            <label translate="huborcidApp.application.applicationSecret">ApplicationSecret</label>
+                            <input type="text" class="form-control" name="applicationSecret"
+                                   ng-model="application.applicationSecret">
+
+                        </div>
+                        <div class="form-group">
+                            <label translate="huborcidApp.application.name">Name</label>
+                            <input type="text" class="form-control" name="name"
+                                   ng-model="application.name">
+
+                        </div>
+                        <div class="form-group">
+                            <label translate="huborcidApp.application.urlCallback">UrlCallback</label>
+                            <input type="text" class="form-control" name="urlCallback"
+                                   ng-model="application.urlCallback">
+
+                        </div>
+                        <div class="form-group">
+                            <label translate="huborcidApp.application.orgUnit">OrgUnit</label>
+                            <input type="text" class="form-control" name="orgUnit"
+                                   ng-model="application.orgUnit">
+
+                        </div>
+                        <div class="form-group">
+                            <label translate="huborcidApp.application.email">Email</label>
+                            <input type="text" class="form-control" name="email"
+                                   ng-model="application.email">
+
+                        </div>
+                        <div class="form-group">
+                            <label translate="huborcidApp.application.urlNotify">UrlNotify</label>
+                            <input type="text" class="form-control" name="urlNotify"
+                                   ng-model="application.urlNotify">
+
+                        </div>
+                        <div class="form-group">
+                            <label translate="huborcidApp.application.notifyUsername">NotifyUsername</label>
+                            <input type="text" class="form-control" name="notifyUsername"
+                                   ng-model="application.notifyUsername">
+
+                        </div>
+                        <div class="form-group">
+                            <label translate="huborcidApp.application.notifyPassword">NotifyPassword</label>
+                            <input type="text" class="form-control" name="notifyPassword"
+                                   ng-model="application.notifyPassword">
+
+                        </div>
+                        <div class="form-group">
+                            <label translate="huborcidApp.application.allOrg">AllOrg</label>
+                            <input type="checkbox" class="form-control" name="allOrg"
+                                   ng-model="application.allOrg">
+
+                        </div>
+                        <div class="form-group">
+                            <label translate="huborcidApp.application.helpURL">HelpURL</label>
+                            <input type="text" class="form-control" name="helpURL"
+                                   ng-model="application.helpURL">
+
+                        </div>
+                        <div class="form-group">
+                            <label translate="huborcidApp.application.helpMail">HelpMail</label>
+                            <input type="text" class="form-control" name="helpMail"
+                                   ng-model="application.helpMail">
+
+                        </div>
+                        <div class="form-group">
+                            <label translate="huborcidApp.application.description">Description</label>
+                            <textarea class="form-control" ng-model="application.description" name="description"
+                            type="text" ng-minlength=1></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label translate="huborcidApp.application.authUser">authUser</label>
+                            <select class="form-control" name="authUser" ng-model="application.authUser.id" ng-options="userOrcid.id as userOrcid.username for userOrcid in userorcids">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
+                            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
+                        </button>
+                        <button type="submit" ng-disabled="editForm.$invalid" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-save"></span>&nbsp;<span translate="entity.action.save">Save</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteApplicationConfirmation">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form name="deleteForm" ng-submit="confirmDelete(application.id)">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                                ng-click="clear()">&times;</button>
+                        <h4 class="modal-title" translate="entity.delete.title">Confirm delete operation</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p translate="huborcidApp.application.delete.question" translate-values="{id: '{{application.id}}'}">Are you sure you want to delete this Application?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
+                            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
+                        </button>
+                        <button type="submit" ng-disabled="deleteForm.$invalid" class="btn btn-danger">
+                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span translate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                	<th></th>
+                    <th>ID</th>
+                    <th translate="huborcidApp.application.applicationID">ApplicationID</th>
+                    <th translate="huborcidApp.application.applicationSecret">ApplicationSecret</th>
+                    <th translate="huborcidApp.application.name">Name</th>
+                    <th translate="huborcidApp.application.urlCallback">UrlCallback</th>
+                    <th translate="huborcidApp.application.orgUnit">OrgUnit</th>
+                    <th translate="huborcidApp.application.email">Email</th>
+                    <th translate="huborcidApp.application.urlNotify">UrlNotify</th>
+                    <th translate="huborcidApp.application.notifyUsername">NotifyUsername</th>
+                    <th translate="huborcidApp.application.notifyPassword">NotifyPassword</th>
+                    <th translate="huborcidApp.application.allOrg">AllOrg</th>
+                    <th translate="huborcidApp.application.helpURL">HelpURL</th>
+                    <th translate="huborcidApp.application.helpMail">HelpMail</th>
+                    <th translate="huborcidApp.application.description">Description</th>
+                    <th translate="huborcidApp.application.authUser">authUser</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="application in applications">
+                    <td>
+                        <button type="submit"
+                                ui-sref="applicationDetail({id:application.id})"
+                                class="btn btn-info btn-sm">
+                            <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span translate="entity.action.view"> View</span>
+                        </button>
+                        <button type="submit"
+                                ng-click="showUpdate(application.id)"
+                                class="btn btn-primary btn-sm">
+                            <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span translate="entity.action.edit"> Edit</span>
+                        </button>
+                        <button type="submit"
+                                ng-click="delete(application.id)"
+                                class="btn btn-danger btn-sm">
+                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span translate="entity.action.delete"> Delete</span>
+                        </button>
+                    </td>
+                    <td><a ui-sref="applicationDetail({id:application.id})">{{application.id}}</a></td>
+                    <td>{{application.applicationID}}</td>
+                    <td>{{application.applicationSecret}}</td>
+                    <td>{{application.name}}</td>
+                    <td>{{application.urlCallback}}</td>
+                    <td>{{application.orgUnit}}</td>
+                    <td>{{application.email}}</td>
+                    <td>{{application.urlNotify}}</td>
+                    <td>{{application.notifyUsername}}</td>
+                    <td>{{application.notifyPassword}}</td>
+                    <td>{{application.allOrg}}</td>
+                    <td>{{application.helpURL}}</td>
+                    <td>{{application.helpMail}}</td>
+                    <td>{{application.description | limitTo:40 }}</td>
+                    <td>{{application.authUser.username}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <nav>
+            <ul class="pagination">
+                <li ng-show="links['first']" ng-click="loadPage(links['first'])"><a>&lt;&lt;</a></li>
+                <li ng-show="links['prev']" ng-click="loadPage(links['prev'])"><a>&lt;</a></li>
+                <li ng-show="page > 2" ng-click="loadPage(page - 2)"><a>{{page - 2}}</a></li>
+                <li ng-show="page > 1" ng-click="loadPage(page - 1)"><a>{{page - 1}}</a></li>
+                <li class="active"><a>{{page}}</a></li>
+                <li ng-show="page < links['last']" ng-click="loadPage(page + 1)"><a>{{page + 1}}</a></li>
+                <li ng-show="page < links['last'] - 1" ng-click="loadPage(page + 2)"><a>{{page + 2}}</a></li>
+                <li ng-show="links['next']" ng-click="loadPage(links['next'])"><a>&gt;</a></li>
+                <li ng-show="links['last']" ng-click="loadPage(links['last'])"><a>&gt;&gt;</a></li>
+            </ul>
+        </nav>
+    </div>
+</div>

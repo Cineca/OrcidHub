@@ -1,0 +1,71 @@
+{
+    "relationships": [],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "localID",
+            "fieldType": "String",
+            "fieldNameCapitalized": "LocalID",
+            "fieldNameUnderscored": "local_id",
+            "fieldInJavaBeanMethod": "LocalID",
+            "fieldValidate": false
+        },
+        {
+            "fieldId": 2,
+            "fieldName": "firstName",
+            "fieldType": "String",
+            "fieldNameCapitalized": "FirstName",
+            "fieldNameUnderscored": "first_name",
+            "fieldInJavaBeanMethod": "FirstName",
+            "fieldValidate": false
+        },
+        {
+            "fieldId": 3,
+            "fieldName": "lastName",
+            "fieldType": "String",
+            "fieldNameCapitalized": "LastName",
+            "fieldNameUnderscored": "last_name",
+            "fieldInJavaBeanMethod": "LastName",
+            "fieldValidate": false
+        },
+        {
+            "fieldId": 4,
+            "fieldName": "email",
+            "fieldType": "String",
+            "fieldNameCapitalized": "Email",
+            "fieldNameUnderscored": "email",
+            "fieldInJavaBeanMethod": "Email",
+            "fieldValidate": false
+        },
+        {
+            "fieldId": 5,
+            "fieldName": "orcid",
+            "fieldType": "String",
+            "fieldNameCapitalized": "Orcid",
+            "fieldNameUnderscored": "orcid",
+            "fieldInJavaBeanMethod": "Orcid",
+            "fieldValidate": false
+        },
+        {
+            "fieldId": 6,
+            "fieldName": "orcidReleaseDate",
+            "fieldType": "DateTime",
+            "fieldNameCapitalized": "OrcidReleaseDate",
+            "fieldNameUnderscored": "orcid_release_date",
+            "fieldInJavaBeanMethod": "OrcidReleaseDate",
+            "fieldValidate": false
+        }
+    ],
+    "fieldsContainOwnerManyToMany": false,
+    "fieldsContainOwnerOneToOne": false,
+    "fieldsContainOneToMany": false,
+    "fieldsContainLocalDate": false,
+    "fieldsContainCustomTime": true,
+    "fieldsContainBigDecimal": false,
+    "fieldsContainDateTime": true,
+    "fieldsContainDate": false,
+    "changelogDate": "20150618151450",
+    "dto": "no",
+    "pagination": "pagination",
+    "validation": false
+}

@@ -1,0 +1,28 @@
+{
+    "main2": {
+        "head1": "Gentile {{firstname}} {{lastname}},",
+        "head2": "tramite questa pagina è possibile avviare il processo di acquisizione e/o associazione di un identificativo ORCID per tutte le applicazioni registrate per la sua istituzione.<br/> Di seguito sono riportate alcune brevi informazioni su ORCID",
+        "first":{
+        	"title":"Cosa è ORCID",
+        	"text1":"ORCID è un acronimo, l'abbreviazione di Open Researcher and Contributor ID. ORCID Inc. è un'organizzazione internazionale, interdisciplinare, aperta, non a scopo di lucro, istituita nel 2010 a beneficio di tutti i soggetti interessati:  istituzioni di ricerca, enti finanziatori della ricerca, organizzazioni, editori e ricercatori.",
+        	"text2":"Il suo obiettivo è  trasformare l'ecosistema della ricerca tramite la creazione di un registro di identificativi persistenti e univoci per ricercatori e studiosi e di un collegamento automatico con i prodotti della ricerca quali: pubblicazioni, progetti finanziati e brevetti."
+        },
+        "second":{
+        	"title":"Perchè utilizzare ORCID",
+        	"text":"Utilizzando un identificativo univoco ed aperto per i ricercatori è possibile superare i problemi di disambiguazione degli autori. Attribuire correttamente risultati e attività di ricerca è un passo imprescindibile per il giusto riconoscimento dell’attività di ricerca di ogni studioso. ORCID è lo standard di fatto per l’identificazione di ricercatori e studiosi, supportato da un sempre maggior numero di Editori, Istituzioni di ricerca ed Enti finanziatori (<a href=\"http://orcid.org/about/community/members\" target=\"_blank\">si veda elenco completo</a>). Il suo utilizzo semplifica e velocizza l’interazione con i vari sistemi evitando e/o riducendo la necessità di imputazione diretta di informazioni da parte del ricercatore."
+        },
+        "third":{
+        	"title":"Come fare per ottenere un ORCID",
+        	"text":"La registrazione di un identificativo ORCID è gratuita. Per creare il tuo identificativo o associare l'orcid al tuo profilo puoi utilizzare rispettivamente i pulsanti \"Crea un nuovo ORCID\" o \"Associa il tuo ORCID\" in coda a questo testo informativo."
+        },
+        "fourth":{
+        	"title":"Ho già un ORCID, come posso associarlo",
+        	"text":"Utilizza il pulsante \"Associa il tuo ORCID\" in coda a questo testo informativo, nella pagina che ti verrà mostrata potrai procedere con l'associazione al tuo ORCID direttamente sul sito ORCID effettuando la login. Se hai dimenticato le credenziali di accesso al tuo profilo ORCID potrai effettuarne il recupero seguendo le indicazioni presenti nella schermata di login ORCID."
+        },
+        "fifth":{
+        	"title":"Altre domande",
+        	"text":"Ulteriori chiarimenti ed informazioni sull'identificativo ORCID, l’organizzazione ORCID, il progetto I.R.ID.E. e l'adozione di ORCID a livello nazionale sono disponibili nella <a href=\"https://wiki.u-gov.it/confluence/pages/viewpage.action?pageId=63441718\" target=\"_blank\">pagina delle FAQ</a>."
+        },
+        "listauth":"Le seguenti applicazioni sono riconducibili alla sua istituzione, la invitiamo a concedere l’autorizzazione ad operare su ORCID per tutte le applicazioni al fine di beneficiare del maggior numero possibile di servizi. Potrà revocare le autorizzazioni concesso in qualsiasi momento a partire dal suo profilo ORCID."
+    }
+}

@@ -1,0 +1,21 @@
+{
+  "generator-jhipster": {
+    "baseName": "huborcid",
+    "packageName": "it.cineca.pst.huborcid",
+    "packageFolder": "it/cineca/pst/huborcid",
+    "authenticationType": "session",
+    "hibernateCache": "no",
+    "clusteredHttpSession": "no",
+    "websocket": "no",
+    "databaseType": "sql",
+    "devDatabaseType": "oracle",
+    "prodDatabaseType": "oracle",
+    "searchEngine": "no",
+    "useCompass": false,
+    "buildTool": "maven",
+    "frontendBuilder": "grunt",
+    "javaVersion": "7",
+    "enableTranslation": true,
+    "rememberMeKey": "88ea12ab11ca407a70c837cc034e285b30f4f3cf"
+  }
+}

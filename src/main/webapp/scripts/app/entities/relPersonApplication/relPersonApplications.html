@@ -1,0 +1,213 @@
+<!--
+
+    This file is part of huborcid.
+
+    huborcid is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    huborcid is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with huborcid.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<div>
+
+    <h2 translate="huborcidApp.relPersonApplication.home.title">RelPersonApplications</h2>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <button class="btn btn-primary" data-toggle="modal" data-target="#saveRelPersonApplicationModal" ng-click="clear()">
+                    <span class="glyphicon glyphicon-flash"></span> <span translate="huborcidApp.relPersonApplication.home.createLabel">Create a new RelPersonApplication</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="saveRelPersonApplicationModal" tabindex="-1" role="dialog" aria-labelledby="myRelPersonApplicationLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form name="editForm" role="form" novalidate ng-submit="save()">
+
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                                ng-click="clear()">&times;</button>
+                        <h4 class="modal-title" id="myRelPersonApplicationLabel" translate="huborcidApp.relPersonApplication.home.createOrEditLabel">Create or edit a RelPersonApplication</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>ID</label>
+                            <input type="text" class="form-control" name="id"
+                                   ng-model="relPersonApplication.id" readonly>
+                        </div>
+
+                        <div class="form-group">
+                            <label translate="huborcidApp.relPersonApplication.oauthAccessToken">OauthAccessToken</label>
+                            <input type="text" class="form-control" name="oauthAccessToken"
+                                   ng-model="relPersonApplication.oauthAccessToken">
+
+                        </div>
+                        <div class="form-group">
+                            <label translate="huborcidApp.relPersonApplication.dateReleased">DateReleased</label>
+                            <input type="datetime-local" class="form-control" name="dateReleased"
+                                   ng-model="relPersonApplication.dateReleased" ng-model-options="{timezone: 'UTC'}">
+
+                        </div>
+                        <div class="form-group">
+                            <label translate="huborcidApp.relPersonApplication.dateDenied">DateDenied</label>
+                            <input type="datetime-local" class="form-control" name="dateDenied"
+                                   ng-model="relPersonApplication.dateDenied" ng-model-options="{timezone: 'UTC'}">
+
+                        </div>
+                        <div class="form-group">
+                            <label translate="huborcidApp.relPersonApplication.valid">Valid</label>
+                            <input type="checkbox" class="form-control" name="valid"
+                                   ng-model="relPersonApplication.valid">
+
+                        </div>
+                        <div class="form-group">
+                            <label translate="huborcidApp.relPersonApplication.denied">Denied</label>
+                            <input type="checkbox" class="form-control" name="denied"
+                                   ng-model="relPersonApplication.denied">
+
+                        </div>
+                        <div class="form-group">
+                            <label translate="huborcidApp.relPersonApplication.errorDescription">ErrorDescription</label>
+                            <input type="text" class="form-control" name="errorDescription"
+                                   ng-model="relPersonApplication.errorDescription">
+
+                        </div>
+                        <div class="form-group">
+                            <label translate="huborcidApp.relPersonApplication.notified">Notified</label>
+                            <input type="checkbox" class="form-control" name="notified"
+                                   ng-model="relPersonApplication.notified">
+
+                        </div>
+
+                        <div class="form-group">
+                            <label translate="huborcidApp.relPersonApplication.person">person</label>
+                            <select class="form-control" name="person" ng-model="relPersonApplication.person.id" ng-options="person.id as person.localID for person in persons">
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label translate="huborcidApp.relPersonApplication.application">application</label>
+                            <select class="form-control" name="application" ng-model="relPersonApplication.application.id" ng-options="application.id as application.applicationID for application in applications">
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label translate="huborcidApp.relPersonApplication.token">token</label>
+                            <select class="form-control" name="token" ng-model="relPersonApplication.token.id" ng-options="token.id as token.id for token in tokens">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
+                            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
+                        </button>
+                        <button type="submit" ng-disabled="editForm.$invalid" class="btn btn-primary">
+                            <span class="glyphicon glyphicon-save"></span>&nbsp;<span translate="entity.action.save">Save</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteRelPersonApplicationConfirmation">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form name="deleteForm" ng-submit="confirmDelete(relPersonApplication.id)">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                                ng-click="clear()">&times;</button>
+                        <h4 class="modal-title" translate="entity.delete.title">Confirm delete operation</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p translate="huborcidApp.relPersonApplication.delete.question" translate-values="{id: '{{relPersonApplication.id}}'}">Are you sure you want to delete this RelPersonApplication?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
+                            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
+                        </button>
+                        <button type="submit" ng-disabled="deleteForm.$invalid" class="btn btn-danger">
+                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span translate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th translate="huborcidApp.relPersonApplication.oauthAccessToken">OauthAccessToken</th>
+                    <th translate="huborcidApp.relPersonApplication.dateReleased">DateReleased</th>
+                    <th translate="huborcidApp.relPersonApplication.dateDenied">DateDenied</th>
+                    <th translate="huborcidApp.relPersonApplication.valid">Valid</th>
+                    <th translate="huborcidApp.relPersonApplication.denied">Denied</th>
+                    <th translate="huborcidApp.relPersonApplication.errorDescription">ErrorDescription</th>
+                    <th translate="huborcidApp.relPersonApplication.notified">Notified</th>
+                    <th translate="huborcidApp.relPersonApplication.person">person</th>
+                    <th translate="huborcidApp.relPersonApplication.application">application</th>
+                    <th translate="huborcidApp.relPersonApplication.token">token</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="relPersonApplication in relPersonApplications">
+                    <td><a ui-sref="relPersonApplicationDetail({id:relPersonApplication.id})">{{relPersonApplication.id}}</a></td>
+                    <td>{{relPersonApplication.oauthAccessToken}}</td>
+                    <td>{{relPersonApplication.dateReleased}}</td>
+                    <td>{{relPersonApplication.dateDenied}}</td>
+                    <td>{{relPersonApplication.valid}}</td>
+                    <td>{{relPersonApplication.denied}}</td>
+                    <td>{{relPersonApplication.errorDescription}}</td>
+                    <td>{{relPersonApplication.notified}}</td>
+                    <td>{{relPersonApplication.person.localID}}</td>
+                    <td>{{relPersonApplication.application.applicationID}}</td>
+                    <td>{{relPersonApplication.token.id}}</td>
+                    <td>
+                        <button type="submit"
+                                ui-sref="relPersonApplicationDetail({id:relPersonApplication.id})"
+                                class="btn btn-info btn-sm">
+                            <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span translate="entity.action.view"> View</span>
+                        </button>
+                        <button type="submit"
+                                ng-click="showUpdate(relPersonApplication.id)"
+                                class="btn btn-primary btn-sm">
+                            <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span translate="entity.action.edit"> Edit</span>
+                        </button>
+                        <button type="submit"
+                                ng-click="delete(relPersonApplication.id)"
+                                class="btn btn-danger btn-sm">
+                            <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span translate="entity.action.delete"> Delete</span>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <nav>
+            <ul class="pagination">
+                <li ng-show="links['first']" ng-click="loadPage(links['first'])"><a>&lt;&lt;</a></li>
+                <li ng-show="links['prev']" ng-click="loadPage(links['prev'])"><a>&lt;</a></li>
+                <li ng-show="page > 2" ng-click="loadPage(page - 2)"><a>{{page - 2}}</a></li>
+                <li ng-show="page > 1" ng-click="loadPage(page - 1)"><a>{{page - 1}}</a></li>
+                <li class="active"><a>{{page}}</a></li>
+                <li ng-show="page < links['last']" ng-click="loadPage(page + 1)"><a>{{page + 1}}</a></li>
+                <li ng-show="page < links['last'] - 1" ng-click="loadPage(page + 2)"><a>{{page + 2}}</a></li>
+                <li ng-show="links['next']" ng-click="loadPage(links['next'])"><a>&gt;</a></li>
+                <li ng-show="links['last']" ng-click="loadPage(links['last'])"><a>&gt;&gt;</a></li>
+            </ul>
+        </nav>
+    </div>
+</div>

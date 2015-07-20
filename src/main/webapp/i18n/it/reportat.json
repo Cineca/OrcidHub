@@ -1,0 +1,17 @@
+{
+    "huborcidApp": {
+        "reportat" : {
+            "home": {
+                "title": "Report Access Token",
+                "downloadexcel":"Download lista in Excel"
+            },
+            "localId":"Local Id",
+            "orcid":"ORCID",
+            "orcidCreated":"Associazione ORCID",
+            "orcidAccassToken":"ORCID Access Token",
+            "accessTokenCreated":"Rilascio ORCID Access Token",
+            "accessTokenRevoked":"AccessT revocato"
+
+        }
+    }
+}

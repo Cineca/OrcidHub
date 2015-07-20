@@ -1,0 +1,44 @@
+{
+    "relationships": [],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "username",
+            "fieldType": "String",
+            "fieldNameCapitalized": "Username",
+            "fieldNameUnderscored": "username",
+            "fieldInJavaBeanMethod": "Username",
+            "fieldValidate": false
+        },
+        {
+            "fieldId": 2,
+            "fieldName": "passwordPlain",
+            "fieldType": "String",
+            "fieldNameCapitalized": "PasswordPlain",
+            "fieldNameUnderscored": "password_plain",
+            "fieldInJavaBeanMethod": "PasswordPlain",
+            "fieldValidate": false
+        },
+        {
+            "fieldId": 3,
+            "fieldName": "passwordHash",
+            "fieldType": "String",
+            "fieldNameCapitalized": "PasswordHash",
+            "fieldNameUnderscored": "password_hash",
+            "fieldInJavaBeanMethod": "PasswordHash",
+            "fieldValidate": false
+        }
+    ],
+    "fieldsContainOwnerManyToMany": false,
+    "fieldsContainOwnerOneToOne": false,
+    "fieldsContainOneToMany": false,
+    "fieldsContainLocalDate": false,
+    "fieldsContainCustomTime": false,
+    "fieldsContainBigDecimal": false,
+    "fieldsContainDateTime": false,
+    "fieldsContainDate": false,
+    "changelogDate": "20150618150123",
+    "dto": "no",
+    "pagination": "pagination",
+    "validation": false
+}

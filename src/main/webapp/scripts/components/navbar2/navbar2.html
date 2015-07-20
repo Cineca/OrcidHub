@@ -1,0 +1,83 @@
+<!--
+
+    This file is part of huborcid.
+
+    huborcid is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    huborcid is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with huborcid.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#/"><span translate="global.title">jhipster</span> <span class="navbar-version">v{{VERSION}}</span></a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbar-collapse" ng-switch="isAuthenticated()">
+            <ul class="nav navbar-nav nav-pills navbar-right">
+                <li ui-sref-active="active">
+                    <a href="https://wiki.u-gov.it/confluence/pages/viewpage.action?pageId=63441718" target="_blank">
+                        <span class="glyphicon glyphicon-question-sign"></span>
+                        <span>Help</span>
+                    </a>
+                </li>
+                <li ng-class="{active: $state.includes('account')}" class="dropdown pointer" ng-switch-when="true">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="">
+                                <span>
+                                    <span class="glyphicon glyphicon-user"></span>
+                                    <span class="hidden-tablet" translate="global.menu.account.main">
+                                        Account
+                                    </span>
+                                    <b class="caret"></b>
+                                </span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li ui-sref-active="active"><a href="" ng-click="logout()"><span class="glyphicon glyphicon-log-out"></span>
+                            &#xA0;<span translate="global.menu.account.logout">Log out</span></a></li>
+                    </ul>
+                </li>
+                <li ng-class="{active: $state.includes('admin')}"  ng-switch-when="true" has-role="ROLE_ORCID" class="dropdown pointer">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="">
+                                <span>
+                                    <span class="glyphicon glyphicon-tower"></span>
+                                    <span class="hidden-tablet" translate="global.menu.cruscotto.main">Cruscottho</span>
+                                    <b class="caret"></b>
+                                </span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li ui-sref-active="active"><a ui-sref="reportat"><span class="glyphicon glyphicon-dashboard"></span>
+                            &#xA0;<span translate="global.menu.cruscotto.reportat">Report Access Token</span></a></li>
+                    </ul>
+                </li>
+                <li ui-sref-active="active" class="dropdown pointer" ng-controller="LanguageController">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="">
+                                <span>
+                                    <span class="glyphicon glyphicon-flag"></span>
+                                    <span class="hidden-tablet" translate="global.menu.language">Language</span>
+                                    <b class="caret"></b>
+                                </span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li active-menu="{{language}}" ng-repeat="language in languages">
+                            <a href="" ng-click="changeLanguage(language)">{{'language.' + language| translate}}</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

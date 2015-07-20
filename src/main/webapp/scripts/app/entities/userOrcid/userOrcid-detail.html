@@ -1,0 +1,64 @@
+<!--
+
+    This file is part of huborcid.
+
+    huborcid is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    huborcid is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with huborcid.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+
+<div>
+    <h2><span translate="huborcidApp.userOrcid.detail.title">UserOrcid</span> {{userOrcid.id}}</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th translate="entity.detail.field">Field</th>
+                    <th translate="entity.detail.value">Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <span translate="huborcidApp.userOrcid.username">Username</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{userOrcid.username}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="huborcidApp.userOrcid.passwordPlain">PasswordPlain</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{userOrcid.passwordPlain}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="huborcidApp.userOrcid.passwordHash">PasswordHash</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{userOrcid.passwordHash}}" readonly>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <button type="submit"
+            ui-sref="userOrcid"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span translate="entity.action.back"> Back</span>
+    </button>
+</div>

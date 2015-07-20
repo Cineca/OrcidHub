@@ -1,0 +1,32 @@
+{
+    "huborcidApp": {
+        "application" : {
+            "home": {
+                "title": "Applications",
+                "createLabel": "Créer un nouveau Application",
+                "createOrEditLabel": "Créer ou éditer un Application"
+            },
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le Application {{ id }} ?"
+            },
+            "detail": {
+                "title": "Application"
+            },
+            "applicationID": "ApplicationID",
+            "applicationSecret": "ApplicationSecret",
+            "name": "Name",
+            "urlCallback": "UrlCallback",
+            "orgUnit": "OrgUnit",
+            "email": "Email",
+            "urlNotify": "UrlNotify",
+            "notifyUsername": "NotifyUsername",
+            "notifyPassword": "NotifyPassword",
+            "allOrg": "AllOrg",
+            "helpURL": "HelpURL",
+            "helpMail": "HelpMail",
+            "description": "Description",
+            "authUser": "authUser"
+        }
+    }
+}
+

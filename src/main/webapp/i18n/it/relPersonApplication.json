@@ -1,0 +1,27 @@
+{
+    "huborcidApp": {
+        "relPersonApplication" : {
+            "home": {
+                "title": "RelPersonApplications",
+                "createLabel": "Create a new RelPersonApplication",
+                "createOrEditLabel": "Create or edit a RelPersonApplication"
+            },
+            "delete": {
+                "question": "Are you sure you want to delete RelPersonApplication {{ id }}?"
+            },
+            "detail": {
+                "title": "RelPersonApplication"
+            },
+            "oauthAccessToken": "OauthAccessToken",
+            "dateReleased": "DateReleased",
+            "dateDenied": "DateDenied",
+            "valid": "Valid",
+            "denied": "Denied",
+            "errorDescription": "ErrorDescription",
+            "notified": "Notified",
+            "person": "person",
+            "application": "application",
+            "token": "token"
+        }
+    }
+}

@@ -1,0 +1,111 @@
+{
+    "relationships": [
+        {
+            "relationshipId": 1,
+            "relationshipName": "person",
+            "relationshipNameCapitalized": "Person",
+            "relationshipFieldName": "person",
+            "otherEntityName": "person",
+            "relationshipType": "many-to-one",
+            "otherEntityNameCapitalized": "Person",
+            "otherEntityField": "localID"
+        },
+        {
+            "relationshipId": 2,
+            "relationshipName": "application",
+            "relationshipNameCapitalized": "Application",
+            "relationshipFieldName": "application",
+            "otherEntityName": "application",
+            "relationshipType": "many-to-one",
+            "otherEntityNameCapitalized": "Application",
+            "otherEntityField": "applicationID"
+        },
+		{
+            "relationshipId": 3,
+            "relationshipName": "token",
+            "relationshipNameCapitalized": "Token",
+            "relationshipFieldName": "token",
+            "otherEntityName": "token",
+            "relationshipType": "many-to-one",
+            "otherEntityNameCapitalized": "Token",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "oauthAccessToken",
+            "fieldType": "String",
+            "fieldNameCapitalized": "OauthAccessToken",
+            "fieldNameUnderscored": "oauth_access_token",
+            "fieldInJavaBeanMethod": "OauthAccessToken",
+            "fieldValidate": false
+        },
+        {
+            "fieldId": 2,
+            "fieldName": "dateReleased",
+            "fieldType": "DateTime",
+            "fieldNameCapitalized": "DateReleased",
+            "fieldNameUnderscored": "date_released",
+            "fieldInJavaBeanMethod": "DateReleased",
+            "fieldValidate": false
+        },
+        {
+            "fieldId": 3,
+            "fieldName": "dateDenied",
+            "fieldType": "DateTime",
+            "fieldNameCapitalized": "DateDenied",
+            "fieldNameUnderscored": "date_denied",
+            "fieldInJavaBeanMethod": "DateDenied",
+            "fieldValidate": false
+        },
+        {
+            "fieldId": 4,
+            "fieldName": "valid",
+            "fieldType": "Boolean",
+            "fieldNameCapitalized": "Valid",
+            "fieldNameUnderscored": "valid",
+            "fieldInJavaBeanMethod": "Valid",
+            "fieldValidate": false
+        },
+        {
+            "fieldId": 5,
+            "fieldName": "denied",
+            "fieldType": "Boolean",
+            "fieldNameCapitalized": "Denied",
+            "fieldNameUnderscored": "denied",
+            "fieldInJavaBeanMethod": "Denied",
+            "fieldValidate": false
+        },
+		{
+            "fieldId": 6,
+            "fieldName": "errorDescription",
+            "fieldType": "String",
+            "fieldNameCapitalized": "ErrorDescription",
+            "fieldNameUnderscored": "error_description",
+            "fieldInJavaBeanMethod": "ErrorDescription",
+            "fieldValidate": false
+        },
+		{
+            "fieldId": 6,
+            "fieldName": "notified",
+            "fieldType": "Boolean",
+            "fieldNameCapitalized": "Notified",
+            "fieldNameUnderscored": "notified",
+            "fieldInJavaBeanMethod": "Notified",
+            "fieldValidate": false
+        }
+    ],
+    "fieldsContainOwnerManyToMany": false,
+    "fieldsContainOwnerOneToOne": false,
+    "fieldsContainOneToMany": false,
+    "fieldsContainLocalDate": false,
+    "fieldsContainCustomTime": true,
+    "fieldsContainBigDecimal": false,
+    "fieldsContainDateTime": true,
+    "fieldsContainDate": false,
+    "changelogDate": "20150618154058",
+    "dto": "no",
+    "pagination": "pagination",
+    "validation": false
+}

@@ -1,0 +1,72 @@
+<!--
+
+    This file is part of huborcid.
+
+    huborcid is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    huborcid is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with huborcid.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<div>
+
+    <h2 translate="huborcidApp.reportat.home.title">RelPersonApplications</h2>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <a ng-href="{{linkDownloadExcel}}" download="exportAccessToken.xls">
+	                <button class="btn btn-primary" >
+	                    <span class="glyphicon glyphicon-flash"></span> <span translate="huborcidApp.reportat.home.downloadexcel">Download lista in excel</span>
+	                </button>
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th translate="huborcidApp.reportat.localId">localId</th>
+                    <th translate="huborcidApp.reportat.orcid">orcid</th>
+                    <th translate="huborcidApp.reportat.orcidCreated">orcidCreated</th>
+                    <th translate="huborcidApp.reportat.orcidAccassToken">orcidAccassToken</th>
+                    <th translate="huborcidApp.reportat.accessTokenCreated">accessTokenCreated</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="relPersonApplication in relPersonApplications">
+                    <td>{{relPersonApplication.localId}}</td>
+                    <td>{{relPersonApplication.orcid}}</td>
+                    <td>{{relPersonApplication.orcidCreated}}</td>
+                    <td>{{relPersonApplication.orcidAccassToken}}</td>
+                    <td>{{relPersonApplication.accessTokenCreated}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <nav>
+            <ul class="pagination">
+                <li ng-show="links['first']" ng-click="loadPage(links['first'])"><a>&lt;&lt;</a></li>
+                <li ng-show="links['prev']" ng-click="loadPage(links['prev'])"><a>&lt;</a></li>
+                <li ng-show="page > 2" ng-click="loadPage(page - 2)"><a>{{page - 2}}</a></li>
+                <li ng-show="page > 1" ng-click="loadPage(page - 1)"><a>{{page - 1}}</a></li>
+                <li class="active"><a>{{page}}</a></li>
+                <li ng-show="page < links['last']" ng-click="loadPage(page + 1)"><a>{{page + 1}}</a></li>
+                <li ng-show="page < links['last'] - 1" ng-click="loadPage(page + 2)"><a>{{page + 2}}</a></li>
+                <li ng-show="links['next']" ng-click="loadPage(links['next'])"><a>&gt;</a></li>
+                <li ng-show="links['last']" ng-click="loadPage(links['last'])"><a>&gt;&gt;</a></li>
+            </ul>
+        </nav>
+    </div>
+</div>

@@ -1,0 +1,21 @@
+{
+    "huborcidApp": {
+        "userOrcid" : {
+            "home": {
+                "title": "UserOrcids",
+                "createLabel": "Créer un nouveau UserOrcid",
+                "createOrEditLabel": "Créer ou éditer un UserOrcid"
+            },
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le UserOrcid {{ id }} ?"
+            },
+            "detail": {
+                "title": "UserOrcid"
+            },
+            "username": "Username",
+            "passwordPlain": "PasswordPlain",
+            "passwordHash": "PasswordHash"
+        }
+    }
+}
+

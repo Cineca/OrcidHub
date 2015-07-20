@@ -1,0 +1,152 @@
+<!--
+
+    This file is part of huborcid.
+
+    huborcid is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    huborcid is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with huborcid.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+
+<div>
+    <h2><span translate="huborcidApp.application.detail.title">Application</span> {{application.id}}</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th translate="entity.detail.field">Field</th>
+                    <th translate="entity.detail.value">Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <span translate="huborcidApp.application.applicationID">ApplicationID</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{application.applicationID}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="huborcidApp.application.applicationSecret">ApplicationSecret</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{application.applicationSecret}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="huborcidApp.application.name">Name</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{application.name}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="huborcidApp.application.urlCallback">UrlCallback</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{application.urlCallback}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="huborcidApp.application.orgUnit">OrgUnit</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{application.orgUnit}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="huborcidApp.application.email">Email</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{application.email}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="huborcidApp.application.urlNotify">UrlNotify</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{application.urlNotify}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="huborcidApp.application.notifyUsername">NotifyUsername</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{application.notifyUsername}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="huborcidApp.application.notifyPassword">NotifyPassword</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{application.notifyPassword}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="huborcidApp.application.allOrg">AllOrg</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{application.allOrg}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="huborcidApp.application.helpURL">HelpURL</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{application.helpURL}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="huborcidApp.application.helpMail">HelpMail</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{application.helpMail}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="huborcidApp.application.description">Description</span>
+                    </td>
+                    <td>
+                        <textarea class="input-sm form-control"  type="text"  ng-minlength=1 readonly>{{application.description}}</textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="huborcidApp.application.authUser">authUser</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{application.authUser.username}}" readonly>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <button type="submit"
+            ui-sref="application"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span translate="entity.action.back"> Back</span>
+    </button>
+</div>

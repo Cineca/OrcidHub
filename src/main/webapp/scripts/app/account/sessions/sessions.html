@@ -1,0 +1,56 @@
+<!--
+
+    This file is part of huborcid.
+
+    huborcid is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    huborcid is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with huborcid.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<div>
+
+    <h2 translate="sessions.title" translate-values="{username: '{{account.login}}'}">Active sessions for [<b>{{account.login}}</b>]</h2>
+
+    <div class="alert alert-success" ng-show="success" translate="sessions.messages.success">
+        <strong>Session invalidated!</strong>
+    </div>
+    <div class="alert alert-danger" ng-show="error" translate="sessions.messages.error">
+        <strong>An error has occured!</strong> The session could not be invalidated.
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th translate="sessions.table.ipaddress">IP Address</th>
+                    <th translate="sessions.table.useragent">User agent</th>
+                    <th translate="sessions.table.date">Date</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="session in sessions">
+                    <td>{{session.ipAddress}}</td>
+                    <td>{{session.userAgent}}</td>
+                    <td>{{session.formattedTokenDate}}</td>
+                    <td>
+                        <button type="submit"
+                                class="btn btn-primary"
+                                ng-click="invalidate(session.series)" translate="sessions.table.button">
+                                 Invalidate
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

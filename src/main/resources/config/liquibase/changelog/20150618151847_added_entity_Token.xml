@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <property name="now" value="now()" dbms="mysql,h2"/>
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+    <property name="now" value="sysdate" dbms="oracle"/>
+
+    <property name="autoIncrement" value="true" dbms="mysql,h2,postgresql"/>
+    <property name="autoIncrement" value="false" dbms="oracle"/>
+    <!--
+        Added the entity Token.
+    -->
+    <changeSet id="20150618151847" author="jhipster">
+        <createSequence sequenceName="SEQ_TOKEN" startValue="1000" incrementBy="1"/>
+        <createTable tableName="ORCID_TOKEN">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="date_released" type="timestamp"/>
+            <column name="date_used" type="timestamp"/>
+            <column name="ott" type="varchar(255)"/>
+            <column name="url_callback" type="varchar(255)"/>
+            <column name="person_id" type="bigint"/>
+            <column name="application_id" type="bigint"/>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+			<column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+			<column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+        <dropDefaultValue tableName="ORCID_TOKEN" columnName="date_released" columnDataType="datetime"/>
+
+        <dropDefaultValue tableName="ORCID_TOKEN" columnName="date_used" columnDataType="datetime"/>
+
+        
+        <addForeignKeyConstraint baseColumnNames="person_id"
+                                 baseTableName="ORCID_TOKEN"
+                                 constraintName="fk_token_person_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="ORCID_PERSON"/>
+
+        <addForeignKeyConstraint baseColumnNames="application_id"
+                                 baseTableName="ORCID_TOKEN"
+                                 constraintName="fk_token_application_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="ORCID_APPLICATION"/>
+
+    </changeSet>
+</databaseChangeLog>

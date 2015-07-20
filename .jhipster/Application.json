@@ -1,0 +1,145 @@
+{
+    "relationships": [
+        {
+            "relationshipId": 1,
+            "relationshipName": "authUser",
+            "relationshipNameCapitalized": "AuthUser",
+            "relationshipFieldName": "authUser",
+            "otherEntityName": "userOrcid",
+            "relationshipType": "many-to-one",
+            "otherEntityNameCapitalized": "UserOrcid",
+            "otherEntityField": "username"
+        }
+    ],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "applicationID",
+            "fieldType": "String",
+            "fieldNameCapitalized": "ApplicationID",
+            "fieldNameUnderscored": "application_id",
+            "fieldInJavaBeanMethod": "ApplicationID",
+            "fieldValidate": false
+        },
+        {
+            "fieldId": 2,
+            "fieldName": "applicationSecret",
+            "fieldType": "String",
+            "fieldNameCapitalized": "ApplicationSecret",
+            "fieldNameUnderscored": "application_secret",
+            "fieldInJavaBeanMethod": "ApplicationSecret",
+            "fieldValidate": false
+        },
+        {
+            "fieldId": 3,
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldNameCapitalized": "Name",
+            "fieldNameUnderscored": "name",
+            "fieldInJavaBeanMethod": "Name",
+            "fieldValidate": false
+        },
+        {
+            "fieldId": 4,
+            "fieldName": "urlCallback",
+            "fieldType": "String",
+            "fieldNameCapitalized": "UrlCallback",
+            "fieldNameUnderscored": "url_callback",
+            "fieldInJavaBeanMethod": "UrlCallback",
+            "fieldValidate": false
+        },
+        {
+            "fieldId": 5,
+            "fieldName": "orgUnit",
+            "fieldType": "String",
+            "fieldNameCapitalized": "OrgUnit",
+            "fieldNameUnderscored": "org_unit",
+            "fieldInJavaBeanMethod": "OrgUnit",
+            "fieldValidate": false
+        },
+        {
+            "fieldId": 6,
+            "fieldName": "email",
+            "fieldType": "String",
+            "fieldNameCapitalized": "Email",
+            "fieldNameUnderscored": "email",
+            "fieldInJavaBeanMethod": "Email",
+            "fieldValidate": false
+        },
+        {
+            "fieldId": 7,
+            "fieldName": "urlNotify",
+            "fieldType": "String",
+            "fieldNameCapitalized": "UrlNotify",
+            "fieldNameUnderscored": "url_notify",
+            "fieldInJavaBeanMethod": "UrlNotify",
+            "fieldValidate": false
+        },
+        {
+            "fieldId": 8,
+            "fieldName": "notifyUsername",
+            "fieldType": "String",
+            "fieldNameCapitalized": "NotifyUsername",
+            "fieldNameUnderscored": "notify_username",
+            "fieldInJavaBeanMethod": "NotifyUsername",
+            "fieldValidate": false
+        },
+        {
+            "fieldId": 9,
+            "fieldName": "notifyPassword",
+            "fieldType": "String",
+            "fieldNameCapitalized": "NotifyPassword",
+            "fieldNameUnderscored": "notify_password",
+            "fieldInJavaBeanMethod": "NotifyPassword",
+            "fieldValidate": false
+        },
+		{
+            "fieldId": 10,
+			"fieldName": "allOrg",
+            "fieldType": "Boolean",
+            "fieldNameCapitalized": "AllOrg",
+            "fieldNameUnderscored": "allOrg",
+            "fieldInJavaBeanMethod": "AllOrg",
+            "fieldValidate": false
+        },
+		{
+            "fieldId": 11,
+            "fieldName": "helpURL",
+            "fieldType": "String",
+            "fieldNameCapitalized": "HelpURL",
+            "fieldNameUnderscored": "help_url",
+            "fieldInJavaBeanMethod": "HelpURL",
+            "fieldValidate": false
+        },
+		{
+            "fieldId": 12,
+            "fieldName": "helpMail",
+            "fieldType": "String",
+            "fieldNameCapitalized": "HelpMail",
+            "fieldNameUnderscored": "help_mail",
+            "fieldInJavaBeanMethod": "HelpMail",
+            "fieldValidate": false
+        },
+		{
+            "fieldId": 13,
+            "fieldName": "description",
+            "fieldType": "String",
+            "fieldNameCapitalized": "Description",
+            "fieldNameUnderscored": "description",
+            "fieldInJavaBeanMethod": "Description",
+            "fieldValidate": false
+        }
+    ],
+    "fieldsContainOwnerManyToMany": false,
+    "fieldsContainOwnerOneToOne": false,
+    "fieldsContainOneToMany": false,
+    "fieldsContainLocalDate": false,
+    "fieldsContainCustomTime": false,
+    "fieldsContainBigDecimal": false,
+    "fieldsContainDateTime": false,
+    "fieldsContainDate": false,
+    "changelogDate": "20150630150951",
+    "dto": "no",
+    "pagination": "pagination",
+    "validation": false
+}
