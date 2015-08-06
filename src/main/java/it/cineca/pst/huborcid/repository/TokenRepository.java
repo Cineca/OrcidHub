@@ -16,6 +16,7 @@
  */
 package it.cineca.pst.huborcid.repository;
 
+import it.cineca.pst.huborcid.domain.Person;
 import it.cineca.pst.huborcid.domain.Token;
 import org.springframework.data.jpa.repository.*;
 
@@ -27,4 +28,6 @@ import java.util.List;
 public interface TokenRepository extends JpaRepository<Token,Long> {
 
 	Token findOneByOtt(String ott);
+	
+	Long deleteByPersonIs(Person person);
 }

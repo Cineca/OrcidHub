@@ -31,6 +31,7 @@ import it.cineca.pst.huborcid.repository.TokenRepository;
 import it.cineca.pst.huborcid.security.SecurityUtils;
 import it.cineca.pst.huborcid.service.OrcidService;
 import it.cineca.pst.huborcid.web.rest.dto.ApplicationMinDTO;
+import it.cineca.pst.huborcid.web.rest.dto.DeleteUserIdResponseDTO;
 import it.cineca.pst.huborcid.web.rest.dto.GetLandingPageResponseDTO;
 import it.cineca.pst.huborcid.web.rest.dto.GetTicketRequestDTO;
 import it.cineca.pst.huborcid.web.rest.dto.GetTicketResponseDTO;
@@ -199,6 +200,30 @@ public class OrcidRestController {
         return new ResponseEntity<GetTicketResponseDTO>(response,HttpStatus.OK);
     }
     
+	@RequestMapping(value = "/user/{LOCALID}/delete",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public  ResponseEntity<DeleteUserIdResponseDTO> deleteUser(
+    		@PathVariable("LOCALID") String localID ) throws ApplicationNotFoundException, LocalIdMissingException{
+		log.debug("REST DELETE_ID START. localid [{}]",localID);
+		String currentLogin =SecurityUtils.getCurrentLogin();
+        Application application = applicationRepository.findOneByApplicationID(currentLogin);
+        if(application==null){
+        	throw new ApplicationNotFoundException(currentLogin);
+        }
+        
+        Person person = personRepository.findOneByLocalID(localID);
+        if(person==null){
+        	throw new LocalIdMissingException();
+        }
+        
+        orcidService.deleteUser(person);
+		
+        DeleteUserIdResponseDTO response = new DeleteUserIdResponseDTO();
+        response.setResultCode(ResultCode.SUCCESS.getCode());
+        return new ResponseEntity<DeleteUserIdResponseDTO>(response,HttpStatus.OK);
+	}
 
 
 

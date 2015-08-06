@@ -48,4 +48,6 @@ public interface RelPersonApplicationRepository extends JpaRepository<RelPersonA
 	RelPersonApplication findOneByPersonIsAndApplicationIsAndTokenIs(Person person, Application application, Token token);
 	
 	List<RelPersonApplication> findAllByPersonIsAndApplicationIs(Person person, Application application);
+	
+	Long deleteByPersonIs(Person person);
 }

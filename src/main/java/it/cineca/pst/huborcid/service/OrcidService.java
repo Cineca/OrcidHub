@@ -17,12 +17,19 @@
 package it.cineca.pst.huborcid.service;
 
 import it.cineca.pst.huborcid.domain.Application;
+import it.cineca.pst.huborcid.domain.Person;
 import it.cineca.pst.huborcid.domain.RelPersonApplication;
+import it.cineca.pst.huborcid.repository.ApplicationRepository;
+import it.cineca.pst.huborcid.repository.PersonRepository;
+import it.cineca.pst.huborcid.repository.RelPersonApplicationRepository;
+import it.cineca.pst.huborcid.repository.TokenRepository;
 import it.cineca.pst.huborcid.web.rest.dto.NotifyDTO;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.concurrent.Future;
+
+import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,7 +59,17 @@ public class OrcidService {
 	
 	private final Logger log = LoggerFactory.getLogger(OrcidService.class);
 	
+	@Inject
+    private PersonRepository personRepository;
+    
+    @Inject
+    private RelPersonApplicationRepository relPersonApplicationRepository;
+    
+    @Inject
+    private TokenRepository tokenRepository;
+	
 	RestTemplate restTemplate = new RestTemplate();
+	
 
     @Async
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -82,6 +99,13 @@ public class OrcidService {
         return new AsyncResult<String>(resultObject);
     }
     
+    @Transactional    
+    public void deleteUser(Person person){
+        relPersonApplicationRepository.deleteByPersonIs(person);
+        tokenRepository.deleteByPersonIs(person);
+        personRepository.delete(person);
+    }
+    
     private String getBasicAuthHeader(String user, String password){
     	String plainCreds = user+":"+password;
     	byte[] plainCredsBytes = plainCreds.getBytes();
@@ -89,5 +113,13 @@ public class OrcidService {
     	System.out.println("Basic " + base64Creds);
     	return "Basic " + base64Creds;
     }
+    
+    public static void main(String [] args)
+	{
+    	String plainCreds = "_palena.cilea@unimi.it"+":"+"1sNotDream";
+    	byte[] plainCredsBytes = plainCreds.getBytes();
+    	String base64Creds  = new String(Base64.encode(plainCredsBytes));
+    	System.out.println("Basic " + base64Creds);
+	}
 
 }

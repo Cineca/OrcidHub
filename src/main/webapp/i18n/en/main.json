@@ -2,7 +2,7 @@
     "main": {
         "title": "Welcome to the Italian National ORCID Hub!",
         "subtitle": "The Italian National ORCID Hub is an infrastractural service enabling easy and effective use of the ORCID registry by Italian researchers. This is the home page of such service providing access to the reporting and management tools for the administrators of integrated applications.",
-        "text":"If you are looking for more information about <a href=\"http://www.w3schools.com\" target=\"_blank\">ORCID</a>, the Anvur's I.R.ID.E. project, or the National Hub please check the <a href=\"https://wiki.u-gov.it/confluence/pages/viewpage.action?pageId=63441718\" target=\"_blank\">F.A.Q. section</a><br/><br/>If you are looking for register your ORCID identifier, you need to start the registration process from one of the connected applications, like the <a href=\"https://loginmiur.cineca.it/\" target=\"_blank\">LoginMIUR</a> or any Istitutional system connected with the National Hub",
+        "text":"If you are looking for more information about <a href=\"http://orcid.org\" target=\"_blank\">ORCID</a>, the Anvur's I.R.ID.E. project, or the National Hub please check the <a href=\"https://wiki.u-gov.it/confluence/pages/viewpage.action?pageId=63441718\" target=\"_blank\">F.A.Q. section</a><br/><br/>If you are looking for register your ORCID identifier, you need to start the registration process from one of the connected applications, like the <a href=\"https://loginmiur.cineca.it/\" target=\"_blank\">LoginMIUR</a> or any Istitutional system connected with the National Hub",
         "logged": {
             "message": "You are logged in as user \"{{username}}\"."
         },
