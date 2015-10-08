@@ -1,17 +1,17 @@
-README for ORCID HUB
+#README for ORCID HUB
 
 Web Application that allows the integration of multiple applications with ORCID.
 
 Live application on https://orcidhub.cineca.it
 
-USE CASE
+##USE CASE
 
 ![use case](http://i.imgur.com/SlQhIDu.png)
 
 
-REST API:
+##REST API:
 
-*getTicket
+###getTicket
 
 POST /user/{LOCALID}/ticket
 
@@ -39,7 +39,9 @@ orcid-access-token (string, optional)
 }
 ```
 
+###Start Oauth
 
+GET /oauth/{ticket}
 
 
 Project Based on JHipster
