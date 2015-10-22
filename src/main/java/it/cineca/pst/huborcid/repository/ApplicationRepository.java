@@ -21,6 +21,7 @@ import java.util.List;
 import it.cineca.pst.huborcid.domain.Application;
 
 import org.springframework.data.jpa.repository.*;
+import org.springframework.data.repository.query.Param;
 
 
 /**
@@ -31,4 +32,7 @@ public interface ApplicationRepository extends JpaRepository<Application,Long> {
 	Application findOneByApplicationID(String applicationID);
 	
 	List<Application> findAllByOrgUnitOrAllOrgIsTrue(String applicationID);
+	
+	@Query("select a from Application a where a.id not in :listIds")
+	List<Application> findAllCustomApps(@Param("listIds")List<Long> listIds);
 }

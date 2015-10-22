@@ -71,6 +71,18 @@ public class RelPersonApplication extends AbstractAuditingEntity implements Seri
     
     @Column(name = "notified")
     private Boolean notified;
+    
+    @Column(name = "last")
+    private Boolean last;
+
+    @Column(name = "custom")
+    private Boolean custom;
+
+    @Column(name = "error_not_description")
+    private String errorNotDescription;
+
+    @Column(name = "num_retry")
+    private Integer numRetry;
 
     @ManyToOne
     private Person person;
@@ -145,6 +157,38 @@ public class RelPersonApplication extends AbstractAuditingEntity implements Seri
 		this.notified = notified;
 	}
 
+	public Boolean getLast() {
+		return last;
+	}
+
+	public void setLast(Boolean last) {
+		this.last = last;
+	}
+
+	public Boolean getCustom() {
+		return custom;
+	}
+
+	public void setCustom(Boolean custom) {
+		this.custom = custom;
+	}
+
+	public String getErrorNotDescription() {
+		return errorNotDescription;
+	}
+
+	public void setErrorNotDescription(String errorNotDescription) {
+		this.errorNotDescription = errorNotDescription;
+	}
+
+	public Integer getNumRetry() {
+		return numRetry;
+	}
+
+	public void setNumRetry(Integer numRetry) {
+		this.numRetry = numRetry;
+	}
+
 	public Person getPerson() {
         return person;
     }
@@ -201,6 +245,10 @@ public class RelPersonApplication extends AbstractAuditingEntity implements Seri
                 ", denied='" + denied + "'" +
                 ", errorDescription='" + errorDescription + "'" +
                 ", notified='" + notified + "'" +
+                ", last='" + last + "'" +
+                ", custom='" + custom + "'" +
+                ", errorNotDescription='" + errorNotDescription + "'" +
+                ", numRetry='" + numRetry + "'" +                
                 '}';
     }
 }

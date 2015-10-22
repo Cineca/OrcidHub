@@ -16,21 +16,15 @@
  */
 package it.cineca.pst.huborcid.repository;
 
-import it.cineca.pst.huborcid.domain.Person;
-
-import org.joda.time.DateTime;
+import it.cineca.pst.huborcid.domain.EnvVariable;
 import org.springframework.data.jpa.repository.*;
 
 import java.util.List;
 
 /**
- * Spring Data JPA repository for the Person entity.
+ * Spring Data JPA repository for the EnvVariable entity.
  */
-public interface PersonRepository extends JpaRepository<Person,Long> {
+public interface EnvVariableRepository extends JpaRepository<EnvVariable,Long> {
 
-	Person findOneByLocalID(String localID);
-	
-	Long countByOrcidIsNotNull();
-	
-	Long countByOrcidIsNotNullAndOrcidReleaseDateGreaterThanEqual(DateTime date);
+	EnvVariable findOneByName(String name);
 }

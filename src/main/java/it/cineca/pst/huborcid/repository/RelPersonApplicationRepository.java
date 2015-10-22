@@ -21,11 +21,14 @@ import it.cineca.pst.huborcid.domain.Person;
 import it.cineca.pst.huborcid.domain.RelPersonApplication;
 import it.cineca.pst.huborcid.domain.Token;
 
+import org.joda.time.DateTime;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.*;
+import org.springframework.data.repository.query.Param;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -35,17 +38,29 @@ public interface RelPersonApplicationRepository extends JpaRepository<RelPersonA
 
 	List<RelPersonApplication> findAllByPersonIsAndApplicationIn(Person person, List<Application> applications);
 	
+	List<RelPersonApplication> findAllByPersonIsAndLastIsTrue(Person person);
+	
 	List<RelPersonApplication> findAllByPersonIsAndApplicationInAndValidIsTrue(Person person, List<Application> applications);
+	
+	@Query("select rel from RelPersonApplication rel where rel.valid = true AND (rel.notified = false OR rel.notified is null) ORDER BY rel.id DESC")
+	List<RelPersonApplication> findAllByValidIsTrueAndNotifiedIsFalse(Pageable pageable);
+	
+	@Query("select rel from RelPersonApplication rel where rel.last = true AND (rel.notified = false OR rel.notified is null) AND rel.createdDate < :hourDate ORDER BY rel.id DESC")
+	List<RelPersonApplication> findAllByLastIsTrueAndNotifiedIsFalse(@Param("hourDate")DateTime hourDate, Pageable pageable);
 	
 	List<RelPersonApplication> findAllByTokenIsAndValidIsNull(Token token);
 	
-	Page<RelPersonApplication> findAllByValidIsTrueAndApplicationIs(Application application, Pageable page);
+	Page<RelPersonApplication> findAllByLastIsTrueAndApplicationIs(Application application, Pageable page);
+	
+	List<RelPersonApplication> findAllByLastIsTrueAndApplicationIs(Application application, Sort sort);
 	
 	List<RelPersonApplication> findAllByValidIsTrueAndApplicationIs(Application application, Sort sort);
 	
 	RelPersonApplication findOneByPersonIsAndApplicationIsAndValidIsTrue(Person person, Application application);
 
 	RelPersonApplication findOneByPersonIsAndApplicationIsAndTokenIs(Person person, Application application, Token token);
+	
+	RelPersonApplication findOneByApplicationIsAndTokenIs(Application application, Token token);
 	
 	List<RelPersonApplication> findAllByPersonIsAndApplicationIs(Person person, Application application);
 	

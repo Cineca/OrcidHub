@@ -1,4 +1,4 @@
-/**
+/*
  * This file is part of huborcid.
  *
  * huborcid is free software: you can redistribute it and/or modify
@@ -14,23 +14,19 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with huborcid.  If not, see <http://www.gnu.org/licenses/>.
  */
-package it.cineca.pst.huborcid.repository;
+'use strict';
 
-import it.cineca.pst.huborcid.domain.Person;
-
-import org.joda.time.DateTime;
-import org.springframework.data.jpa.repository.*;
-
-import java.util.List;
-
-/**
- * Spring Data JPA repository for the Person entity.
- */
-public interface PersonRepository extends JpaRepository<Person,Long> {
-
-	Person findOneByLocalID(String localID);
-	
-	Long countByOrcidIsNotNull();
-	
-	Long countByOrcidIsNotNullAndOrcidReleaseDateGreaterThanEqual(DateTime date);
-}
+angular.module('huborcidApp')
+    .factory('EnvVariable', function ($resource, DateUtils) {
+        return $resource('api/envVariables/:id', {}, {
+            'query': { method: 'GET', isArray: true},
+            'get': {
+                method: 'GET',
+                transformResponse: function (data) {
+                    data = angular.fromJson(data);
+                    return data;
+                }
+            },
+            'update': { method:'PUT' }
+        });
+    });

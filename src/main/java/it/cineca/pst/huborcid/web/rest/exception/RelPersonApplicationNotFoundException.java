@@ -27,7 +27,7 @@ public class RelPersonApplicationNotFoundException extends Exception {
 	String relPersonApplicationId = null;
 	
 	public RelPersonApplicationNotFoundException(String relPersonApplicationId) {
-		super("relPersonApplicationId: "+relPersonApplicationId +" not found or used!");
+		super("A generic error occurred (RelPersonApplication: "+relPersonApplicationId +" not found or used). Please close this page and try to restart association to orcid from the beggining!");
 		this.relPersonApplicationId = relPersonApplicationId;
 	}
 

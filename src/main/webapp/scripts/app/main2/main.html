@@ -87,17 +87,52 @@
 				Le seguenti applicazioni sono riconducibili alla sua istituzione, la invitiamo a concedere l’autorizzazione ad operare su ORCID per tutte le applicazioni al fine di beneficiare del 
 				maggior numero possibile di servizi. Potrà revocare le autorizzazioni concesso in qualsiasi momento a partire dal suo profilo ORCID.
 			</p>
+			
+			<div class="alert alert-info" role="alert">
+            
+           	 Cliccando su Aggiungi Applicazione sarà possibile aggiungere ulteriori applicazioni da autorizzare
+            </div>
      
             <div class="panel panel-primary" ng-repeat="value2 in appsdata.listApp" >
 	            <div class="panel-heading">
-	            	{{value2.name}}
+	            	{{value2.name}} <span class="pull-right" ng-show="value2.canDelete">
+		            	<a href="" style="color:#fff">
+		            		<span ng-click="deleteApp(value2.id,$index)" class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+		            	</a>
+	            	</span>
 	            </div>
 	            <div class="panel-body">
 			        {{value2.description}}
 			    </div>
             </div>
-            
-            <a ng-href="{{appsdata.urlRegisterOrcid}}"><button id="connect-orcid-button" ><img id="orcid-id-logo" src="http://orcid.org/sites/default/files/images/orcid_24x24.png" width='24' height='24' alt="ORCID logo"/>Crea un nuovo ORCID</button></a>
+
+
+			<script type="text/ng-template" id="myModalContent.html">
+        		<div class="modal-header">
+		            <h3 class="modal-title">Aggiungi nuova applicazione</h3>
+		        </div>
+		        <div class="modal-body">
+    			<input type="text" ng-model="selected" 
+ 					  typeahead="item as item.name for item in items | filter:{name:$viewValue}| limitTo:10" 
+					  typeahead-no-results="noResults"
+					  class="form-control"
+					  placeholder="Cerca Applicazione" >
+				<div ng-show="noResults">
+      				<i class="glyphicon glyphicon-remove"></i> Nessun risultato trovato
+    			</div>
+        		    Applicazione Selezionata: <b>{{ selected.name }}</b>
+		        </div>
+        		<div class="modal-footer">
+		            <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+        		    <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+        		</div>
+    		</script>
+    		<div style="margin-bottom: 20px;">
+    		<button type="button" class="btn btn-primary" ng-click="open()">
+    			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>  Aggiungi applicazione</button>
+    		</div>
+			<div class="clearfix"></div>
+			<a ng-href="{{appsdata.urlRegisterOrcid}}"><button id="connect-orcid-button" ><img id="orcid-id-logo" src="http://orcid.org/sites/default/files/images/orcid_24x24.png" width='24' height='24' alt="ORCID logo"/>Crea un nuovo ORCID</button></a>
             <a ng-href="{{appsdata.urlLoginOrcid}}"><button id="connect-orcid-button" ><img id="orcid-id-logo" src="http://orcid.org/sites/default/files/images/orcid_24x24.png" width='24' height='24' alt="ORCID logo"/>Associa il tuo ORCID</button></a>
 			<iframe src="https://sandbox.orcid.org/userStatus.json?logUserOut=true" style="display:none;" height=0 width=0></iframe>
 			<iframe src="https://orcid.org/userStatus.json?logUserOut=true" style="display:none;" height=0 width=0></iframe>

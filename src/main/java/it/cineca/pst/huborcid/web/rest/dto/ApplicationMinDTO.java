@@ -21,6 +21,7 @@ public class ApplicationMinDTO {
 	Long id;
 	String name;
 	String description;
+	Boolean canDelete;
 	
 	public ApplicationMinDTO() {
 	}
@@ -47,6 +48,14 @@ public class ApplicationMinDTO {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Boolean getCanDelete() {
+		return canDelete;
+	}
+
+	public void setCanDelete(Boolean canDelete) {
+		this.canDelete = canDelete;
 	}
 	
 }

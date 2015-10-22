@@ -82,7 +82,7 @@ public class ReportatFileResource {
     	String currentLogin = SecurityUtils.getCurrentLogin();
     	Application application = applicationRepository.findOneByApplicationID(currentLogin);
     	Sort sort = new Sort(Sort.Direction.ASC, "person.localID");
-    	List<RelPersonApplication> listAccessToken = relPersonApplicationRepository.findAllByValidIsTrueAndApplicationIs(application,sort);
+    	List<RelPersonApplication> listAccessToken = relPersonApplicationRepository.findAllByLastIsTrueAndApplicationIs(application,sort);
     	
     	
     	HSSFWorkbook workbook = new HSSFWorkbook();

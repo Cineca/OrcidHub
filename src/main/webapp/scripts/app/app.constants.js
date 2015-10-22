@@ -4,6 +4,6 @@ angular.module('huborcidApp')
 
 .constant('ENV', 'dev')
 
-.constant('VERSION', '1.0.5-SNAPSHOT')
+.constant('VERSION', '1.1.1-SNAPSHOT')
 
 ;

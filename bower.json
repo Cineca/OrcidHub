@@ -1,6 +1,6 @@
 {
   "name": "huborcid",
-  "version": "1.0.1",
+  "version": "1.1.1",
   "appPath": "src/main/webapp",
   "testPath": "src/test/javascript/spec",
   "dependencies": {

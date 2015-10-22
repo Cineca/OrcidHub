@@ -1,0 +1,19 @@
+{
+    "huborcidApp": {
+        "envVariable" : {
+            "home": {
+                "title": "EnvVariables",
+                "createLabel": "Create a new EnvVariable",
+                "createOrEditLabel": "Create or edit a EnvVariable"
+            },
+            "delete": {
+                "question": "Are you sure you want to delete EnvVariable {{ id }}?"
+            },
+            "detail": {
+                "title": "EnvVariable"
+            },
+            "name": "Name",
+            "variableValue": "VariableValue"
+        }
+    }
+}

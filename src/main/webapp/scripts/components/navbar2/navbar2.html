@@ -29,6 +29,18 @@
         </div>
         <div class="collapse navbar-collapse" id="navbar-collapse" ng-switch="isAuthenticated()">
             <ul class="nav navbar-nav nav-pills navbar-right">
+               <li><a>
+                    <span class="glyphicon glyphicon-user"></span>
+                    Orcid Totali
+                    <span class="badge">{{totals.total}}</span>
+                    </a>
+                </li>
+                <li><a>
+                    <span class="glyphicon glyphicon-user"></span>
+                    Orcid Giornalieri
+                    <span class="badge">{{totals.totalDay}}</span>
+                    </a>
+                </li>
                 <li ui-sref-active="active">
                     <a href="https://wiki.u-gov.it/confluence/pages/viewpage.action?pageId=63441718" target="_blank">
                         <span class="glyphicon glyphicon-question-sign"></span>

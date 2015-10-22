@@ -14,23 +14,20 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with huborcid.  If not, see <http://www.gnu.org/licenses/>.
  */
-package it.cineca.pst.huborcid.repository;
-
-import it.cineca.pst.huborcid.domain.Person;
-
-import org.joda.time.DateTime;
-import org.springframework.data.jpa.repository.*;
+package it.cineca.pst.huborcid.web.rest.dto;
 
 import java.util.List;
 
-/**
- * Spring Data JPA repository for the Person entity.
- */
-public interface PersonRepository extends JpaRepository<Person,Long> {
+public class AddAppResponseDTO {
+	
+	ApplicationMinDTO app;
 
-	Person findOneByLocalID(String localID);
-	
-	Long countByOrcidIsNotNull();
-	
-	Long countByOrcidIsNotNullAndOrcidReleaseDateGreaterThanEqual(DateTime date);
+	public ApplicationMinDTO getApp() {
+		return app;
+	}
+
+	public void setApp(ApplicationMinDTO app) {
+		this.app = app;
+	}
+
 }

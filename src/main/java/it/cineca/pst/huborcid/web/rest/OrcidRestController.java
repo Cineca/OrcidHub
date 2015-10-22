@@ -17,6 +17,7 @@
 package it.cineca.pst.huborcid.web.rest;
 
 import it.cineca.pst.huborcid.domain.Application;
+import it.cineca.pst.huborcid.domain.EnvVariable;
 import it.cineca.pst.huborcid.domain.Person;
 import it.cineca.pst.huborcid.domain.RelPersonApplication;
 import it.cineca.pst.huborcid.domain.Token;
@@ -25,17 +26,21 @@ import it.cineca.pst.huborcid.orcid.client.OrcidApiType;
 import it.cineca.pst.huborcid.orcid.client.OrcidAuthScope;
 import it.cineca.pst.huborcid.orcid.client.OrcidOAuthClient;
 import it.cineca.pst.huborcid.repository.ApplicationRepository;
+import it.cineca.pst.huborcid.repository.EnvVariableRepository;
 import it.cineca.pst.huborcid.repository.PersonRepository;
 import it.cineca.pst.huborcid.repository.RelPersonApplicationRepository;
 import it.cineca.pst.huborcid.repository.TokenRepository;
 import it.cineca.pst.huborcid.security.SecurityUtils;
 import it.cineca.pst.huborcid.service.OrcidService;
+import it.cineca.pst.huborcid.web.rest.dto.AddAppResponseDTO;
 import it.cineca.pst.huborcid.web.rest.dto.ApplicationMinDTO;
 import it.cineca.pst.huborcid.web.rest.dto.DeleteUserIdResponseDTO;
 import it.cineca.pst.huborcid.web.rest.dto.GetLandingPageResponseDTO;
 import it.cineca.pst.huborcid.web.rest.dto.GetTicketRequestDTO;
 import it.cineca.pst.huborcid.web.rest.dto.GetTicketResponseDTO;
+import it.cineca.pst.huborcid.web.rest.dto.GetTotalOrcidResponseDTO;
 import it.cineca.pst.huborcid.web.rest.dto.GetUserIdResponseDTO;
+import it.cineca.pst.huborcid.web.rest.dto.ListAddAppResponseDTO;
 import it.cineca.pst.huborcid.web.rest.exception.ApplicationIdMissingException;
 import it.cineca.pst.huborcid.web.rest.exception.ApplicationNotFoundException;
 import it.cineca.pst.huborcid.web.rest.exception.ApplicationlIDDifferentException;
@@ -55,6 +60,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Future;
 
@@ -99,6 +105,9 @@ public class OrcidRestController {
     
     @Inject
     private TokenRepository tokenRepository;
+    
+    @Inject
+    private EnvVariableRepository envVarRepository;
     
     @Inject
     private OrcidService orcidService;
@@ -292,13 +301,13 @@ public class OrcidRestController {
         	orgUnit = application.getOrgUnit();
         
         List<Application> applicationForUser = applicationRepository.findAllByOrgUnitOrAllOrgIsTrue(orgUnit);
-        
-        List<RelPersonApplication> listApplicationAuth = relPersonApplicationRepository.findAllByPersonIsAndApplicationIn(person, applicationForUser);
-        
+
+        List<RelPersonApplication> listApplicationAuth = relPersonApplicationRepository.findAllByPersonIsAndLastIsTrue(person);
         //Set old application access key invalid
         for(int i=0;i<listApplicationAuth.size();i++){
         	RelPersonApplication applicationAuthorize = listApplicationAuth.get(i);
         	applicationAuthorize.setValid(false);
+        	applicationAuthorize.setLast(false);
         	relPersonApplicationRepository.save(applicationAuthorize);
         }  
         
@@ -316,6 +325,8 @@ public class OrcidRestController {
         	relPersonApplication.setPerson(person);
         	relPersonApplication.setToken(token);
         	relPersonApplication.setValid(null);
+        	relPersonApplication.setLast(true);
+        	relPersonApplication.setCustom(false);
         	
         	relPersonApplicationRepository.save(relPersonApplication);
         }  
@@ -329,13 +340,25 @@ public class OrcidRestController {
         return;
     }
     
+    @RequestMapping(value = "/oauth/total",
+            method = RequestMethod.GET)
+    @Timed
+    public GetTotalOrcidResponseDTO getTotal(){
+    	GetTotalOrcidResponseDTO response = new GetTotalOrcidResponseDTO();
+    	EnvVariable total = envVarRepository.findOneByName("orcid.total");
+    	EnvVariable totalDay = envVarRepository.findOneByName("orcid.total.day");
+    	response.setTotal(new Long(total.getVariableValue()));
+    	response.setTotalDay(new Long(totalDay.getVariableValue()));
+    	return response;
+    }
+    
     @RequestMapping(value = "/oauth/apps/{TOKEN}",
             method = RequestMethod.GET)
     @Timed
     public  GetLandingPageResponseDTO oauthAppForUser(@PathVariable("TOKEN") String ott,
     		HttpServletRequest request) throws IOException, JAXBException, TokenNotFoundException, TokenAlreadyUsedException {
     	GetLandingPageResponseDTO response = new GetLandingPageResponseDTO();
-    	log.debug("REST OAUTH APPS START. token [{}]",ott);
+    	log.debug("REST GET APPS. token [{}]",ott);
     	
         Token token = tokenRepository.findOneByOtt(ott);
         if(token == null){
@@ -345,7 +368,7 @@ public class OrcidRestController {
         Person person = token.getPerson();
         Application application = token.getApplication();
         
-        log.debug("REST OAUTH APPS START. person [{}], localid [{}]",person,person.getLocalID());
+        log.debug("REST GET APPS. person [{}], localid [{}]",person,person.getLocalID());
         
         //qual è l'organizzazione dell'utente?
         String orgUnit = null;
@@ -376,16 +399,113 @@ public class OrcidRestController {
         }
         
         
-        List<Application> applicationForUser = applicationRepository.findAllByOrgUnitOrAllOrgIsTrue(orgUnit);
+        //List<Application> applicationForUser = applicationRepository.findAllByOrgUnitOrAllOrgIsTrue(orgUnit);
         response.setFirstname(person.getFirstName());
         response.setLastname(person.getLastName());
         response.setUrlRegisterOrcid(urlRegisterOrcid);
         response.setUrlLoginOrcid(urlLoginOrcid);
         response.setUrlHelp(urlHelp);
-        response.setListApp(ApplicationMapper.from(applicationForUser));
+        response.setListApp(ApplicationMapper.fromListRelApp(listApplicationAuth));
         
         return response;
     }
+    
+    @RequestMapping(value = "/oauth/newApps/{TOKEN}",
+            method = RequestMethod.GET)
+    @Timed
+    public  ListAddAppResponseDTO oauthNewAppForUser(@PathVariable("TOKEN") String ott,
+    		HttpServletRequest request) throws IOException, JAXBException, TokenNotFoundException, TokenAlreadyUsedException {
+    	ListAddAppResponseDTO response = new ListAddAppResponseDTO();
+    	log.debug("REST GET CUSTOM APPS. token [{}]",ott);
+    	
+        Token token = tokenRepository.findOneByOtt(ott);
+        if(token == null){
+        	throw new TokenNotFoundException(ott);
+        }
+        
+        Person person = token.getPerson();
+        Application application = token.getApplication();
+        
+        log.debug("REST GET CUSTOM APPS. person [{}], localid [{}]",person,person.getLocalID());
+        
+        List<RelPersonApplication> listApplicationAuth = relPersonApplicationRepository.findAllByTokenIsAndValidIsNull(token);
+        List<Long> listIdsToExclude = new ArrayList<Long>();
+        for(int i=0;i<listApplicationAuth.size();i++){
+        	listIdsToExclude.add(listApplicationAuth.get(i).getApplication().getId());
+        }
+        
+        log.debug("REST GET CUSTOM APPS. person [{}], localid [{}], listIds [{}]",person,person.getLocalID(),listIdsToExclude);
+        
+        List<Application> listCustomApps = applicationRepository.findAllCustomApps(listIdsToExclude); 
+        
+        response.setListApp(ApplicationMapper.fromListAppCustom(listCustomApps));
+        
+        return response;
+    }
+    
+    @RequestMapping(value = "/oauth/addApp/{TOKEN}/{APPID}",
+            method = RequestMethod.GET)
+    @Timed
+    public  AddAppResponseDTO addApp(@PathVariable("TOKEN") String ott, @PathVariable("APPID") String appId,
+    		HttpServletRequest request) throws IOException, JAXBException, TokenNotFoundException, TokenAlreadyUsedException {
+    	AddAppResponseDTO response = new AddAppResponseDTO();
+    	log.debug("REST ADD CUSTOM APPS. token [{}]",ott);
+    	
+        Token token = tokenRepository.findOneByOtt(ott);
+        if(token == null){
+        	throw new TokenNotFoundException(ott);
+        }
+        
+        Person person = token.getPerson();
+        Application application = token.getApplication();
+        
+        Application customApp = applicationRepository.findOne(new Long(appId));
+        
+        log.debug("REST ADD CUSTOM APPS. person [{}], localid [{}], customApp [{}]",person,person.getLocalID(),customApp.getId());
+        
+        
+        RelPersonApplication relPersonApplication = null;
+    	relPersonApplication = new RelPersonApplication();
+    	relPersonApplication.setApplication(customApp);
+    	relPersonApplication.setPerson(person);
+    	relPersonApplication.setToken(token);
+    	relPersonApplication.setValid(null);
+    	relPersonApplication.setLast(true);
+    	relPersonApplication.setCustom(true);
+    	relPersonApplicationRepository.save(relPersonApplication);
+        
+    	ApplicationMinDTO appMinAdded = ApplicationMapper.from(customApp,true);
+    	response.setApp(appMinAdded);
+    	
+        return response;
+    }
+    
+    @RequestMapping(value = "/oauth/delApp/{TOKEN}/{APPID}",
+            method = RequestMethod.GET)
+    @Timed
+    public  ResponseEntity<Void>  delApp(@PathVariable("TOKEN") String ott, @PathVariable("APPID") String appId,
+    		HttpServletRequest request) throws IOException, JAXBException, TokenNotFoundException, TokenAlreadyUsedException {
+    	log.debug("REST ADD CUSTOM APPS. token [{}]",ott);
+    	
+        Token token = tokenRepository.findOneByOtt(ott);
+        if(token == null){
+        	throw new TokenNotFoundException(ott);
+        }
+        
+        Person person = token.getPerson();
+        Application application = token.getApplication();
+        
+        Application toDelete = applicationRepository.findOne(new Long(appId));
+        
+        RelPersonApplication relPersonApplication = relPersonApplicationRepository.findOneByApplicationIsAndTokenIs(toDelete, token);
+        
+        log.debug("REST ADD CUSTOM APPS. person [{}], localid [{}], relPersonApplication [{}]",person,person.getLocalID(),relPersonApplication.getId());
+
+    	relPersonApplicationRepository.delete(relPersonApplication);
+        
+        return ResponseEntity.ok().build();
+    }
+    
     
     @RequestMapping(value = "/oauth/finish",
             method = RequestMethod.GET)
@@ -448,7 +568,7 @@ public class OrcidRestController {
         	personRepository.save(person);
         	
         	//async
-        	orcidService.sendNotify(application,relPersonApplication);
+        	orcidService.sendNotify(relPersonApplication);
         }
         
         List<RelPersonApplication> listApplicationAuth = relPersonApplicationRepository.findAllByTokenIsAndValidIsNull(token);

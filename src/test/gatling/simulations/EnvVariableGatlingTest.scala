@@ -23,9 +23,9 @@ import org.slf4j.LoggerFactory
 import scala.concurrent.duration._
 
 /**
- * Performance test for the RelPersonApplication entity.
+ * Performance test for the EnvVariable entity.
  */
-class RelPersonApplicationGatlingTest extends Simulation {
+class EnvVariableGatlingTest extends Simulation {
 
     val context: LoggerContext = LoggerFactory.getILoggerFactory.asInstanceOf[LoggerContext]
     // Log all HTTP requests
@@ -53,7 +53,7 @@ class RelPersonApplicationGatlingTest extends Simulation {
         "X-CSRF-TOKEN" -> "${csrf_token}"
     )
 
-    val scn = scenario("Test the RelPersonApplication entity")
+    val scn = scenario("Test the EnvVariable entity")
         .exec(http("First unauthenticated request")
         .get("/api/account")
         .headers(headers_http)
@@ -75,26 +75,26 @@ class RelPersonApplicationGatlingTest extends Simulation {
         .check(headerRegex("Set-Cookie", "CSRF-TOKEN=(.*); [P,p]ath=/").saveAs("csrf_token")))
         .pause(10)
         .repeat(2) {
-            exec(http("Get all relPersonApplications")
-            .get("/api/relPersonApplications")
+            exec(http("Get all envVariables")
+            .get("/api/envVariables")
             .headers(headers_http_authenticated)
             .check(status.is(200)))
             .pause(10 seconds, 20 seconds)
-            .exec(http("Create new relPersonApplication")
-            .put("/api/relPersonApplications")
+            .exec(http("Create new envVariable")
+            .put("/api/envVariables")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "oauthAccessToken":"SAMPLE_TEXT", "dateReleased":"2020-01-01T00:00:00.000Z", "dateDenied":"2020-01-01T00:00:00.000Z", "valid":null, "denied":null, "errorDescription":"SAMPLE_TEXT", "notified":null, "last":null, "custom":null, "errorNotDescription":"SAMPLE_TEXT", "numRetry":"0"}""")).asJSON
+            .body(StringBody("""{"id":null, "name":"SAMPLE_TEXT", "variableValue":"SAMPLE_TEXT"}""")).asJSON
             .check(status.is(201))
-            .check(headerRegex("Location", "(.*)").saveAs("new_relPersonApplication_url")))
+            .check(headerRegex("Location", "(.*)").saveAs("new_envVariable_url")))
             .pause(10)
             .repeat(5) {
-                exec(http("Get created relPersonApplication")
-                .get("${new_relPersonApplication_url}")
+                exec(http("Get created envVariable")
+                .get("${new_envVariable_url}")
                 .headers(headers_http_authenticated))
                 .pause(10)
             }
-            .exec(http("Delete created relPersonApplication")
-            .delete("${new_relPersonApplication_url}")
+            .exec(http("Delete created envVariable")
+            .delete("${new_envVariable_url}")
             .headers(headers_http_authenticated))
             .pause(10)
         }

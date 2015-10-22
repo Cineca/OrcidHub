@@ -11,6 +11,7 @@
 				"userOrcid": "UserOrcid",
 				"token": "Token",
 				"application": "Application",
+				"envVariable": "EnvVariable",
                 "additionalEntity": "JHipster con entita' aggiunte qui senza traduzione"
             },
             "account": {

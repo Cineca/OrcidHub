@@ -94,6 +94,42 @@
             "fieldNameUnderscored": "notified",
             "fieldInJavaBeanMethod": "Notified",
             "fieldValidate": false
+        },
+		{
+            "fieldId": 7,
+            "fieldName": "last",
+            "fieldType": "Boolean",
+            "fieldNameCapitalized": "Last",
+            "fieldNameUnderscored": "last",
+            "fieldInJavaBeanMethod": "Last",
+            "fieldValidate": false
+        },
+		{
+            "fieldId": 8,
+            "fieldName": "custom",
+            "fieldType": "Boolean",
+            "fieldNameCapitalized": "Custom",
+            "fieldNameUnderscored": "custom",
+            "fieldInJavaBeanMethod": "Custom",
+            "fieldValidate": false
+        },
+		{
+            "fieldId": 9,
+            "fieldName": "errorNotDescription",
+            "fieldType": "String",
+            "fieldNameCapitalized": "ErrorNotDescription",
+            "fieldNameUnderscored": "error_not_description",
+            "fieldInJavaBeanMethod": "ErrorNotDescription",
+            "fieldValidate": false
+        },
+		{
+            "fieldId": 10,
+            "fieldName": "numRetry",
+            "fieldType": "Integer",
+            "fieldNameCapitalized": "NumRetry",
+            "fieldNameUnderscored": "num_retry",
+            "fieldInJavaBeanMethod": "NumRetry",
+            "fieldValidate": false
         }
     ],
     "fieldsContainOwnerManyToMany": false,

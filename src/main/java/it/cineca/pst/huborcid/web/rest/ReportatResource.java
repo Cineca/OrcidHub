@@ -71,7 +71,7 @@ public class ReportatResource {
     	String currentLogin = SecurityUtils.getCurrentLogin();
     	Application application = applicationRepository.findOneByApplicationID(currentLogin);
     	Sort sort = new Sort(Sort.Direction.ASC, "person.localID");
-    	Page<RelPersonApplication> listAccessToken = relPersonApplicationRepository.findAllByValidIsTrueAndApplicationIs(application,PaginationUtil.generatePageRequest(offset, limit,sort));
+    	Page<RelPersonApplication> listAccessToken = relPersonApplicationRepository.findAllByLastIsTrueAndApplicationIs(application,PaginationUtil.generatePageRequest(offset, limit,sort));
     	List<ReportatDTO> listReportat = new ArrayList<ReportatDTO>();
     	for(int i=0;i<listAccessToken.getContent().size();i++){
     		RelPersonApplication relPerson = listAccessToken.getContent().get(i);

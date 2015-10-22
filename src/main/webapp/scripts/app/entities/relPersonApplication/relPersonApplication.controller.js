@@ -79,7 +79,7 @@ angular.module('huborcidApp')
         };
 
         $scope.clear = function () {
-            $scope.relPersonApplication = {oauthAccessToken: null, dateReleased: null, dateDenied: null, valid: null, denied: null, errorDescription: null, notified: null, id: null};
+            $scope.relPersonApplication = {oauthAccessToken: null, dateReleased: null, dateDenied: null, valid: null, denied: null, errorDescription: null, notified: null, last: null, custom: null, errorNotDescription: null, numRetry: null, id: null};
             $scope.editForm.$setPristine();
             $scope.editForm.$setUntouched();
         };

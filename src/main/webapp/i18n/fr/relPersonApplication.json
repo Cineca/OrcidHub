@@ -19,6 +19,10 @@
             "denied": "Denied",
             "errorDescription": "ErrorDescription",
             "notified": "Notified",
+            "last": "Last",
+            "custom": "Custom",
+            "errorNotDescription": "ErrorNotDescription",
+            "numRetry": "NumRetry",
             "person": "person",
             "application": "application",
             "token": "token"

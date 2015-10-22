@@ -20,26 +20,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.cineca.pst.huborcid.domain.Application;
+import it.cineca.pst.huborcid.domain.RelPersonApplication;
 import it.cineca.pst.huborcid.web.rest.dto.ApplicationMinDTO;
 
 
 
 public final class ApplicationMapper {
 
-	public static ApplicationMinDTO from (Application application){
+	public static ApplicationMinDTO from (Application application,Boolean custom){
 		ApplicationMinDTO applicationMin = new ApplicationMinDTO();
 		applicationMin.setId(application.getId());
 		applicationMin.setName(application.getName());
 		applicationMin.setDescription(application.getDescription());
+		applicationMin.setCanDelete(custom);
 		return applicationMin;
 	}
 	
-	public static List<ApplicationMinDTO> from (List<Application> applications){
+	public static List<ApplicationMinDTO> fromListAppCustom (List<Application> applications){
 		List<ApplicationMinDTO> applicationsMin = new ArrayList<ApplicationMinDTO>();
 		for(int i=0;i<applications.size();i++){
-			applicationsMin.add(from(applications.get(i)));
+			applicationsMin.add(from(applications.get(i),true));
 		}
 		return applicationsMin;
 	}
+	
+	public static List<ApplicationMinDTO> fromListRelApp (List<RelPersonApplication> applications){
+		List<ApplicationMinDTO> applicationsMin = new ArrayList<ApplicationMinDTO>();
+		for(int i=0;i<applications.size();i++){
+			applicationsMin.add(from(applications.get(i).getApplication(),applications.get(i).getCustom()));
+		}
+		return applicationsMin;
+	}
+	
+	
 	
 }

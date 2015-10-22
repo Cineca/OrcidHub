@@ -17,10 +17,18 @@
 'use strict';
 
 angular.module('huborcidApp')
-    .controller('Navbar2Controller', function ($scope, $location, $state, Auth, Principal) {
+    .controller('Navbar2Controller', function ($scope, $location, $state,$http, Auth, Principal) {
         $scope.isAuthenticated = Principal.isAuthenticated;
         $scope.$state = $state;
+        $scope.totals = null;
 
+        $http.get('oauth/total').
+        success(function(data, status, headers, config) {
+        	$scope.totals = data;
+        }).
+        error(function(data, status, headers, config) {
+        });
+        
         $scope.logout = function () {
             Auth.logout();
             $state.go('home');

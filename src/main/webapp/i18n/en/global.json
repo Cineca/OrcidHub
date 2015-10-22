@@ -11,6 +11,7 @@
                 "person": "Person",
                 "token": "Token",
                 "relPersonApplication": "RelPersonApplication",
+                "envVariable": "EnvVariable",
                 "additionalEntity": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

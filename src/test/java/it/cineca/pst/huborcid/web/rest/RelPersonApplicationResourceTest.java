@@ -82,6 +82,17 @@ public class RelPersonApplicationResourceTest {
     private static final Boolean DEFAULT_NOTIFIED = false;
     private static final Boolean UPDATED_NOTIFIED = true;
 
+    private static final Boolean DEFAULT_LAST = false;
+    private static final Boolean UPDATED_LAST = true;
+
+    private static final Boolean DEFAULT_CUSTOM = false;
+    private static final Boolean UPDATED_CUSTOM = true;
+    private static final String DEFAULT_ERROR_NOT_DESCRIPTION = "SAMPLE_TEXT";
+    private static final String UPDATED_ERROR_NOT_DESCRIPTION = "UPDATED_TEXT";
+
+    private static final Integer DEFAULT_NUM_RETRY = 0;
+    private static final Integer UPDATED_NUM_RETRY = 1;
+
     @Inject
     private RelPersonApplicationRepository relPersonApplicationRepository;
 
@@ -107,6 +118,10 @@ public class RelPersonApplicationResourceTest {
         relPersonApplication.setDenied(DEFAULT_DENIED);
         relPersonApplication.setErrorDescription(DEFAULT_ERROR_DESCRIPTION);
         relPersonApplication.setNotified(DEFAULT_NOTIFIED);
+        relPersonApplication.setLast(DEFAULT_LAST);
+        relPersonApplication.setCustom(DEFAULT_CUSTOM);
+        relPersonApplication.setErrorNotDescription(DEFAULT_ERROR_NOT_DESCRIPTION);
+        relPersonApplication.setNumRetry(DEFAULT_NUM_RETRY);
     }
 
     @Test
@@ -131,6 +146,10 @@ public class RelPersonApplicationResourceTest {
         assertThat(testRelPersonApplication.getDenied()).isEqualTo(DEFAULT_DENIED);
         assertThat(testRelPersonApplication.getErrorDescription()).isEqualTo(DEFAULT_ERROR_DESCRIPTION);
         assertThat(testRelPersonApplication.getNotified()).isEqualTo(DEFAULT_NOTIFIED);
+        assertThat(testRelPersonApplication.getLast()).isEqualTo(DEFAULT_LAST);
+        assertThat(testRelPersonApplication.getCustom()).isEqualTo(DEFAULT_CUSTOM);
+        assertThat(testRelPersonApplication.getErrorNotDescription()).isEqualTo(DEFAULT_ERROR_NOT_DESCRIPTION);
+        assertThat(testRelPersonApplication.getNumRetry()).isEqualTo(DEFAULT_NUM_RETRY);
     }
 
     @Test
@@ -150,7 +169,11 @@ public class RelPersonApplicationResourceTest {
                 .andExpect(jsonPath("$.[*].valid").value(hasItem(DEFAULT_VALID.booleanValue())))
                 .andExpect(jsonPath("$.[*].denied").value(hasItem(DEFAULT_DENIED.booleanValue())))
                 .andExpect(jsonPath("$.[*].errorDescription").value(hasItem(DEFAULT_ERROR_DESCRIPTION.toString())))
-                .andExpect(jsonPath("$.[*].notified").value(hasItem(DEFAULT_NOTIFIED.booleanValue())));
+                .andExpect(jsonPath("$.[*].notified").value(hasItem(DEFAULT_NOTIFIED.booleanValue())))
+                .andExpect(jsonPath("$.[*].last").value(hasItem(DEFAULT_LAST.booleanValue())))
+                .andExpect(jsonPath("$.[*].custom").value(hasItem(DEFAULT_CUSTOM.booleanValue())))
+                .andExpect(jsonPath("$.[*].errorNotDescription").value(hasItem(DEFAULT_ERROR_NOT_DESCRIPTION.toString())))
+                .andExpect(jsonPath("$.[*].numRetry").value(hasItem(DEFAULT_NUM_RETRY)));
     }
 
     @Test
@@ -170,7 +193,11 @@ public class RelPersonApplicationResourceTest {
             .andExpect(jsonPath("$.valid").value(DEFAULT_VALID.booleanValue()))
             .andExpect(jsonPath("$.denied").value(DEFAULT_DENIED.booleanValue()))
             .andExpect(jsonPath("$.errorDescription").value(DEFAULT_ERROR_DESCRIPTION.toString()))
-            .andExpect(jsonPath("$.notified").value(DEFAULT_NOTIFIED.booleanValue()));
+            .andExpect(jsonPath("$.notified").value(DEFAULT_NOTIFIED.booleanValue()))
+            .andExpect(jsonPath("$.last").value(DEFAULT_LAST.booleanValue()))
+            .andExpect(jsonPath("$.custom").value(DEFAULT_CUSTOM.booleanValue()))
+            .andExpect(jsonPath("$.errorNotDescription").value(DEFAULT_ERROR_NOT_DESCRIPTION.toString()))
+            .andExpect(jsonPath("$.numRetry").value(DEFAULT_NUM_RETRY));
     }
 
     @Test
@@ -197,6 +224,10 @@ public class RelPersonApplicationResourceTest {
         relPersonApplication.setDenied(UPDATED_DENIED);
         relPersonApplication.setErrorDescription(UPDATED_ERROR_DESCRIPTION);
         relPersonApplication.setNotified(UPDATED_NOTIFIED);
+        relPersonApplication.setLast(UPDATED_LAST);
+        relPersonApplication.setCustom(UPDATED_CUSTOM);
+        relPersonApplication.setErrorNotDescription(UPDATED_ERROR_NOT_DESCRIPTION);
+        relPersonApplication.setNumRetry(UPDATED_NUM_RETRY);
         restRelPersonApplicationMockMvc.perform(put("/api/relPersonApplications")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(relPersonApplication)))
@@ -213,6 +244,10 @@ public class RelPersonApplicationResourceTest {
         assertThat(testRelPersonApplication.getDenied()).isEqualTo(UPDATED_DENIED);
         assertThat(testRelPersonApplication.getErrorDescription()).isEqualTo(UPDATED_ERROR_DESCRIPTION);
         assertThat(testRelPersonApplication.getNotified()).isEqualTo(UPDATED_NOTIFIED);
+        assertThat(testRelPersonApplication.getLast()).isEqualTo(UPDATED_LAST);
+        assertThat(testRelPersonApplication.getCustom()).isEqualTo(UPDATED_CUSTOM);
+        assertThat(testRelPersonApplication.getErrorNotDescription()).isEqualTo(UPDATED_ERROR_NOT_DESCRIPTION);
+        assertThat(testRelPersonApplication.getNumRetry()).isEqualTo(UPDATED_NUM_RETRY);
     }
 
     @Test
