@@ -22,6 +22,7 @@ public class ApplicationMinDTO {
 	String name;
 	String description;
 	Boolean canDelete;
+	Boolean authorized;
 	
 	public ApplicationMinDTO() {
 	}
@@ -57,5 +58,14 @@ public class ApplicationMinDTO {
 	public void setCanDelete(Boolean canDelete) {
 		this.canDelete = canDelete;
 	}
+
+	public Boolean getAuthorized() {
+		return authorized;
+	}
+
+	public void setAuthorized(Boolean authorized) {
+		this.authorized = authorized;
+	}
+	
 	
 }

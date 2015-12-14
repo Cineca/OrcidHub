@@ -56,7 +56,7 @@ public interface RelPersonApplicationRepository extends JpaRepository<RelPersonA
 	
 	List<RelPersonApplication> findAllByValidIsTrueAndApplicationIs(Application application, Sort sort);
 	
-	RelPersonApplication findOneByPersonIsAndApplicationIsAndValidIsTrue(Person person, Application application);
+	RelPersonApplication findOneByPersonIsAndApplicationIsAndLastIsTrue(Person person, Application application);
 
 	RelPersonApplication findOneByPersonIsAndApplicationIsAndTokenIs(Person person, Application application, Token token);
 	

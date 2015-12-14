@@ -61,7 +61,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Future;
 
 import javax.annotation.PostConstruct;
@@ -188,7 +190,7 @@ public class OrcidRestController {
         tokenRepository.save(token);
         
         //search if person-app have an access-token
-        RelPersonApplication relPersonApplication = relPersonApplicationRepository.findOneByPersonIsAndApplicationIsAndValidIsTrue(person, application);
+        RelPersonApplication relPersonApplication = relPersonApplicationRepository.findOneByPersonIsAndApplicationIsAndLastIsTrue(person, application);
         String orcid = person.getOrcid();
         String apiKey = null;
         
@@ -301,14 +303,21 @@ public class OrcidRestController {
         	orgUnit = application.getOrgUnit();
         
         List<Application> applicationForUser = applicationRepository.findAllByOrgUnitOrAllOrgIsTrue(orgUnit);
+        Map<Long,Application> applicationForUserMap = new HashMap<Long,Application>();
+        for (Application i : applicationForUser) applicationForUserMap.put(i.getId(),i);
 
         List<RelPersonApplication> listApplicationAuth = relPersonApplicationRepository.findAllByPersonIsAndLastIsTrue(person);
+        Map<Long,RelPersonApplication> mapRelOld = new HashMap<Long,RelPersonApplication>();
         //Set old application access key invalid
         for(int i=0;i<listApplicationAuth.size();i++){
         	RelPersonApplication applicationAuthorize = listApplicationAuth.get(i);
         	applicationAuthorize.setValid(false);
         	applicationAuthorize.setLast(false);
         	relPersonApplicationRepository.save(applicationAuthorize);
+        	mapRelOld.put(applicationAuthorize.getApplication().getId(), applicationAuthorize);
+        	if((applicationAuthorize.getCustom()==true) && (applicationForUserMap.get(applicationAuthorize.getApplication().getId())==null)){
+        		applicationForUser.add(applicationAuthorize.getApplication());
+        	}
         }  
         
         //token.setDateUsed(DateTime.now());
@@ -324,10 +333,17 @@ public class OrcidRestController {
         	relPersonApplication.setApplication(applicationAuthorize);
         	relPersonApplication.setPerson(person);
         	relPersonApplication.setToken(token);
+        	if(mapRelOld.get(applicationAuthorize.getId())!=null){
+        		RelPersonApplication relOld = mapRelOld.get(applicationAuthorize.getId());
+            	relPersonApplication.setDateReleased(relOld.getDateReleased());
+            	relPersonApplication.setOauthAccessToken(relOld.getOauthAccessToken());
+            	relPersonApplication.setCustom(relOld.getCustom());
+        	}else{
+        		relPersonApplication.setCustom(false);
+        	}
         	relPersonApplication.setValid(null);
         	relPersonApplication.setLast(true);
-        	relPersonApplication.setCustom(false);
-        	
+        	        	
         	relPersonApplicationRepository.save(relPersonApplication);
         }  
         
@@ -474,7 +490,7 @@ public class OrcidRestController {
     	relPersonApplication.setCustom(true);
     	relPersonApplicationRepository.save(relPersonApplication);
         
-    	ApplicationMinDTO appMinAdded = ApplicationMapper.from(customApp,true);
+    	ApplicationMinDTO appMinAdded = ApplicationMapper.from(customApp,true,null);
     	response.setApp(appMinAdded);
     	
         return response;
@@ -562,8 +578,10 @@ public class OrcidRestController {
         	relPersonApplication.setOauthAccessToken(tokenOrcid.getAccess_token());
         	relPersonApplication.setValid(true);
         	relPersonApplication.setDenied(false);
-        	person.setOrcid(tokenOrcid.getOrcid());
-        	person.setOrcidReleaseDate(DateTime.now());
+        	if(  (person.getOrcid()==null) || ( (tokenOrcid.getOrcid()!=null) && (!person.getOrcid().equals(tokenOrcid.getOrcid()))  )){
+	        	person.setOrcid(tokenOrcid.getOrcid());
+	        	person.setOrcidReleaseDate(DateTime.now());
+        	}
         	relPersonApplicationRepository.save(relPersonApplication);
         	personRepository.save(person);
         	

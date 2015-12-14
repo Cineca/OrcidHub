@@ -27,19 +27,20 @@ import it.cineca.pst.huborcid.web.rest.dto.ApplicationMinDTO;
 
 public final class ApplicationMapper {
 
-	public static ApplicationMinDTO from (Application application,Boolean custom){
+	public static ApplicationMinDTO from (Application application,Boolean custom, String oauth){
 		ApplicationMinDTO applicationMin = new ApplicationMinDTO();
 		applicationMin.setId(application.getId());
 		applicationMin.setName(application.getName());
 		applicationMin.setDescription(application.getDescription());
 		applicationMin.setCanDelete(custom);
+		applicationMin.setAuthorized(oauth == null ? false : true);
 		return applicationMin;
 	}
 	
 	public static List<ApplicationMinDTO> fromListAppCustom (List<Application> applications){
 		List<ApplicationMinDTO> applicationsMin = new ArrayList<ApplicationMinDTO>();
 		for(int i=0;i<applications.size();i++){
-			applicationsMin.add(from(applications.get(i),true));
+			applicationsMin.add(from(applications.get(i),true,null));
 		}
 		return applicationsMin;
 	}
@@ -47,7 +48,7 @@ public final class ApplicationMapper {
 	public static List<ApplicationMinDTO> fromListRelApp (List<RelPersonApplication> applications){
 		List<ApplicationMinDTO> applicationsMin = new ArrayList<ApplicationMinDTO>();
 		for(int i=0;i<applications.size();i++){
-			applicationsMin.add(from(applications.get(i).getApplication(),applications.get(i).getCustom()));
+			applicationsMin.add(from(applications.get(i).getApplication(),applications.get(i).getCustom(),applications.get(i).getOauthAccessToken()));
 		}
 		return applicationsMin;
 	}

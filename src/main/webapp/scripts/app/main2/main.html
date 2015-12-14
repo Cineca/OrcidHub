@@ -95,7 +95,7 @@
      
             <div class="panel panel-primary" ng-repeat="value2 in appsdata.listApp" >
 	            <div class="panel-heading">
-	            	{{value2.name}} <span class="pull-right" ng-show="value2.canDelete">
+	            	{{value2.name}} <span ng-show="value2.authorized" class="label label-success">Autorizzata in precedenza</span> <span class="pull-right" ng-show="value2.canDelete">
 		            	<a href="" style="color:#fff">
 		            		<span ng-click="deleteApp(value2.id,$index)" class="glyphicon glyphicon-trash" aria-hidden="true"></span>
 		            	</a>
