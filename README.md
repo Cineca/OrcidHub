@@ -44,5 +44,27 @@ orcid-access-token (string, optional)
 GET /oauth/{ticket}
 
 
+###getListApps
+
+GET /user/{LOCALID}/listApps
+
+
+Response Class:
+```
+GetListAppsResponseDTO {
+firstname (string, optional),
+lastname (string, optional),
+listApp (List[ApplicationDTO], optional),
+result-code (string, optional)
+}
+ApplicationDTO {
+name (string, optional),
+custom (boolean, optional),
+authorized (boolean, optional)
+}
+
+```
+
+
 Project Based on JHipster
 Full documentation and information is available on website at http://jhipster.github.io/

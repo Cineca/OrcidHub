@@ -19,6 +19,11 @@
             	"COMPLETED":"COMPLETED",
             	"ERROR":"ERROR",
             	"PROGRESS":"PROGRESS"
+            },
+            "uploadFileStatus":{
+            	"UPLOAD_SUCCESS":"You successfully uploaded: \"{{fileName}}\".",
+            	"UPLOAD_FAILURE":"You failed to upload: \"{{fileName}}\".",
+            	"UPLOAD_FAILURE_EMPTY":"You failed to upload: \"{{fileName}}\" because the file was empty."
             }
         }
     }

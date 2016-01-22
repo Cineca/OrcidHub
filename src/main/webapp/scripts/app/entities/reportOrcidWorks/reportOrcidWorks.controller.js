@@ -29,9 +29,9 @@ angular.module('huborcidApp')
 	        file.upload.then(function (response) {
 	        	console.log(response);
 	        	if(response.data.code == '001'){
-	        		$scope.addAlert('success', $translate(response.data.message, { fileName: file.name }));
+	        		$scope.addAlert('success', $translate.instant(response.data.message, { fileName: file.name }));
 	        	}else{
-	        		$scope.addAlert('danger', $translate(response.data.message, { fileName: file.name }));
+	        		$scope.addAlert('danger', $translate.instant(response.data.message, { fileName: file.name }));
 	        	}
 	        	$scope.loadAll();
 	          },function (resp) {
