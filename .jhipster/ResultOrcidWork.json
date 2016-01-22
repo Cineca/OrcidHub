@@ -1,0 +1,64 @@
+{
+    "relationships": [
+        {
+            "relationshipId": 1,
+            "relationshipName": "application",
+            "relationshipNameCapitalized": "Application",
+            "relationshipFieldName": "application",
+            "otherEntityName": "application",
+            "relationshipType": "many-to-one",
+            "otherEntityNameCapitalized": "Application",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "fileNameUpload",
+            "fieldType": "String",
+            "fieldNameCapitalized": "FileNameUpload",
+            "fieldNameUnderscored": "file_name_upload",
+            "fieldInJavaBeanMethod": "FileNameUpload",
+            "fieldValidate": false
+        },
+        {
+            "fieldId": 2,
+            "fieldName": "status",
+            "fieldType": "String",
+            "fieldNameCapitalized": "Status",
+            "fieldNameUnderscored": "status",
+            "fieldInJavaBeanMethod": "Status",
+            "fieldValidate": false
+        },
+        {
+            "fieldId": 3,
+            "fieldName": "withErrors",
+            "fieldType": "Boolean",
+            "fieldNameCapitalized": "WithErrors",
+            "fieldNameUnderscored": "with_errors",
+            "fieldInJavaBeanMethod": "WithErrors",
+            "fieldValidate": false
+        },
+        {
+            "fieldId": 4,
+            "fieldName": "fileResult",
+            "fieldType": "String",
+            "fieldNameCapitalized": "FileResult",
+            "fieldNameUnderscored": "file_result",
+            "fieldInJavaBeanMethod": "FileResult",
+            "fieldValidate": false
+        }
+    ],
+    "fieldsContainOwnerManyToMany": false,
+    "fieldsContainOwnerOneToOne": false,
+    "fieldsContainOneToMany": false,
+    "fieldsContainLocalDate": false,
+    "fieldsContainCustomTime": false,
+    "fieldsContainBigDecimal": false,
+    "fieldsContainDateTime": false,
+    "fieldsContainDate": false,
+    "changelogDate": "20160120100811",
+    "dto": "no",
+    "pagination": "no",
+    "validation": false
+}

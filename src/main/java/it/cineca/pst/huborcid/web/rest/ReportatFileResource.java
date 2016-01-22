@@ -21,10 +21,12 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import it.cineca.pst.huborcid.domain.Application;
+import it.cineca.pst.huborcid.domain.PersonBio;
 import it.cineca.pst.huborcid.domain.RelPersonApplication;
 import it.cineca.pst.huborcid.domain.util.CustomDateTimeDeserializer;
 import it.cineca.pst.huborcid.domain.util.CustomDateTimeSerializer;
 import it.cineca.pst.huborcid.repository.ApplicationRepository;
+import it.cineca.pst.huborcid.repository.PersonBioRepository;
 import it.cineca.pst.huborcid.repository.RelPersonApplicationRepository;
 import it.cineca.pst.huborcid.security.SecurityUtils;
 
@@ -49,6 +51,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -70,7 +73,10 @@ public class ReportatFileResource {
     @Inject
     private ApplicationRepository applicationRepository;
 
-
+    @Inject 
+    private PersonBioRepository personBioRepository;
+    
+    
     /**
      * GET  /reportat -> get all the relPersonApplications.
      */
@@ -175,6 +181,5 @@ public class ReportatFileResource {
     	}
     	
     }
-
    
 }

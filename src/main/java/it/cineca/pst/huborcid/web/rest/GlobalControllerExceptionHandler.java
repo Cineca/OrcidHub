@@ -20,6 +20,7 @@ import it.cineca.pst.huborcid.web.rest.dto.ErrrorMessageDTO;
 import it.cineca.pst.huborcid.web.rest.exception.ApplicationIdMissingException;
 import it.cineca.pst.huborcid.web.rest.exception.ApplicationNotFoundException;
 import it.cineca.pst.huborcid.web.rest.exception.ApplicationlIDDifferentException;
+import it.cineca.pst.huborcid.web.rest.exception.CallbackMissingException;
 import it.cineca.pst.huborcid.web.rest.exception.LocalIDDifferentException;
 import it.cineca.pst.huborcid.web.rest.exception.LocalIdMissingException;
 import it.cineca.pst.huborcid.web.rest.exception.OrcidDeniedForApplicationException;
@@ -127,6 +128,13 @@ public class GlobalControllerExceptionHandler {
     ResponseEntity<ErrrorMessageDTO> handleException(Exception ex) {
 		ErrrorMessageDTO errorMessage = new ErrrorMessageDTO(ResultCode.ERROR_GENERIC_FAIL,ex.getMessage());
         ResponseEntity<ErrrorMessageDTO> responseEntity = new ResponseEntity<ErrrorMessageDTO>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+        return responseEntity;
+    }
+	
+	@ExceptionHandler
+    ResponseEntity<ErrrorMessageDTO> handleException(CallbackMissingException ex) {
+		ErrrorMessageDTO errorMessage = new ErrrorMessageDTO(ResultCode.ERROR_CALLBACK_MISSING,ex.getMessage());
+        ResponseEntity<ErrrorMessageDTO> responseEntity = new ResponseEntity<ErrrorMessageDTO>(errorMessage, HttpStatus.BAD_REQUEST);
         return responseEntity;
     }
 }

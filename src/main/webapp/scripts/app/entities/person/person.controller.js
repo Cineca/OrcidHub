@@ -32,27 +32,6 @@ angular.module('huborcidApp')
         };
         $scope.loadAll();
 
-        $scope.showUpdate = function (id) {
-            Person.get({id: id}, function(result) {
-                $scope.person = result;
-                $('#savePersonModal').modal('show');
-            });
-        };
-
-        $scope.save = function () {
-            if ($scope.person.id != null) {
-                Person.update($scope.person,
-                    function () {
-                        $scope.refresh();
-                    });
-            } else {
-                Person.save($scope.person,
-                    function () {
-                        $scope.refresh();
-                    });
-            }
-        };
-
         $scope.delete = function (id) {
             Person.get({id: id}, function(result) {
                 $scope.person = result;
@@ -71,13 +50,10 @@ angular.module('huborcidApp')
 
         $scope.refresh = function () {
             $scope.loadAll();
-            $('#savePersonModal').modal('hide');
             $scope.clear();
         };
 
         $scope.clear = function () {
-            $scope.person = {localID: null, firstName: null, lastName: null, email: null, orcid: null, orcidReleaseDate: null, id: null};
-            $scope.editForm.$setPristine();
-            $scope.editForm.$setUntouched();
+            $scope.person = {localID: null, firstName: null, lastName: null, email: null, orcid: null, orcidReleaseDate: null, needUpdate: null, id: null};
         };
     });

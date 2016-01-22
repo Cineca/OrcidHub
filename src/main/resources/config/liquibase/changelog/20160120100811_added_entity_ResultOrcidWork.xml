@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <property name="now" value="now()" dbms="mysql,h2"/>
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+    <property name="now" value="sysdate" dbms="oracle"/>
+
+    <property name="autoIncrement" value="true" dbms="mysql,h2,postgresql"/>
+    <property name="autoIncrement" value="false" dbms="oracle"/>
+    <!--
+        Added the entity ResultOrcidWork.
+    -->
+    <changeSet id="20160120100811" author="jhipster">
+        <createSequence sequenceName="SEQ_RESULTORCIDWORK" startValue="1000" incrementBy="1"/>
+        <createTable tableName="ORCID_RESULT_WORK">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="file_name_upload" type="varchar(255)"/>
+            <column name="status" type="varchar(255)"/>
+            <column name="with_errors" type="bit"/>
+            <column name="file_result" type="blob"/>
+            <column name="application_id" type="bigint"/>
+            <column name="created_by" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+			<column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+			<column name="last_modified_by" type="varchar(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+        
+        <addForeignKeyConstraint baseColumnNames="application_id"
+                                 baseTableName="ORCID_RESULT_WORK"
+                                 constraintName="fk_res_app_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="ORCID_APPLICATION"/>
+
+    </changeSet>
+</databaseChangeLog>

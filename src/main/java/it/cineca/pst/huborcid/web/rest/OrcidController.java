@@ -17,6 +17,12 @@
 package it.cineca.pst.huborcid.web.rest;
 
 import it.cineca.pst.huborcid.config.Constants;
+import it.cineca.pst.huborcid.service.FileService;
+import it.cineca.pst.huborcid.service.OrcidService;
+
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +31,9 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @Controller
@@ -32,7 +41,7 @@ public class OrcidController {
 	
     @Inject
     private Environment env;
-
+    
     public OrcidController() {
 		super();
 	}
@@ -48,5 +57,8 @@ public class OrcidController {
 	
 		return "forward:/index2.html";
 	}
+	
+
+
 
 }

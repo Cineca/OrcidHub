@@ -19,6 +19,7 @@ package it.cineca.pst.huborcid.repository;
 import it.cineca.pst.huborcid.domain.Person;
 
 import org.joda.time.DateTime;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.*;
 
 import java.util.List;
@@ -33,4 +34,6 @@ public interface PersonRepository extends JpaRepository<Person,Long> {
 	Long countByOrcidIsNotNull();
 	
 	Long countByOrcidIsNotNullAndOrcidReleaseDateGreaterThanEqual(DateTime date);
+	
+	List<Person> findAllByNeedUpdateIsTrue(Pageable pageable);
 }

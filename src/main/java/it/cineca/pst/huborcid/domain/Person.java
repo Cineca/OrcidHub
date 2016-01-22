@@ -62,7 +62,14 @@ public class Person extends AbstractAuditingEntity implements Serializable {
     @JsonDeserialize(using = CustomDateTimeDeserializer.class)
     @Column(name = "orcid_release_date")
     private DateTime orcidReleaseDate;
+    
+    @Column(name = "need_update")
+    private Boolean needUpdate;
 
+    @OneToOne(mappedBy = "person", fetch = FetchType.LAZY)
+    private PersonBio personBio;
+
+    
     public Long getId() {
         return id;
     }
@@ -118,8 +125,25 @@ public class Person extends AbstractAuditingEntity implements Serializable {
     public void setOrcidReleaseDate(DateTime orcidReleaseDate) {
         this.orcidReleaseDate = orcidReleaseDate;
     }
+    
+    public Boolean getNeedUpdate() {
+		return needUpdate;
+	}
 
-    @Override
+	public void setNeedUpdate(Boolean needUpdate) {
+		this.needUpdate = needUpdate;
+	}
+	
+
+	public PersonBio getPersonBio() {
+		return personBio;
+	}
+
+	public void setPersonBio(PersonBio personBio) {
+		this.personBio = personBio;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -150,6 +174,7 @@ public class Person extends AbstractAuditingEntity implements Serializable {
                 ", email='" + email + "'" +
                 ", orcid='" + orcid + "'" +
                 ", orcidReleaseDate='" + orcidReleaseDate + "'" +
+                ", needUpdate='" + needUpdate + "'" +
                 '}';
     }
 }

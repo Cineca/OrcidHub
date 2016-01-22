@@ -1,0 +1,65 @@
+<!--
+
+    This file is part of huborcid.
+
+    huborcid is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    huborcid is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with huborcid.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+
+<div>
+    <h2><span translate="huborcidApp.personBio.detail.title">PersonBio</span> {{personBio.id}}</h2>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th translate="entity.detail.field">Field</th>
+                    <th translate="entity.detail.value">Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <span translate="huborcidApp.personBio.biography">Biography</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{personBio.biography}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="huborcidApp.personBio.researcher_urls">Researcher_urls</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{personBio.researcher_urls}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="huborcidApp.personBio.external_identifiers">External_identifiers</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{personBio.external_identifiers}}" readonly>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <button type="submit"
+            ui-sref="personBio"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span translate="entity.action.back"> Back</span>
+    </button>
+</div>

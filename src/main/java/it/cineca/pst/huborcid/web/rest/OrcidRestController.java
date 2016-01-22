@@ -36,6 +36,7 @@ import it.cineca.pst.huborcid.web.rest.dto.AddAppResponseDTO;
 import it.cineca.pst.huborcid.web.rest.dto.ApplicationMinDTO;
 import it.cineca.pst.huborcid.web.rest.dto.DeleteUserIdResponseDTO;
 import it.cineca.pst.huborcid.web.rest.dto.GetLandingPageResponseDTO;
+import it.cineca.pst.huborcid.web.rest.dto.GetListAppsResponseDTO;
 import it.cineca.pst.huborcid.web.rest.dto.GetTicketRequestDTO;
 import it.cineca.pst.huborcid.web.rest.dto.GetTicketResponseDTO;
 import it.cineca.pst.huborcid.web.rest.dto.GetTotalOrcidResponseDTO;
@@ -44,6 +45,7 @@ import it.cineca.pst.huborcid.web.rest.dto.ListAddAppResponseDTO;
 import it.cineca.pst.huborcid.web.rest.exception.ApplicationIdMissingException;
 import it.cineca.pst.huborcid.web.rest.exception.ApplicationNotFoundException;
 import it.cineca.pst.huborcid.web.rest.exception.ApplicationlIDDifferentException;
+import it.cineca.pst.huborcid.web.rest.exception.CallbackMissingException;
 import it.cineca.pst.huborcid.web.rest.exception.LocalIDDifferentException;
 import it.cineca.pst.huborcid.web.rest.exception.LocalIdMissingException;
 import it.cineca.pst.huborcid.web.rest.exception.OrcidDeniedForApplicationException;
@@ -64,7 +66,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Future;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -144,7 +145,7 @@ public class OrcidRestController {
     @Timed
     public  ResponseEntity<GetTicketResponseDTO> getTicket(@RequestBody GetTicketRequestDTO jsonGetTicket,
     		@PathVariable("LOCALID") String localID 
-    		) throws ApplicationNotFoundException, LocalIDDifferentException, LocalIdMissingException, ApplicationIdMissingException, ApplicationlIDDifferentException, OrgIdIsOnlyForPublicAppException, OrgIdIsMissingException {
+    		) throws ApplicationNotFoundException, LocalIDDifferentException, LocalIdMissingException, ApplicationIdMissingException, OrgIdIsOnlyForPublicAppException, OrgIdIsMissingException, CallbackMissingException {
     	log.debug("REST GETTICKET START. localid [{}], appid [{}]",localID,jsonGetTicket.getAppId());
         
 
@@ -168,6 +169,7 @@ public class OrcidRestController {
         	person.setLastName(jsonGetTicket.getLastname());
         if(jsonGetTicket.getMail() != null && !jsonGetTicket.getMail().isEmpty())
         	person.setEmail(jsonGetTicket.getMail());
+        person.setNeedUpdate(false);
         personRepository.save(person);
         
         if((jsonGetTicket.getOrgId()!=null)&&(!jsonGetTicket.getOrgId().isEmpty())&&(!application.getAllOrg())){
@@ -583,6 +585,7 @@ public class OrcidRestController {
 	        	person.setOrcidReleaseDate(DateTime.now());
         	}
         	relPersonApplicationRepository.save(relPersonApplication);
+        	person.setNeedUpdate(true);
         	personRepository.save(person);
         	
         	//async
@@ -629,6 +632,37 @@ public class OrcidRestController {
         }
         return;
     }
+    
+    @RequestMapping(value = "/user/{LOCALID}/listApps",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public  ResponseEntity<GetListAppsResponseDTO> getListApps(
+    		@PathVariable("LOCALID") String localID ) throws ApplicationNotFoundException, LocalIdMissingException{
+	
+		log.debug("REST GET_LIST_APPS START. localid [{}]",localID);
+		
+		String currentLogin = SecurityUtils.getCurrentLogin();
+        Application application = applicationRepository.findOneByApplicationID(currentLogin);
+        if(application==null){
+        	throw new ApplicationNotFoundException(currentLogin);
+        }
+        
+        Person person = personRepository.findOneByLocalID(localID);
+        if(person==null){
+        	throw new LocalIdMissingException();
+        }
+        
+        List<RelPersonApplication> listApps = relPersonApplicationRepository.findAllByPersonIsAndLastIsTrue( person );
+        
+        GetListAppsResponseDTO response = new GetListAppsResponseDTO();
+        response.setFirstname(person.getFirstName());
+        response.setLastname(person.getLastName());
+        response.setListApp(ApplicationMapper.fromListRelAppToApplication( listApps ));
+        response.setResultCode(ResultCode.SUCCESS.getCode());
+        
+        return new ResponseEntity<GetListAppsResponseDTO>(response, HttpStatus.OK);
+	}
 
 
     private String generateTokenData(String id) {
@@ -682,10 +716,11 @@ public class OrcidRestController {
     }
     
     private void checkGetTicketInput(String localID,
-			GetTicketRequestDTO jsonGetTicket) throws LocalIDDifferentException, LocalIdMissingException, ApplicationIdMissingException, ApplicationlIDDifferentException {
+			GetTicketRequestDTO jsonGetTicket) throws LocalIDDifferentException, LocalIdMissingException, ApplicationIdMissingException, CallbackMissingException {
     	String currentLogin = SecurityUtils.getCurrentLogin();
-    	if(!currentLogin.equals(jsonGetTicket.getAppId())){
-    		throw new ApplicationlIDDifferentException(currentLogin,jsonGetTicket.getAppId());
+    
+    	if( !currentLogin.equals(jsonGetTicket.getAppId()) && ( jsonGetTicket.getUrlCallback() == null || jsonGetTicket.getUrlCallback().isEmpty() ) ){
+    		throw new CallbackMissingException();
     	}
     	
         if(!localID.equals(jsonGetTicket.getLocalID()))

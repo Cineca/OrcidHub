@@ -21,18 +21,18 @@ import java.util.List;
 
 import it.cineca.pst.huborcid.domain.Application;
 import it.cineca.pst.huborcid.domain.RelPersonApplication;
+import it.cineca.pst.huborcid.web.rest.dto.ApplicationDTO;
 import it.cineca.pst.huborcid.web.rest.dto.ApplicationMinDTO;
-
 
 
 public final class ApplicationMapper {
 
-	public static ApplicationMinDTO from (Application application,Boolean custom, String oauth){
+	public static ApplicationMinDTO from (Application application, Boolean custom, String oauth){
 		ApplicationMinDTO applicationMin = new ApplicationMinDTO();
 		applicationMin.setId(application.getId());
 		applicationMin.setName(application.getName());
 		applicationMin.setDescription(application.getDescription());
-		applicationMin.setCanDelete(custom);
+		applicationMin.setCustom(custom);
 		applicationMin.setAuthorized(oauth == null ? false : true);
 		return applicationMin;
 	}
@@ -51,6 +51,20 @@ public final class ApplicationMapper {
 			applicationsMin.add(from(applications.get(i).getApplication(),applications.get(i).getCustom(),applications.get(i).getOauthAccessToken()));
 		}
 		return applicationsMin;
+	}
+	
+	
+	public static List<ApplicationDTO> fromListRelAppToApplication (List<RelPersonApplication> applications){
+		List<ApplicationDTO> applicationsList = new ArrayList<ApplicationDTO>();
+		for(int i=0;i<applications.size();i++){
+			ApplicationMinDTO appTmp = from(applications.get(i).getApplication(), applications.get(i).getCustom(), applications.get(i).getOauthAccessToken()); 
+			ApplicationDTO appication = new ApplicationDTO();
+			appication.setName(appTmp.getName());
+			appication.setCustom(appTmp.getCustom());
+			appication.setAuthorized(appTmp.getAuthorized());
+			applicationsList.add(appication);
+		}
+		return applicationsList;
 	}
 	
 	

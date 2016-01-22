@@ -1,0 +1,21 @@
+{
+    "huborcidApp": {
+        "personBio" : {
+            "home": {
+                "title": "PersonBio",
+                "createLabel": "Create a new PersonBio",
+                "createOrEditLabel": "Create or edit a PersonBio"
+            },
+            "delete": {
+                "question": "Are you sure you want to delete PersonBio {{ id }}?"
+            },
+            "detail": {
+                "title": "PersonBio"
+            },
+            "biography": "Biography",
+            "researcher_urls": "Researcher urls",
+            "external_identifiers": "External identifiers",
+            "FK_person_personBio": "FK_person_personBio"
+        }
+    }
+}

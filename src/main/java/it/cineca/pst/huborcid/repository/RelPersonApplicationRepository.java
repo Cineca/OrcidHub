@@ -65,4 +65,11 @@ public interface RelPersonApplicationRepository extends JpaRepository<RelPersonA
 	List<RelPersonApplication> findAllByPersonIsAndApplicationIs(Person person, Application application);
 	
 	Long deleteByPersonIs(Person person);
+	
+	List<RelPersonApplication> findAllByPersonIsAndLastIsTrueAndOauthAccessTokenIsNotNull(Person person);
+	
+	
+	@Query("SELECT personApp FROM RelPersonApplication personApp INNER JOIN personApp.person person WHERE personApp.application = :application AND personApp.last = true "
+			+ "AND ( person.orcid = :orcid OR person.localID = :localid ) ") 
+	List<RelPersonApplication> findAllByApplicationIsAndLastIsTrueAndOrcidIsOrLocalIdIs(@Param("application")Application application, @Param("orcid")String orcid, @Param("localid")String localId);
 }

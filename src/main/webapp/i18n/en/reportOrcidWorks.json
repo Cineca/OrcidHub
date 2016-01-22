@@ -1,0 +1,25 @@
+{
+    "huborcidApp": {
+        "reportOrcidWorks" : {
+            "home": {
+                "title": "Upload file orcid works",
+                "uploadFile":"Upload file"
+            },
+            "fileNameUpload":"File name",
+            "status":"Status",
+            "withErrors":"File with errors",
+            "downloadFileResult":"Result file",
+            "dateUpload":"Date upload",
+            "btnDownloadFileResult":"Download",
+            "withErrorsValue":{
+            	"true":"True",
+            	"false":"False"
+            },
+            "statusValue":{
+            	"COMPLETED":"COMPLETED",
+            	"ERROR":"ERROR",
+            	"PROGRESS":"PROGRESS"
+            }
+        }
+    }
+}

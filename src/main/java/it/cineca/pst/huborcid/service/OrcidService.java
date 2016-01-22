@@ -19,34 +19,42 @@ package it.cineca.pst.huborcid.service;
 import it.cineca.pst.huborcid.domain.Application;
 import it.cineca.pst.huborcid.domain.EnvVariable;
 import it.cineca.pst.huborcid.domain.Person;
+import it.cineca.pst.huborcid.domain.PersonBio;
 import it.cineca.pst.huborcid.domain.RelPersonApplication;
-import it.cineca.pst.huborcid.repository.ApplicationRepository;
+import it.cineca.pst.huborcid.orcid.client.OrcidAccessToken;
+import it.cineca.pst.huborcid.orcid.client.OrcidApiType;
+import it.cineca.pst.huborcid.orcid.client.OrcidOAuthClient;
 import it.cineca.pst.huborcid.repository.EnvVariableRepository;
+import it.cineca.pst.huborcid.repository.PersonBioRepository;
 import it.cineca.pst.huborcid.repository.PersonRepository;
 import it.cineca.pst.huborcid.repository.RelPersonApplicationRepository;
 import it.cineca.pst.huborcid.repository.TokenRepository;
-import it.cineca.pst.huborcid.web.rest.dto.GetTotalOrcidResponseDTO;
 import it.cineca.pst.huborcid.web.rest.dto.NotifyDTO;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Future;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import javax.xml.bind.JAXBException;
 
-import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
+import org.orcid.ns.orcid.ExternalIdentifier;
+import org.orcid.ns.orcid.ExternalIdentifiers;
+import org.orcid.ns.orcid.OrcidBio;
+import org.orcid.ns.orcid.ResearcherUrl;
+import org.orcid.ns.orcid.ResearcherUrls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.core.env.Environment;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
@@ -56,19 +64,17 @@ import org.springframework.security.crypto.codec.Base64;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 @Scope("prototype")
 @Transactional
 public class OrcidService {
 
+	final private String SEPARATOR = "|||";
+	
 	private final Logger log = LoggerFactory.getLogger(OrcidService.class);
 
 	@Inject
@@ -82,8 +88,26 @@ public class OrcidService {
 	
 	@Inject
 	private EnvVariableRepository envVarRepository;
+	
+	@Inject
+	private PersonBioRepository personBioRepository;
+	
+	@Autowired
+    private Environment env;
+	
+	private OrcidApiType orcidApiType;
 
 	RestTemplate restTemplate = new RestTemplate();
+	
+	@PostConstruct
+    public void settingEnv() {
+		if(env.acceptsProfiles("prod")){
+			orcidApiType = OrcidApiType.LIVE;
+		}else{
+			orcidApiType = OrcidApiType.SANDBOX;
+		}
+    }
+
 
 	@Async
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -183,7 +207,7 @@ public class OrcidService {
 		List<RelPersonApplication> relPersonApp = relPersonApplicationRepository
 				.findAllByLastIsTrueAndNotifiedIsFalse(dt, topXXX);
 		System.out.println("Notify size: " + relPersonApp.size());
-		for (int i = 0; i < relPersonApp.size(); i++) {
+		for (int i = 0; i < relPersonApp.size(); i++) { 
 			try {
 				System.out.println(i + " Notify: notify " + relPersonApp.get(i).getId());
 				Future<String> result = sendNotify(relPersonApp.get(i));
@@ -201,5 +225,88 @@ public class OrcidService {
 		System.out.println("Basic " + base64Creds);
 		return "Basic " + base64Creds;
 	}
+	
+	
+	/**
+	 * Mediante chiamata rest ogni 5 minuti, aggiorna i dati personali (biografia etc) per tutte le persone che hanno need_update = 1 e last = 1 e token not null.
+	 * @throws JAXBException
+	 */
+	@Scheduled(cron = "0 */5 * * * *")
+	public void populateOrcidBio( ) throws JAXBException{
+		log.debug("Method populateOrcidBio START");
+		Pageable pageable = new PageRequest(0, 200);
+		List<Person> listPerson = personRepository.findAllByNeedUpdateIsTrue(pageable);
+        OrcidOAuthClient clientOrcid = new OrcidOAuthClient(orcidApiType);
+		for(Person person: listPerson){
+			List<RelPersonApplication> listRelPersonApp = relPersonApplicationRepository.findAllByPersonIsAndLastIsTrueAndOauthAccessTokenIsNotNull(person);
+			OrcidBio orcidBio = null;
+			for(RelPersonApplication relPersonApplication: listRelPersonApp){
+				String orcid = relPersonApplication.getPerson().getOrcid();
+				OrcidAccessToken orcidAccessToken = new OrcidAccessToken();
+				orcidAccessToken.setOrcid(orcid);
+				orcidAccessToken.setAccess_token(relPersonApplication.getOauthAccessToken());
+				try {
+					orcidBio = clientOrcid.getOrcidBio(orcidAccessToken);
+
+					manageOrcidBio(person, orcidBio);
+					
+					log.info(String.format("Method populateOrcidBio: save personBio person.id=[%s]", person.getId()));
+					break;
+				} catch (Exception e) {
+					log.info(String.format("Method populateOrcidBio: error personBio person.id=[%s], token=[%s], orcid=[%s]", person.getId(), relPersonApplication.getOauthAccessToken(), orcid));
+				}
+			}
+			person.setNeedUpdate(false);
+		}
+		log.debug("Method populateOrcidBio END");
+	}
+	
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	private void manageOrcidBio(Person person, OrcidBio orcidBio){		
+		log.debug(String.format("Method manageOrcidBio START, person.id=[%s]", person.getId()));
+		
+		StringBuilder urls = new StringBuilder();
+		ResearcherUrls researcherUrls = orcidBio.getResearcherUrls();
+		if( researcherUrls!=null ){
+			List<ResearcherUrl> listUrls = researcherUrls.getResearcherUrl();
+			for(ResearcherUrl researcherUrl : listUrls){
+				String urlName = researcherUrl.getUrlName();
+				String url = researcherUrl.getUrl().getValue();
+				if(urls.length()!=0){
+					urls.append(SEPARATOR);
+				}
+				urls.append(String.format("%s (%s)", urlName, url));
+			}
+		}
+
+		StringBuilder identifiers = new StringBuilder();
+		ExternalIdentifiers externalIdentifiers = orcidBio.getExternalIdentifiers();
+		if( externalIdentifiers!=null ){
+			List<ExternalIdentifier> listExternalIdentifiers = externalIdentifiers.getExternalIdentifier();
+			for(ExternalIdentifier externalIdentifier : listExternalIdentifiers){
+				String commonNameExId = externalIdentifier.getExternalIdCommonName().getContent();
+				String referenceExId = externalIdentifier.getExternalIdReference().getContent();
+				String urlExId = externalIdentifier.getExternalIdUrl().getValue();
+				if(identifiers.length()!=0){
+					identifiers.append(SEPARATOR);
+				}
+				identifiers.append(String.format("%s (%s - %s)", commonNameExId, referenceExId, urlExId));
+			}
+		}
+		
+		personBioRepository.deleteByPersonIs(person);
+		
+		PersonBio personBio = new PersonBio();
+		personBio.setPerson(person);
+		if(orcidBio.getBiography() != null){
+			personBio.setBiography(orcidBio.getBiography().getValue());
+		}
+		personBio.setResearcher_urls(urls.toString());
+		personBio.setExternal_identifiers(identifiers.toString());
+		personBioRepository.save(personBio);
+		
+		log.debug(String.format("Method manageOrcidBio END, person.id=%s", person.getId()));
+	}
+	
 
 }

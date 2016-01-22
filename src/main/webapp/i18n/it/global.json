@@ -12,7 +12,9 @@
 				"token": "Token",
 				"application": "Application",
 				"envVariable": "EnvVariable",
-                "additionalEntity": "JHipster con entita' aggiunte qui senza traduzione"
+				"personBio": "PersonBio",
+                "additionalEntity": "JHipster con entita' aggiunte qui senza traduzione",
+                "resultOrcidWork": "ResultOrcidWork"
             },
             "account": {
                 "main": "Principale",
@@ -36,7 +38,9 @@
             },
             "cruscotto": {
                 "main": "Cruscotto",
-                "reportat": "Report Access Token"
+                "reportat": "Report Access Token",
+                "reportOrcidBio": "Report Orcid Bio",
+                "reportOrcidWorks": "Report Orcid Work"
             },
             "language": "Lingua"
         },

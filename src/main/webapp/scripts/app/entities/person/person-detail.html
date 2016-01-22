@@ -19,6 +19,7 @@
 
 <div>
     <h2><span translate="huborcidApp.person.detail.title">Person</span> {{person.id}}</h2>
+
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
@@ -74,6 +75,14 @@
                     </td>
                     <td>
                         <input type="text" class="input-sm form-control" value="{{person.orcidReleaseDate}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="huborcidApp.person.needUpdate">NeedUpdate</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{person.needUpdate}}" readonly>
                     </td>
                 </tr>
             </tbody>

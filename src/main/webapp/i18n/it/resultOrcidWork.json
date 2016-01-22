@@ -1,0 +1,22 @@
+{
+    "huborcidApp": {
+        "resultOrcidWork" : {
+            "home": {
+                "title": "ResultOrcidWorks",
+                "createLabel": "Create a new ResultOrcidWork",
+                "createOrEditLabel": "Create or edit a ResultOrcidWork"
+            },
+            "delete": {
+                "question": "Are you sure you want to delete ResultOrcidWork {{ id }}?"
+            },
+            "detail": {
+                "title": "ResultOrcidWork"
+            },
+            "fileNameUpload": "FileNameUpload",
+            "status": "Status",
+            "withErrors": "WithErrors",
+            "fileResult": "FileResult",
+            "application": "application"
+        }
+    }
+}

@@ -1,0 +1,30 @@
+{
+    "huborcidApp": {
+        "reportOrcidWorks" : {
+            "home": {
+                "title": "Carica file orcid works",
+                "uploadFile":"Carica file"
+            },
+            "fileNameUpload":"Nome file caricato",
+            "status":"Stato elaborazione",
+            "withErrors":"File con errori",
+            "downloadFileResult":"File processato",
+            "dateUpload":"Data caricamento",
+            "btnDownloadFileResult":"Scarica",
+            "withErrorsValue":{
+            	"true":"SI",
+            	"false":"NO"
+            },
+            "statusValue":{
+            	"COMPLETED":"COMPLETATO",
+            	"ERROR":"ERRORE",
+            	"PROGRESS":"ELABORAZIONE"
+            },
+            "uploadFileStatus":{
+            	"UPLOAD_SUCCESS":"File \"{{fileName}}\" caricato correttamente.",
+            	"UPLOAD_FAILURE":"Errore nel caricamento del file: \"{{fileName}}\".",
+            	"UPLOAD_FAILURE_EMPTY":"Errore nel caricamento del file: \"{{fileName}}\". Il file è vuoto."
+            }
+        }
+    }
+}

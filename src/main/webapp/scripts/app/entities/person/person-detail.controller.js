@@ -17,12 +17,14 @@
 'use strict';
 
 angular.module('huborcidApp')
-    .controller('PersonDetailController', function ($scope, $stateParams, Person) {
-        $scope.person = {};
+    .controller('PersonDetailController', function ($scope, $rootScope, $stateParams, entity, Person) {
+        $scope.person = entity;
         $scope.load = function (id) {
             Person.get({id: id}, function(result) {
-              $scope.person = result;
+                $scope.person = result;
             });
         };
-        $scope.load($stateParams.id);
+        $rootScope.$on('huborcidApp:personUpdate', function(event, result) {
+            $scope.person = result;
+        });
     });

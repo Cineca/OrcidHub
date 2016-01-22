@@ -17,7 +17,7 @@
 'use strict';
 
 angular.module('huborcidApp', ['LocalStorageModule', 'tmh.dynamicLocale', 'pascalprecht.translate', 
-    'ngResource', 'ui.router', 'ngCookies', 'ngCacheBuster', 'infinite-scroll', 'frapontillo.bootstrap-switch','ui.bootstrap'])
+    'ngResource', 'ui.router', 'ngCookies', 'ngCacheBuster', 'infinite-scroll', 'frapontillo.bootstrap-switch','ui.bootstrap','ngFileUpload'])
 
     .run(function ($rootScope, $location, $window, $http, $state, $translate, Language, Auth, Principal, ENV, VERSION) {
         $rootScope.ENV = ENV;

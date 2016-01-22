@@ -47,6 +47,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+
 /**
  * Test class for the PersonResource REST controller.
  *
@@ -75,6 +76,9 @@ public class PersonResourceTest {
     private static final DateTime UPDATED_ORCID_RELEASE_DATE = new DateTime(DateTimeZone.UTC).withMillisOfSecond(0);
     private static final String DEFAULT_ORCID_RELEASE_DATE_STR = dateTimeFormatter.print(DEFAULT_ORCID_RELEASE_DATE);
 
+    private static final Boolean DEFAULT_NEED_UPDATE = false;
+    private static final Boolean UPDATED_NEED_UPDATE = true;
+
     @Inject
     private PersonRepository personRepository;
 
@@ -99,6 +103,7 @@ public class PersonResourceTest {
         person.setEmail(DEFAULT_EMAIL);
         person.setOrcid(DEFAULT_ORCID);
         person.setOrcidReleaseDate(DEFAULT_ORCID_RELEASE_DATE);
+        person.setNeedUpdate(DEFAULT_NEED_UPDATE);
     }
 
     @Test
@@ -122,6 +127,7 @@ public class PersonResourceTest {
         assertThat(testPerson.getEmail()).isEqualTo(DEFAULT_EMAIL);
         assertThat(testPerson.getOrcid()).isEqualTo(DEFAULT_ORCID);
         assertThat(testPerson.getOrcidReleaseDate().toDateTime(DateTimeZone.UTC)).isEqualTo(DEFAULT_ORCID_RELEASE_DATE);
+        assertThat(testPerson.getNeedUpdate()).isEqualTo(DEFAULT_NEED_UPDATE);
     }
 
     @Test
@@ -140,7 +146,8 @@ public class PersonResourceTest {
                 .andExpect(jsonPath("$.[*].lastName").value(hasItem(DEFAULT_LAST_NAME.toString())))
                 .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL.toString())))
                 .andExpect(jsonPath("$.[*].orcid").value(hasItem(DEFAULT_ORCID.toString())))
-                .andExpect(jsonPath("$.[*].orcidReleaseDate").value(hasItem(DEFAULT_ORCID_RELEASE_DATE_STR)));
+                .andExpect(jsonPath("$.[*].orcidReleaseDate").value(hasItem(DEFAULT_ORCID_RELEASE_DATE_STR)))
+                .andExpect(jsonPath("$.[*].needUpdate").value(hasItem(DEFAULT_NEED_UPDATE.booleanValue())));
     }
 
     @Test
@@ -159,7 +166,8 @@ public class PersonResourceTest {
             .andExpect(jsonPath("$.lastName").value(DEFAULT_LAST_NAME.toString()))
             .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL.toString()))
             .andExpect(jsonPath("$.orcid").value(DEFAULT_ORCID.toString()))
-            .andExpect(jsonPath("$.orcidReleaseDate").value(DEFAULT_ORCID_RELEASE_DATE_STR));
+            .andExpect(jsonPath("$.orcidReleaseDate").value(DEFAULT_ORCID_RELEASE_DATE_STR))
+            .andExpect(jsonPath("$.needUpdate").value(DEFAULT_NEED_UPDATE.booleanValue()));
     }
 
     @Test
@@ -185,6 +193,7 @@ public class PersonResourceTest {
         person.setEmail(UPDATED_EMAIL);
         person.setOrcid(UPDATED_ORCID);
         person.setOrcidReleaseDate(UPDATED_ORCID_RELEASE_DATE);
+        person.setNeedUpdate(UPDATED_NEED_UPDATE);
         restPersonMockMvc.perform(put("/api/persons")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(person)))
@@ -200,6 +209,7 @@ public class PersonResourceTest {
         assertThat(testPerson.getEmail()).isEqualTo(UPDATED_EMAIL);
         assertThat(testPerson.getOrcid()).isEqualTo(UPDATED_ORCID);
         assertThat(testPerson.getOrcidReleaseDate().toDateTime(DateTimeZone.UTC)).isEqualTo(UPDATED_ORCID_RELEASE_DATE);
+        assertThat(testPerson.getNeedUpdate()).isEqualTo(UPDATED_NEED_UPDATE);
     }
 
     @Test

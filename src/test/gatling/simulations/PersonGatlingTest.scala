@@ -81,9 +81,9 @@ class PersonGatlingTest extends Simulation {
             .check(status.is(200)))
             .pause(10 seconds, 20 seconds)
             .exec(http("Create new person")
-            .put("/api/persons")
+            .post("/api/persons")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "localID":"SAMPLE_TEXT", "firstName":"SAMPLE_TEXT", "lastName":"SAMPLE_TEXT", "email":"SAMPLE_TEXT", "orcid":"SAMPLE_TEXT", "orcidReleaseDate":"2020-01-01T00:00:00.000Z"}""")).asJSON
+            .body(StringBody("""{"id":null, "localID":"SAMPLE_TEXT", "firstName":"SAMPLE_TEXT", "lastName":"SAMPLE_TEXT", "email":"SAMPLE_TEXT", "orcid":"SAMPLE_TEXT", "orcidReleaseDate":"2020-01-01T00:00:00.000Z", "needUpdate":null}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_person_url")))
             .pause(10)

@@ -16,13 +16,10 @@
  */
 package it.cineca.pst.huborcid.web.rest.dto;
 
-public class ApplicationMinDTO {
+public class ApplicationMinDTO extends ApplicationDTO {
 	
 	Long id;
-	String name;
 	String description;
-	Boolean canDelete;
-	Boolean authorized;
 	
 	public ApplicationMinDTO() {
 	}
@@ -35,13 +32,6 @@ public class ApplicationMinDTO {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
 
 	public String getDescription() {
 		return description;
@@ -51,21 +41,5 @@ public class ApplicationMinDTO {
 		this.description = description;
 	}
 
-	public Boolean getCanDelete() {
-		return canDelete;
-	}
-
-	public void setCanDelete(Boolean canDelete) {
-		this.canDelete = canDelete;
-	}
-
-	public Boolean getAuthorized() {
-		return authorized;
-	}
-
-	public void setAuthorized(Boolean authorized) {
-		this.authorized = authorized;
-	}
-	
 	
 }

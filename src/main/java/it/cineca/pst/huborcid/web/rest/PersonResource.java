@@ -54,13 +54,13 @@ public class PersonResource {
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<Void> create(@RequestBody Person person) throws URISyntaxException {
+    public ResponseEntity<Person> create(@RequestBody Person person) throws URISyntaxException {
         log.debug("REST request to save Person : {}", person);
         if (person.getId() != null) {
-            return ResponseEntity.badRequest().header("Failure", "A new person cannot already have an ID").build();
+            return ResponseEntity.badRequest().header("Failure", "A new person cannot already have an ID").body(null);
         }
-        personRepository.save(person);
-        return ResponseEntity.created(new URI("/api/persons/" + person.getId())).build();
+        Person result = personRepository.save(person);
+        return ResponseEntity.created(new URI("/api/persons/" + person.getId())).body(result);
     }
 
     /**
@@ -70,13 +70,13 @@ public class PersonResource {
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<Void> update(@RequestBody Person person) throws URISyntaxException {
+    public ResponseEntity<Person> update(@RequestBody Person person) throws URISyntaxException {
         log.debug("REST request to update Person : {}", person);
         if (person.getId() == null) {
             return create(person);
         }
-        personRepository.save(person);
-        return ResponseEntity.ok().build();
+        Person result = personRepository.save(person);
+        return ResponseEntity.ok().body(result);
     }
 
     /**

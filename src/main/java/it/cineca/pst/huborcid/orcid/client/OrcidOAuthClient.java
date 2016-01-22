@@ -16,11 +16,16 @@
  */
 package it.cineca.pst.huborcid.orcid.client;
 
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Joiner;
 
-import javax.xml.bind.JAXBException;
-
+import org.orcid.ns.orcid.OrcidActivities;
+import org.orcid.ns.orcid.OrcidBio;
+import org.orcid.ns.orcid.OrcidMessage;
+import org.orcid.ns.orcid.OrcidProfile;
+import org.orcid.ns.orcid.OrcidWork;
+import org.orcid.ns.orcid.OrcidWorks;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -32,32 +37,43 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 
 
 public class OrcidOAuthClient {
 
-	private static final Logger log = Logger.getLogger(OrcidOAuthClient.class.getName());
+	private final Logger log = LoggerFactory.getLogger(OrcidOAuthClient.class);
 
 	private static final String AUTHZ_ENDPOINT = "/oauth/authorize";
 	private static final String TOKEN_ENDPOINT = "/oauth/token";
-
-
+	private static final String READ_BIO_ENDPOINT = "/orcid-bio";
+	private static final String WORK_CREATE_ENDPOINT = "/orcid-works";
+	
 	private static final String SANDBOX_LOGIN_URI = "https://sandbox.orcid.org";
-	private static final String SANDBOX_API_URI_TOKEN = "https://api.sandbox.orcid.org";
+	private static final String SANDBOX_API_URI_TOKEN = "https://sandbox.orcid.org";
+	private static final String SANDBOX_API_URI_V1_2 = "http://api.sandbox.orcid.org/v1.2";
 	
 	private static final String LIVE_LOGIN_URI = "https://orcid.org";
 	private static final String LIVE_API_URI_TOKEN = "https://api.orcid.org";
-
+	private static final String LIVE_API_URI_V1_2 = "http://api.orcid.org/v1.2";
+	
 	private final String clientID;
 	private final String clientSecret;
 	private final String redirectUri;
 
 	private final String loginUri;
 	private final String apiUriToken;
+	private final String apiUriV12;
+	
+	private final JAXBContext orcidMessageContext;
 
 
 	public OrcidOAuthClient(String clientID, String clientSecret, String redirectUri, OrcidApiType orcidApiType)
@@ -68,14 +84,40 @@ public class OrcidOAuthClient {
 		if (orcidApiType == OrcidApiType.SANDBOX) {
 			this.loginUri = SANDBOX_LOGIN_URI;
 			this.apiUriToken = SANDBOX_API_URI_TOKEN;
+			this.apiUriV12 = SANDBOX_API_URI_V1_2;
 		} else {
 			this.loginUri = LIVE_LOGIN_URI;
 			this.apiUriToken = LIVE_API_URI_TOKEN;
+			this.apiUriV12 = LIVE_API_URI_V1_2;
 		}
 		this.clientID = clientID;
 		this.clientSecret = clientSecret;
 		this.redirectUri = redirectUri;
+		
+		this.orcidMessageContext = JAXBContext.newInstance(OrcidMessage.class);
 	}
+	
+	public OrcidOAuthClient(OrcidApiType orcidApiType)
+			throws JAXBException {
+		if (orcidApiType == null) {
+			throw new IllegalArgumentException("cannot create OrcidOAuthClient - missing init parameter(s)");
+		}
+		if (orcidApiType == OrcidApiType.SANDBOX) {
+			this.loginUri = SANDBOX_LOGIN_URI;
+			this.apiUriToken = SANDBOX_API_URI_TOKEN;
+			this.apiUriV12 = SANDBOX_API_URI_V1_2;
+		} else {
+			this.loginUri = LIVE_LOGIN_URI;
+			this.apiUriToken = LIVE_API_URI_TOKEN;
+			this.apiUriV12 = LIVE_API_URI_V1_2;
+		}
+		this.clientID = null;
+		this.clientSecret = null;
+		this.redirectUri = null;
+		
+		this.orcidMessageContext = JAXBContext.newInstance(OrcidMessage.class);
+	}
+	
 
 	public String getAuthzCodeRegisterRequest(String state, List<OrcidAuthScope> scopes, String firstName, String lastName, String mail) {
 		return getAuthzCodeRequest(state,firstName,lastName,mail,false) + "&scope=" + Joiner.on("%20").join(scopes);
@@ -136,13 +178,74 @@ public class OrcidOAuthClient {
 		try{
 			 result = restTemplate.exchange(apiUriToken + TOKEN_ENDPOINT, HttpMethod.POST, entity, String.class);
 		}catch(RestClientException e){
-			System.out.println(e.getMessage());
+			log.debug(String.format("Method getAccessToken, exception %s", e.getMessage()));
 			throw e;
 		}
-		System.out.println(result.getBody());
+		log.debug(String.format("Method getAccessToken, result %s", result.getBody()));
 		return new ObjectMapper().reader(OrcidAccessToken.class).readValue(result.getBody());
 	}
 	
+	
+	/**
+	 * Ritorna OrcidBio della persona
+	 * @param token
+	 * @return
+	 * @throws JAXBException
+	 */
+	public OrcidBio getOrcidBio(OrcidAccessToken token) throws JAXBException {
+		log.debug(String.format("Method getOrcidBio START, token=[%s], orcid=[%s]", token.getAccess_token(), token.getOrcid()));
+		RestTemplate restTemplate = new RestTemplate();
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", "Bearer ".concat( token.getAccess_token()) );
+		
+		HttpEntity<String> entity = new HttpEntity<String>(headers);
+		ResponseEntity<String> result = null;
+		try{
+			String url = String.format( "%s//%s%s", apiUriV12, token.getOrcid(), READ_BIO_ENDPOINT );
+			result = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+		}catch(RestClientException e){
+			log.debug(String.format("Method getOrcidBio, exception=[%s]", e.getMessage()));
+			throw e;
+		}
+		log.debug(String.format("Method getOrcidBio, result=[%s]", result.getBody()));
+	    OrcidMessage message =
+				(OrcidMessage) orcidMessageContext.createUnmarshaller().unmarshal(new StringReader(result.getBody()));
+
+		log.debug(String.format("Method getOrcidBio END, token=[%s], orcid=[%s]", token.getAccess_token(), token.getOrcid()));
+
+	    return message.getOrcidProfile().getOrcidBio();
+	}
 
 
+	public void appendWork(OrcidAccessToken token, OrcidWork work) {
+		log.debug(String.format("Method appendWork START, token=[%s], orcid=[%s]", token.getAccess_token(), token.getOrcid()));
+		
+		RestTemplate restTemplate = new RestTemplate();
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", "Bearer ".concat( token.getAccess_token()) );
+		
+		log.info(token.getAccess_token());
+		try {
+			String url = String.format( "%s//%s%s", apiUriV12, token.getOrcid(), WORK_CREATE_ENDPOINT );
+			OrcidMessage orcidMessage = wrapWork(work);
+			restTemplate.postForObject(url, orcidMessage, OrcidMessage.class);
+		} catch (RestClientException e) {
+			log.debug(String.format("Method appendWork, exception=[%s]", e.getMessage()));
+			throw e;
+		} 
+		log.debug(String.format("Method appendWork END, token=[%s], orcid=[%s]", token.getAccess_token(), token.getOrcid()));
+	}
+	
+	
+	private static OrcidMessage wrapWork(OrcidWork work) {
+		OrcidWorks works = new OrcidWorks();
+		works.getOrcidWork().add(work);
+		OrcidActivities activities = new OrcidActivities();
+		activities.setOrcidWorks(works);
+		OrcidProfile profile = new OrcidProfile();
+		profile.setOrcidActivities(activities);
+		OrcidMessage message = new OrcidMessage();
+		message.setOrcidProfile(profile);
+		return message;
+	}
 }

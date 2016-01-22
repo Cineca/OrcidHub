@@ -1,0 +1,10 @@
+{
+    "huborcidApp": {
+        "reportOrcidBio" : {
+            "home": {
+                "title": "Report Orcid Bio",
+                "downloadexcel":"Download lista in Excel"
+            }
+        }
+    }
+}

@@ -17,6 +17,8 @@
 package it.cineca.pst.huborcid;
 
 import it.cineca.pst.huborcid.config.Constants;
+import it.cineca.pst.huborcid.service.FileService;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -95,7 +97,6 @@ public class Application {
             env.getProperty("server.port"),
             InetAddress.getLocalHost().getHostAddress(),
             env.getProperty("server.port"));
-
     }
 
     /**

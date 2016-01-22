@@ -12,6 +12,8 @@
                 "token": "Token",
                 "relPersonApplication": "RelPersonApplication",
                 "envVariable": "EnvVariable",
+                "personBio": "PersonBio",
+                "resultOrcidWork": "ResultOrcidWork",
                 "additionalEntity": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -36,7 +38,9 @@
             },
             "cruscotto": {
                 "main": "Dashboard",
-                "reportat": "Report Access Token"
+                "reportat": "Report Access Token",
+                "reportOrcidBio": "Report Orcid Bio",
+                "reportOrcidWorks": "Report Orcid Work"
             },
             "language": "Language"
         },

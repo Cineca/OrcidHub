@@ -48,7 +48,6 @@ public abstract class AbstractAuditingEntity {
     @CreatedDate
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     @Column(name = "created_date", updatable = false)
-    @JsonIgnore
     private DateTime createdDate = DateTime.now();
 
     @LastModifiedBy

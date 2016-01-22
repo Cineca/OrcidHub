@@ -54,6 +54,15 @@
             "fieldNameUnderscored": "orcid_release_date",
             "fieldInJavaBeanMethod": "OrcidReleaseDate",
             "fieldValidate": false
+        },
+		{
+            "fieldId": 7,
+            "fieldName": "needUpdate",
+            "fieldType": "Boolean",
+            "fieldNameCapitalized": "NeedUpdate",
+            "fieldNameUnderscored": "need_update",
+            "fieldInJavaBeanMethod": "NeedUpdate",
+            "fieldValidate": false
         }
     ],
     "fieldsContainOwnerManyToMany": false,

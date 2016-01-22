@@ -1,0 +1,58 @@
+{
+    "relationships": [
+        {
+            "relationshipId": 1,
+            "relationshipName": "FK_person_personBio",
+            "relationshipNameCapitalized": "FK_person_personBio",
+            "relationshipFieldName": "fK_person_personBio",
+            "otherEntityName": "person",
+            "relationshipType": "one-to-one",
+            "otherEntityNameCapitalized": "Person",
+            "ownerSide": true
+        }
+    ],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "biography",
+            "fieldType": "String",
+            "fieldIsEnum": false,
+            "fieldNameCapitalized": "Biography",
+            "fieldNameUnderscored": "biography",
+            "fieldInJavaBeanMethod": "Biography",
+            "fieldValidate": false
+        },
+        {
+            "fieldId": 2,
+            "fieldName": "researcher_urls",
+            "fieldType": "String",
+            "fieldIsEnum": false,
+            "fieldNameCapitalized": "Researcher_urls",
+            "fieldNameUnderscored": "researcher_urls",
+            "fieldInJavaBeanMethod": "Researcher_urls",
+            "fieldValidate": false
+        },
+        {
+            "fieldId": 3,
+            "fieldName": "external_identifiers",
+            "fieldType": "String",
+            "fieldIsEnum": false,
+            "fieldNameCapitalized": "External_identifiers",
+            "fieldNameUnderscored": "external_identifiers",
+            "fieldInJavaBeanMethod": "External_identifiers",
+            "fieldValidate": false
+        }
+    ],
+    "fieldsContainOwnerManyToMany": false,
+    "fieldsContainOwnerOneToOne": true,
+    "fieldsContainOneToMany": false,
+    "fieldsContainLocalDate": false,
+    "fieldsContainCustomTime": false,
+    "fieldsContainBigDecimal": false,
+    "fieldsContainDateTime": false,
+    "fieldsContainDate": false,
+    "changelogDate": "20160113132550",
+    "dto": "no",
+    "pagination": "no",
+    "validation": false
+}
