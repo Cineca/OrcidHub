@@ -38,6 +38,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -217,18 +219,22 @@ public class OrcidOAuthClient {
 	}
 
 
-	public void appendWork(OrcidAccessToken token, OrcidWork work) {
+	public void appendWork(OrcidAccessToken token, OrcidWork work) throws JAXBException{
 		log.debug(String.format("Method appendWork START, token=[%s], orcid=[%s]", token.getAccess_token(), token.getOrcid()));
 		
 		RestTemplate restTemplate = new RestTemplate();
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", "Bearer ".concat( token.getAccess_token()) );
-		
+		headers.add("Content-Type", "application/orcid+xml" );
+
 		log.info(token.getAccess_token());
 		try {
-			String url = String.format( "%s//%s%s", apiUriV12, token.getOrcid(), WORK_CREATE_ENDPOINT );
+			String url = String.format( "%s/%s%s", apiUriV12, token.getOrcid(), WORK_CREATE_ENDPOINT );
 			OrcidMessage orcidMessage = wrapWork(work);
-			restTemplate.postForObject(url, orcidMessage, OrcidMessage.class);
+			Writer writer = new StringWriter();
+			orcidMessageContext.createMarshaller().marshal(orcidMessage, writer);
+			HttpEntity<String> request = new HttpEntity<String>(writer.toString(), headers);
+			restTemplate.postForObject(url, request, String.class);
 		} catch (RestClientException e) {
 			log.debug(String.format("Method appendWork, exception=[%s]", e.getMessage()));
 			throw e;
@@ -246,6 +252,7 @@ public class OrcidOAuthClient {
 		profile.setOrcidActivities(activities);
 		OrcidMessage message = new OrcidMessage();
 		message.setOrcidProfile(profile);
+		message.setMessageVersion("1.2");
 		return message;
 	}
 }

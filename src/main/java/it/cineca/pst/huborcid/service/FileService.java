@@ -106,7 +106,7 @@ public class FileService {
     }
 
 
-	@Async
+	//@Async
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void importExcelWorks(MultipartFile file, Application application) throws IOException{
 		log.debug(String.format("Method importExcelWorks START, file.name=[%s]", file.getOriginalFilename()));
@@ -127,6 +127,7 @@ public class FileService {
 			
 			boolean withErrors = false;
 			Iterator<Row> rowIterator = sheet.iterator();
+			OrcidOAuthClient clientOrcid = new OrcidOAuthClient(orcidApiType);
 	        while (rowIterator.hasNext()) {
 	        	Row row = rowIterator.next();
 	        	if(row.getRowNum() != 0){ 
@@ -140,9 +141,7 @@ public class FileService {
 		        			orcidAccessToken.setAccess_token(persApp.getOauthAccessToken());
 		        			orcidAccessToken.setOrcid(persApp.getPerson().getOrcid());
 		        			
-		        			orcidWork = createOrcidWork(sheet, row);
-		        			
-		        			OrcidOAuthClient clientOrcid = new OrcidOAuthClient(orcidApiType);
+		        			orcidWork = createOrcidWork(sheet, row);     			
 		        			clientOrcid.appendWork(orcidAccessToken, orcidWork);
 		        			
 		        			writeResultRow(row, "", true);
