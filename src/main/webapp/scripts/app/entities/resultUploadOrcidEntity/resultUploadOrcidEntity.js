@@ -19,42 +19,42 @@
 angular.module('huborcidApp')
     .config(function ($stateProvider) {
         $stateProvider
-            .state('resultOrcidWork', {
+            .state('resultUploadOrcidEntity', {
                 parent: 'entity',
-                url: '/resultOrcidWork',
+                url: '/resultUploadOrcidEntity',
                 data: {
                     roles: ['ROLE_USER'],
-                    pageTitle: 'huborcidApp.resultOrcidWork.home.title'
+                    pageTitle: 'huborcidApp.resultUploadOrcidEntity.home.title'
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'scripts/app/entities/resultOrcidWork/resultOrcidWorks.html',
-                        controller: 'ResultOrcidWorkController'
+                        templateUrl: 'scripts/app/entities/resultUploadOrcidEntity/resultUploadOrcidEntitys.html',
+                        controller: 'ResultUploadOrcidEntityController'
                     }
                 },
                 resolve: {
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                        $translatePartialLoader.addPart('resultOrcidWork');
+                        $translatePartialLoader.addPart('resultUploadOrcidEntity');
                         return $translate.refresh();
                     }]
                 }
             })
-            .state('resultOrcidWorkDetail', {
+            .state('resultUploadOrcidEntityDetail', {
                 parent: 'entity',
-                url: '/resultOrcidWork/:id',
+                url: '/resultUploadOrcidEntity/:id',
                 data: {
                     roles: ['ROLE_USER'],
-                    pageTitle: 'huborcidApp.resultOrcidWork.detail.title'
+                    pageTitle: 'huborcidApp.resultUploadOrcidEntity.detail.title'
                 },
                 views: {
                     'content@': {
-                        templateUrl: 'scripts/app/entities/resultOrcidWork/resultOrcidWork-detail.html',
-                        controller: 'ResultOrcidWorkDetailController'
+                        templateUrl: 'scripts/app/entities/resultUploadOrcidEntity/resultUploadOrcidEntity-detail.html',
+                        controller: 'ResultUploadOrcidEntityDetailController'
                     }
                 },
                 resolve: {
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-                        $translatePartialLoader.addPart('resultOrcidWork');
+                        $translatePartialLoader.addPart('resultUploadOrcidEntity');
                         return $translate.refresh();
                     }]
                 }

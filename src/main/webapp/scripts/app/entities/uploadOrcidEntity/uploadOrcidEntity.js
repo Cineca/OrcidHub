@@ -19,22 +19,22 @@
 angular.module('huborcidApp')
     .config(function ($stateProvider) {
         $stateProvider
-	        .state('reportOrcidWorks', {
+	        .state('uploadOrcidEntity', {
 	            parent: 'entity',
-	            url: '/reportOrcidWorks',
+	            url: '/uploadOrcidEntity',
 	            data: {
 	                roles: ['ROLE_ORCID'],
-	                pageTitle: 'huborcidApp.reportOrcidWorks.home.title'
+	                pageTitle: 'huborcidApp.uploadOrcidEntity.home.title'
 	            },
 	            views: {
 	                'content@': {
-	                    templateUrl: 'scripts/app/entities/reportOrcidWorks/reportOrcidWorks.html',
-	                    controller: 'ReportOrcidWorksController'
+	                    templateUrl: 'scripts/app/entities/uploadOrcidEntity/uploadOrcidEntity.html',
+	                    controller: 'UploadOrcidEntityController'
 	                }
 	            },
 	            resolve: {
 	                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
-	                    $translatePartialLoader.addPart('reportOrcidWorks');
+	                    $translatePartialLoader.addPart('uploadOrcidEntity');
 	                    return $translate.refresh();
 	                }]
 	            }

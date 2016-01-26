@@ -13,7 +13,7 @@
                 "relPersonApplication": "RelPersonApplication",
                 "envVariable": "EnvVariable",
                 "personBio": "PersonBio",
-                "resultOrcidWork": "ResultOrcidWork",
+                "resultUploadOrcidEntity": "ResultUploadOrcidEntity",
                 "additionalEntity": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -40,7 +40,7 @@
                 "main": "Dashboard",
                 "reportat": "Report Access Token",
                 "reportOrcidBio": "Report Orcid Bio",
-                "reportOrcidWorks": "Report Orcid Work"
+                "uploadOrcidEntity": "Upload Orcid Entity"
             },
             "language": "Language"
         },

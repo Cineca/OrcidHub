@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of huborcid.
  *
  * huborcid is free software: you can redistribute it and/or modify
@@ -14,15 +14,19 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with huborcid.  If not, see <http://www.gnu.org/licenses/>.
  */
-'use strict';
+package it.cineca.pst.huborcid.repository;
 
-angular.module('huborcidApp')
-    .controller('ResultOrcidWorkDetailController', function ($scope, $stateParams, ResultOrcidWork, Application) {
-        $scope.resultOrcidWork = {};
-        $scope.load = function (id) {
-            ResultOrcidWork.get({id: id}, function(result) {
-              $scope.resultOrcidWork = result;
-            });
-        };
-        $scope.load($stateParams.id);
-    });
+import it.cineca.pst.huborcid.domain.Application;
+import it.cineca.pst.huborcid.domain.ResultUploadOrcidEntity;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.*;
+
+/**
+ * Spring Data JPA repository for the ResultUploadOrcidEntity entity.
+ */
+public interface ResultUploadOrcidEntityRepository extends JpaRepository<ResultUploadOrcidEntity,Long> {
+
+	Page<ResultUploadOrcidEntity> findAllByApplicationIs(Application application, Pageable page);
+}

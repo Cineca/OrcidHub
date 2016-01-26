@@ -17,6 +17,6 @@
     <include file="classpath:config/liquibase/changelog/20151018233216_added_entity_EnvVariable.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20160113132550_added_entity_PersonBio.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20160114151450_modify_entity_Person.xml" relativeToChangelogFile="false"/>
-    <include file="classpath:config/liquibase/changelog/20160120100811_added_entity_ResultOrcidWork.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20160125124917_added_entity_ResultUploadOrcidEntity.xml" relativeToChangelogFile="false"/>
     <!-- JHipster will add liquibase changelogs here -->
 </databaseChangeLog>

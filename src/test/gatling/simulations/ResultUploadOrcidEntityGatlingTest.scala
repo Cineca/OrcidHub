@@ -23,9 +23,9 @@ import org.slf4j.LoggerFactory
 import scala.concurrent.duration._
 
 /**
- * Performance test for the ResultOrcidWork entity.
+ * Performance test for the ResultUploadOrcidEntity entity.
  */
-class ResultOrcidWorkGatlingTest extends Simulation {
+class ResultUploadOrcidEntityGatlingTest extends Simulation {
 
     val context: LoggerContext = LoggerFactory.getILoggerFactory.asInstanceOf[LoggerContext]
     // Log all HTTP requests
@@ -53,7 +53,7 @@ class ResultOrcidWorkGatlingTest extends Simulation {
         "X-CSRF-TOKEN" -> "${csrf_token}"
     )
 
-    val scn = scenario("Test the ResultOrcidWork entity")
+    val scn = scenario("Test the ResultUploadOrcidEntity entity")
         .exec(http("First unauthenticated request")
         .get("/api/account")
         .headers(headers_http)
@@ -75,26 +75,26 @@ class ResultOrcidWorkGatlingTest extends Simulation {
         .check(headerRegex("Set-Cookie", "CSRF-TOKEN=(.*); [P,p]ath=/").saveAs("csrf_token")))
         .pause(10)
         .repeat(2) {
-            exec(http("Get all resultOrcidWorks")
-            .get("/api/resultOrcidWorks")
+            exec(http("Get all resultUploadOrcidEntitys")
+            .get("/api/resultUploadOrcidEntitys")
             .headers(headers_http_authenticated)
             .check(status.is(200)))
             .pause(10 seconds, 20 seconds)
-            .exec(http("Create new resultOrcidWork")
-            .put("/api/resultOrcidWorks")
+            .exec(http("Create new resultUploadOrcidEntity")
+            .put("/api/resultUploadOrcidEntitys")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "fileNameUpload":"SAMPLE_TEXT", "status":"SAMPLE_TEXT", "withErrors":null, "fileResult":"SAMPLE_TEXT"}""")).asJSON
+            .body(StringBody("""{"id":null, "fileNameUpload":"SAMPLE_TEXT", "status":"SAMPLE_TEXT", "withErrors":null, "fileResult":"SAMPLE_TEXT", "entityType":"SAMPLE_TEXT"}""")).asJSON
             .check(status.is(201))
-            .check(headerRegex("Location", "(.*)").saveAs("new_resultOrcidWork_url")))
+            .check(headerRegex("Location", "(.*)").saveAs("new_resultUploadOrcidEntity_url")))
             .pause(10)
             .repeat(5) {
-                exec(http("Get created resultOrcidWork")
-                .get("${new_resultOrcidWork_url}")
+                exec(http("Get created resultUploadOrcidEntity")
+                .get("${new_resultUploadOrcidEntity_url}")
                 .headers(headers_http_authenticated))
                 .pause(10)
             }
-            .exec(http("Delete created resultOrcidWork")
-            .delete("${new_resultOrcidWork_url}")
+            .exec(http("Delete created resultUploadOrcidEntity")
+            .delete("${new_resultUploadOrcidEntity_url}")
             .headers(headers_http_authenticated))
             .pause(10)
         }

@@ -17,10 +17,13 @@
 'use strict';
 
 angular.module('huborcidApp')
-	.controller('ReportOrcidWorksController', ['$scope', '$translate', 'Upload', 'ReportOrcidWorks', 'ParseLinks', function ($scope, $translate, Upload, ReportOrcidWorks, ParseLinks) {
-		$scope.upload = function(file) {
+	.controller('UploadOrcidEntityController', ['$scope', '$translate', 'Upload', 'UploadOrcidEntity', 'ParseLinks', function ($scope, $translate, Upload, UploadOrcidEntity, ParseLinks) {
+		$scope.linkDownloadTemplateExcelWorks = "assets/excel/template_upload_orcid_works.xls";
+		$scope.linkDownloadTemplateExcelFunding = "assets/excel/template_upload_orcid_funding.xls";
+		$scope.upload = function(file, typeEntity) {
+			$scope.fileUp = file;
 	        file.upload = Upload.upload({
-	          url: 'api/reportOrcidWorks/fileUpload',
+	          url: 'api/uploadOrcidEntity/fileUpload/'+typeEntity,
 	          data: {file: file},
 	        });
 	        
@@ -35,21 +38,21 @@ angular.module('huborcidApp')
 	        	}
 	        	$scope.loadAll();
 	          },function (resp) {
-	             $scope.addAlert('danger', resp.status);
-	             $scope.loadAll();
+	        	  $scope.addAlert('danger', resp.status);
+	        	  $scope.loadAll();
 	          }, function (evt) {
-	        	 var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-	        	 console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
-	        	 $scope.loadAll();
+	        	  var progressPercentage = parseInt(100.0 * evt.loaded / evt.total); 
+	        	  file.progress = progressPercentage;
+	        	  console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+	        	  $scope.loadAll();
 	          });
-	        
         }
 		$scope.page = 1;
-		$scope.resultOrcidWorks = [];
+		$scope.resultUploadOrcidEntities = [];
         $scope.loadAll = function() {
-        	ReportOrcidWorks.query({page: $scope.page, per_page: 20}, function(result, headers) {
+        	UploadOrcidEntity.query({page: $scope.page, per_page: 20}, function(result, headers) {
                $scope.links = ParseLinks.parse(headers('link'));
-               $scope.resultOrcidWorks = result;
+               $scope.resultUploadOrcidEntities = result;
             });
         };
         $scope.loadPage = function(page) {

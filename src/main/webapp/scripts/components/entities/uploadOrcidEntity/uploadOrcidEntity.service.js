@@ -17,8 +17,8 @@
 'use strict';
 
 angular.module('huborcidApp')
-    .factory('ReportOrcidWorks', function ($resource) {
-        return $resource('api/reportOrcidWorks/app', {}, {
+    .factory('UploadOrcidEntity', function ($resource) {
+        return $resource('api/uploadOrcidEntity/app', {}, {
             'query': { method: 'GET', isArray: true}
         });
     });

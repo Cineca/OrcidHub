@@ -1,0 +1,23 @@
+{
+    "huborcidApp": {
+        "resultUploadOrcidEntity" : {
+            "home": {
+                "title": "ResultUploadOrcidEntitys",
+                "createLabel": "Create a new ResultUploadOrcidEntity",
+                "createOrEditLabel": "Create or edit a ResultUploadOrcidEntity"
+            },
+            "delete": {
+                "question": "Are you sure you want to delete ResultUploadOrcidEntity {{ id }}?"
+            },
+            "detail": {
+                "title": "ResultUploadOrcidEntity"
+            },
+            "fileNameUpload": "FileNameUpload",
+            "status": "Status",
+            "withErrors": "WithErrors",
+            "fileResult": "FileResult",
+            "entityType": "EntityType",
+            "application": "application"
+        }
+    }
+}

@@ -1,0 +1,97 @@
+<!--
+
+    This file is part of huborcid.
+
+    huborcid is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    huborcid is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with huborcid.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+<div>
+
+    <h2 translate="huborcidApp.uploadOrcidEntity.home.title">Upload file of works</h2>
+  	<alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+    <span translate="huborcidApp.uploadOrcidEntity.home.descriptionPage">
+        Mediante questa funzionalità è possibile caricare o aggiornare le attività di ricerca sul profilo ORCID dei ricercatori dell'Ateneo/Ente a partire da un tracciato excel predefinito.
+		E' possibile scaricare tale tracciato per:
+   	</span>
+   	<span>
+   		<a ng-href="{{linkDownloadTemplateExcelWorks}}" download="template_upload_orcid_works.xls">Orcid Works</a>,
+   		<a ng-href="{{linkDownloadTemplateExcelFunding}}" download="template_upload_orcid_funding.xls">Orcid Funding</a>
+   	</span>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+               	<form name="form" style="padding-top: 30px">
+					<div>
+						<div class="btn btn-primary" ngf-accept="'.xls'" ngf-select="upload($file, 'WORKS')">
+							<span translate="huborcidApp.uploadOrcidEntity.home.uploadFileWorks">Upload file Orcid Works</span>
+					 	</div>
+					 	<div class="btn btn-primary" ngf-accept="'.xls'" ngf-select="upload($file, 'FUNDING')">
+							<span translate="huborcidApp.uploadOrcidEntity.home.uploadFileFunding">Upload file Orcid Funding</span>
+					 	</div>	
+					</div> 
+					<div style="padding-top: 10px">	
+						<span class="progress"  ng-show="fileUp.progress >= 0">
+					 		<div style="width:{{fileUp.progress}}%" ng-bind="fileUp.progress + '%'"></div>
+					 	</span>
+					</div> 	
+			  	</form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="table-responsive" style="padding-top: 30px">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                	<th translate="huborcidApp.uploadOrcidEntity.entityType">Entity type</th>
+                    <th translate="huborcidApp.uploadOrcidEntity.fileNameUpload">File name upload</th>
+                    <th translate="huborcidApp.uploadOrcidEntity.status">Status</th>
+                    <th translate="huborcidApp.uploadOrcidEntity.withErrors">With errors</th>
+                    <th translate="huborcidApp.uploadOrcidEntity.downloadFileResult">Download file result</th>
+                    <th translate="huborcidApp.uploadOrcidEntity.dateUpload">Date upload</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="resultUploadOrcidEntity in resultUploadOrcidEntities">
+                	<td>{{resultUploadOrcidEntity.entityType}}</td>
+                    <td>{{resultUploadOrcidEntity.fileNameUpload}}</td>
+                    <td><span translate="huborcidApp.uploadOrcidEntity.statusValue.{{resultUploadOrcidEntity.status}}">{{resultUploadOrcidEntity.status}}</span></td>
+                    <td><span translate="huborcidApp.uploadOrcidEntity.withErrorsValue.{{resultUploadOrcidEntity.withErrors}}" translate-default="">{{resultUploadOrcidEntity.withErrors}}</span></td>
+                    <td>
+                   		<div ng-show="'{{resultUploadOrcidEntity.status}}' == 'COMPLETED'">
+                    		<a ng-href="api/uploadOrcidEntity/downloadExcelResult/{{resultUploadOrcidEntity.id}}" download="result_{{resultUploadOrcidEntity.id}}.xls">
+                   	 			<span translate="huborcidApp.uploadOrcidEntity.btnDownloadFileResult">Download</span>
+                    		</a>
+                    	</div>
+                    </td>		 
+                    <td>{{resultUploadOrcidEntity.createdDate | date:'dd/MM/yyyy h:mm a'}}</td>
+                </tr>    
+            </tbody>
+        </table>
+        <nav>
+            <ul class="pagination">
+                <li ng-show="links['first']" ng-click="loadPage(links['first'])"><a>&lt;&lt;</a></li>
+                <li ng-show="links['prev']" ng-click="loadPage(links['prev'])"><a>&lt;</a></li>
+                <li ng-show="page > 2" ng-click="loadPage(page - 2)"><a>{{page - 2}}</a></li>
+                <li ng-show="page > 1" ng-click="loadPage(page - 1)"><a>{{page - 1}}</a></li>
+                <li class="active"><a>{{page}}</a></li>
+                <li ng-show="page < links['last']" ng-click="loadPage(page + 1)"><a>{{page + 1}}</a></li>
+                <li ng-show="page < links['last'] - 1" ng-click="loadPage(page + 2)"><a>{{page + 2}}</a></li>
+                <li ng-show="links['next']" ng-click="loadPage(links['next'])"><a>&gt;</a></li>
+                <li ng-show="links['last']" ng-click="loadPage(links['last'])"><a>&gt;&gt;</a></li>
+            </ul>
+        </nav>
+    </div>
+    
+</div>

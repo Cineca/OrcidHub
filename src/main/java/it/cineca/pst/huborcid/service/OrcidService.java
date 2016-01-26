@@ -34,6 +34,7 @@ import it.cineca.pst.huborcid.web.rest.dto.NotifyDTO;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.Future;
 
 import javax.annotation.PostConstruct;
@@ -230,9 +231,13 @@ public class OrcidService {
 	/**
 	 * Mediante chiamata rest ogni 5 minuti, aggiorna i dati personali (biografia etc) per tutte le persone che hanno need_update = 1 e last = 1 e token not null.
 	 * @throws JAXBException
+	 * @throws InterruptedException 
 	 */
 	@Scheduled(cron = "0 */5 * * * *")
-	public void populateOrcidBio( ) throws JAXBException{
+	public void populateOrcidBio( ) throws JAXBException, InterruptedException{
+		Random random = new Random();
+		Integer numRandom = random.nextInt(30);
+		wait( numRandom );
 		log.debug("Method populateOrcidBio START");
 		Pageable pageable = new PageRequest(0, 200);
 		List<Person> listPerson = personRepository.findAllByNeedUpdateIsTrue(pageable);

@@ -18,19 +18,19 @@
 -->
 <div>
 
-    <h2 translate="huborcidApp.resultOrcidWork.home.title">ResultOrcidWorks</h2>
+    <h2 translate="huborcidApp.resultUploadOrcidEntity.home.title">ResultUploadOrcidEntitys</h2>
 
     <div class="container">
         <div class="row">
             <div class="col-md-4">
-                <button class="btn btn-primary" data-toggle="modal" data-target="#saveResultOrcidWorkModal" ng-click="clear()">
-                    <span class="glyphicon glyphicon-flash"></span> <span translate="huborcidApp.resultOrcidWork.home.createLabel">Create a new ResultOrcidWork</span>
+                <button class="btn btn-primary" data-toggle="modal" data-target="#saveResultUploadOrcidEntityModal" ng-click="clear()">
+                    <span class="glyphicon glyphicon-flash"></span> <span translate="huborcidApp.resultUploadOrcidEntity.home.createLabel">Create a new ResultUploadOrcidEntity</span>
                 </button>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="saveResultOrcidWorkModal" tabindex="-1" role="dialog" aria-labelledby="myResultOrcidWorkLabel"
+    <div class="modal fade" id="saveResultUploadOrcidEntityModal" tabindex="-1" role="dialog" aria-labelledby="myResultUploadOrcidEntityLabel"
          aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -39,43 +39,49 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                                 ng-click="clear()">&times;</button>
-                        <h4 class="modal-title" id="myResultOrcidWorkLabel" translate="huborcidApp.resultOrcidWork.home.createOrEditLabel">Create or edit a ResultOrcidWork</h4>
+                        <h4 class="modal-title" id="myResultUploadOrcidEntityLabel" translate="huborcidApp.resultUploadOrcidEntity.home.createOrEditLabel">Create or edit a ResultUploadOrcidEntity</h4>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
                             <label>ID</label>
                             <input type="text" class="form-control" name="id"
-                                   ng-model="resultOrcidWork.id" readonly>
+                                   ng-model="resultUploadOrcidEntity.id" readonly>
                         </div>
 
                         <div class="form-group">
-                            <label translate="huborcidApp.resultOrcidWork.fileNameUpload">FileNameUpload</label>
+                            <label translate="huborcidApp.resultUploadOrcidEntity.fileNameUpload">FileNameUpload</label>
                             <input type="text" class="form-control" name="fileNameUpload"
-                                   ng-model="resultOrcidWork.fileNameUpload">
+                                   ng-model="resultUploadOrcidEntity.fileNameUpload">
 
                         </div>
                         <div class="form-group">
-                            <label translate="huborcidApp.resultOrcidWork.status">Status</label>
+                            <label translate="huborcidApp.resultUploadOrcidEntity.status">Status</label>
                             <input type="text" class="form-control" name="status"
-                                   ng-model="resultOrcidWork.status">
+                                   ng-model="resultUploadOrcidEntity.status">
 
                         </div>
                         <div class="form-group">
-                            <label translate="huborcidApp.resultOrcidWork.withErrors">WithErrors</label>
+                            <label translate="huborcidApp.resultUploadOrcidEntity.withErrors">WithErrors</label>
                             <input type="checkbox" class="form-control" name="withErrors"
-                                   ng-model="resultOrcidWork.withErrors">
+                                   ng-model="resultUploadOrcidEntity.withErrors">
 
                         </div>
                         <div class="form-group">
-                            <label translate="huborcidApp.resultOrcidWork.fileResult">FileResult</label>
+                            <label translate="huborcidApp.resultUploadOrcidEntity.fileResult">FileResult</label>
                             <input type="text" class="form-control" name="fileResult"
-                                   ng-model="resultOrcidWork.fileResult">
+                                   ng-model="resultUploadOrcidEntity.fileResult">
+
+                        </div>
+                        <div class="form-group">
+                            <label translate="huborcidApp.resultUploadOrcidEntity.entityType">EntityType</label>
+                            <input type="text" class="form-control" name="entityType"
+                                   ng-model="resultUploadOrcidEntity.entityType">
 
                         </div>
 
                         <div class="form-group">
-                            <label translate="huborcidApp.resultOrcidWork.application">application</label>
-                            <select class="form-control" name="application" ng-model="resultOrcidWork.application.id" ng-options="application.id as application.id for application in applications">
+                            <label translate="huborcidApp.resultUploadOrcidEntity.application">application</label>
+                            <select class="form-control" name="application" ng-model="resultUploadOrcidEntity.application.id" ng-options="application.id as application.id for application in applications">
                             </select>
                         </div>
                     </div>
@@ -92,17 +98,17 @@
         </div>
     </div>
 
-    <div class="modal fade" id="deleteResultOrcidWorkConfirmation">
+    <div class="modal fade" id="deleteResultUploadOrcidEntityConfirmation">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form name="deleteForm" ng-submit="confirmDelete(resultOrcidWork.id)">
+                <form name="deleteForm" ng-submit="confirmDelete(resultUploadOrcidEntity.id)">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                                 ng-click="clear()">&times;</button>
                         <h4 class="modal-title" translate="entity.delete.title">Confirm delete operation</h4>
                     </div>
                     <div class="modal-body">
-                        <p translate="huborcidApp.resultOrcidWork.delete.question" translate-values="{id: '{{resultOrcidWork.id}}'}">Are you sure you want to delete this ResultOrcidWork?</p>
+                        <p translate="huborcidApp.resultUploadOrcidEntity.delete.question" translate-values="{id: '{{resultUploadOrcidEntity.id}}'}">Are you sure you want to delete this ResultUploadOrcidEntity?</p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
@@ -122,35 +128,37 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th translate="huborcidApp.resultOrcidWork.fileNameUpload">FileNameUpload</th>
-                    <th translate="huborcidApp.resultOrcidWork.status">Status</th>
-                    <th translate="huborcidApp.resultOrcidWork.withErrors">WithErrors</th>
-                    <th translate="huborcidApp.resultOrcidWork.fileResult">FileResult</th>
-                    <th translate="huborcidApp.resultOrcidWork.application">application</th>
+                    <th translate="huborcidApp.resultUploadOrcidEntity.fileNameUpload">FileNameUpload</th>
+                    <th translate="huborcidApp.resultUploadOrcidEntity.status">Status</th>
+                    <th translate="huborcidApp.resultUploadOrcidEntity.withErrors">WithErrors</th>
+                    <th translate="huborcidApp.resultUploadOrcidEntity.fileResult">FileResult</th>
+                    <th translate="huborcidApp.resultUploadOrcidEntity.entityType">EntityType</th>
+                    <th translate="huborcidApp.resultUploadOrcidEntity.application">application</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="resultOrcidWork in resultOrcidWorks">
-                    <td><a ui-sref="resultOrcidWorkDetail({id:resultOrcidWork.id})">{{resultOrcidWork.id}}</a></td>
-                    <td>{{resultOrcidWork.fileNameUpload}}</td>
-                    <td>{{resultOrcidWork.status}}</td>
-                    <td>{{resultOrcidWork.withErrors}}</td>
-                    <td>{{resultOrcidWork.fileResult}}</td>
-                    <td>{{resultOrcidWork.application.id}}</td>
+                <tr ng-repeat="resultUploadOrcidEntity in resultUploadOrcidEntitys">
+                    <td><a ui-sref="resultUploadOrcidEntityDetail({id:resultUploadOrcidEntity.id})">{{resultUploadOrcidEntity.id}}</a></td>
+                    <td>{{resultUploadOrcidEntity.fileNameUpload}}</td>
+                    <td>{{resultUploadOrcidEntity.status}}</td>
+                    <td>{{resultUploadOrcidEntity.withErrors}}</td>
+                    <td>{{resultUploadOrcidEntity.fileResult}}</td>
+                    <td>{{resultUploadOrcidEntity.entityType}}</td>
+                    <td>{{resultUploadOrcidEntity.application.id}}</td>
                     <td>
                         <button type="submit"
-                                ui-sref="resultOrcidWorkDetail({id:resultOrcidWork.id})"
+                                ui-sref="resultUploadOrcidEntityDetail({id:resultUploadOrcidEntity.id})"
                                 class="btn btn-info btn-sm">
                             <span class="glyphicon glyphicon-eye-open"></span>&nbsp;<span translate="entity.action.view"> View</span>
                         </button>
                         <button type="submit"
-                                ng-click="showUpdate(resultOrcidWork.id)"
+                                ng-click="showUpdate(resultUploadOrcidEntity.id)"
                                 class="btn btn-primary btn-sm">
                             <span class="glyphicon glyphicon-pencil"></span>&nbsp;<span translate="entity.action.edit"> Edit</span>
                         </button>
                         <button type="submit"
-                                ng-click="delete(resultOrcidWork.id)"
+                                ng-click="delete(resultUploadOrcidEntity.id)"
                                 class="btn btn-danger btn-sm">
                             <span class="glyphicon glyphicon-remove-circle"></span>&nbsp;<span translate="entity.action.delete"> Delete</span>
                         </button>

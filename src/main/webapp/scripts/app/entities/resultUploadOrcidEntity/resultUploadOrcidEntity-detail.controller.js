@@ -17,16 +17,12 @@
 'use strict';
 
 angular.module('huborcidApp')
-    .factory('ResultOrcidWork', function ($resource, DateUtils) {
-        return $resource('api/resultOrcidWorks/:id', {}, {
-            'query': { method: 'GET', isArray: true},
-            'get': {
-                method: 'GET',
-                transformResponse: function (data) {
-                    data = angular.fromJson(data);
-                    return data;
-                }
-            },
-            'update': { method:'PUT' }
-        });
+    .controller('ResultUploadOrcidEntityDetailController', function ($scope, $stateParams, ResultUploadOrcidEntity, Application) {
+        $scope.resultUploadOrcidEntity = {};
+        $scope.load = function (id) {
+            ResultUploadOrcidEntity.get({id: id}, function(result) {
+              $scope.resultUploadOrcidEntity = result;
+            });
+        };
+        $scope.load($stateParams.id);
     });

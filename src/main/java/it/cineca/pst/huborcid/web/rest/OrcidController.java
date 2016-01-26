@@ -17,7 +17,6 @@
 package it.cineca.pst.huborcid.web.rest;
 
 import it.cineca.pst.huborcid.config.Constants;
-import it.cineca.pst.huborcid.service.FileService;
 import it.cineca.pst.huborcid.service.OrcidService;
 
 import java.io.BufferedOutputStream;

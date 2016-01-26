@@ -16,22 +16,9 @@
  */
 package it.cineca.pst.huborcid.service;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-import javax.inject.Inject;
+import javax.xml.bind.JAXBElement;
 
 import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.json.JSONArray;
@@ -47,6 +34,7 @@ import org.orcid.ns.orcid.Day;
 import org.orcid.ns.orcid.JournalTitle;
 import org.orcid.ns.orcid.LanguageCode;
 import org.orcid.ns.orcid.Month;
+import org.orcid.ns.orcid.ObjectFactory;
 import org.orcid.ns.orcid.OrcidId;
 import org.orcid.ns.orcid.OrcidWork;
 import org.orcid.ns.orcid.PublicationDate;
@@ -58,130 +46,22 @@ import org.orcid.ns.orcid.WorkExternalIdentifier;
 import org.orcid.ns.orcid.WorkExternalIdentifiers;
 import org.orcid.ns.orcid.WorkTitle;
 import org.orcid.ns.orcid.Year;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.core.env.Environment;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import it.cineca.pst.huborcid.domain.Application;
-import it.cineca.pst.huborcid.domain.RelPersonApplication;
-import it.cineca.pst.huborcid.domain.ResultOrcidWork;
 import it.cineca.pst.huborcid.orcid.client.OrcidAccessToken;
-import it.cineca.pst.huborcid.orcid.client.OrcidApiType;
 import it.cineca.pst.huborcid.orcid.client.OrcidOAuthClient;
-import it.cineca.pst.huborcid.repository.RelPersonApplicationRepository;
-import it.cineca.pst.huborcid.repository.ResultOrcidWorkRepository;
 
 @Service
 @Scope("prototype")
 @Transactional
-public class FileService {
+public class OrcidWorksFileService extends AbstractFileService {
 
-	private final Logger log = LoggerFactory.getLogger(FileService.class);
-	
-	@Inject
-	private RelPersonApplicationRepository relPersonApplicationRepository;
-	
-	@Inject
-	private ResultOrcidWorkRepository resultOrcidWorkRepository;
-	    
-	@Autowired
-    private Environment env;
-	
-	private OrcidApiType orcidApiType;
-	
-	@PostConstruct
-    public void settingEnv() {
-		if(env.acceptsProfiles("prod")){
-			orcidApiType = OrcidApiType.LIVE;
-		}else{
-			orcidApiType = OrcidApiType.SANDBOX;
-		}
-    }
-
-
-	//@Async
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public void importExcelWorks(MultipartFile file, Application application) throws IOException{
-		log.debug(String.format("Method importExcelWorks START, file.name=[%s]", file.getOriginalFilename()));
-		
-		ResultOrcidWork resultOrcidWork = new ResultOrcidWork();
-		try{
-			resultOrcidWork.setApplication(application);
-			resultOrcidWork.setFileNameUpload(file.getOriginalFilename());
-			resultOrcidWork.setStatus("PROGRESS");
-			resultOrcidWorkRepository.save(resultOrcidWork);
-			
-	        OrcidAccessToken orcidAccessToken = new OrcidAccessToken();
-			OrcidWork orcidWork = new OrcidWork();
-			
-			InputStream fileInputStream = new BufferedInputStream( file.getInputStream());
-			HSSFWorkbook workbook = new HSSFWorkbook( fileInputStream );
-			HSSFSheet sheet = workbook.getSheetAt(0);
-			
-			boolean withErrors = false;
-			Iterator<Row> rowIterator = sheet.iterator();
-			OrcidOAuthClient clientOrcid = new OrcidOAuthClient(orcidApiType);
-	        while (rowIterator.hasNext()) {
-	        	Row row = rowIterator.next();
-	        	if(row.getRowNum() != 0){ 
-	        		try {
-		        		String valueCellLocalId = row.getCell(0).getStringCellValue();
-		        		String valueCellOrcid = row.getCell(1).getStringCellValue();
-	
-		        		List<RelPersonApplication> listPersApp = relPersonApplicationRepository.findAllByApplicationIsAndLastIsTrueAndOrcidIsOrLocalIdIs(application, valueCellOrcid, valueCellLocalId);
-		        		if(listPersApp.size()==1){
-		        			RelPersonApplication persApp = listPersApp.get(0);
-		        			orcidAccessToken.setAccess_token(persApp.getOauthAccessToken());
-		        			orcidAccessToken.setOrcid(persApp.getPerson().getOrcid());
-		        			
-		        			orcidWork = createOrcidWork(sheet, row);     			
-		        			clientOrcid.appendWork(orcidAccessToken, orcidWork);
-		        			
-		        			writeResultRow(row, "", true);
-		        		}else{
-		        			writeResultRow(row, "Utente non trovato", false);
-		        			withErrors = true;
-		        		}	        		
-	        		} catch (Exception e) {
-	        			writeResultRow(row, e.getMessage(), false);
-	        			withErrors = true;
-					}
-	        	}
-	        }
-	        
-	        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-	        workbook.write(baos);
-	        workbook.close();
-	        byte[] fileResult = baos.toByteArray();
-			resultOrcidWork.setStatus("COMPLETED");
-			resultOrcidWork.setWithErrors(withErrors);
-			resultOrcidWork.setFileResult(fileResult);
-			resultOrcidWorkRepository.save(resultOrcidWork);
-		} catch (Exception e) {
-			log.debug(String.format("Method importExcelWorks, exception=[%s]", e.getMessage()));
-			resultOrcidWork.setStatus("ERROR");
-			resultOrcidWorkRepository.save(resultOrcidWork);
-		}
-		
-		log.debug("Method importExcelWorks END");
-	}
-	
-	
-	private void writeResultRow(Row row, String message, boolean isRowOK){
-		String cellValue = isRowOK ? "OK" : "ERROR"; 
-		Cell cell = row.createCell(row.getPhysicalNumberOfCells());
-		cell.setCellValue(cellValue);
-		if( !isRowOK ){
-			cell = row.createCell(row.getPhysicalNumberOfCells());
-			cell.setCellValue(message);
-		}
+	@Override
+	public void createAppendEntity(OrcidOAuthClient orcidOAuthClient, OrcidAccessToken orcidAccessToken, HSSFSheet sheet, Row row) throws Exception {
+		OrcidWork orcidWork = createOrcidWork(sheet, row);     			
+		orcidOAuthClient.appendWork(orcidAccessToken, orcidWork);
 	}
 	
 	private OrcidWork createOrcidWork(HSSFSheet sheet, Row row) throws Exception {
@@ -286,6 +166,12 @@ public class FileService {
 			String dayStr = json.getString("giorno");
 			String monthStr = json.getString("mese");
 			String yearStr = json.getString("anno");
+			if(dayStr.length()==1) {
+				dayStr = "0".concat(dayStr);
+	        }
+			if(monthStr.length()==1) {
+				monthStr = "0".concat(monthStr);
+	        }
 			Day day = new Day();
 			day.setValue(dayStr);
 			Month month = new Month();
@@ -323,16 +209,17 @@ public class FileService {
 			JSONObject json = new JSONObject(valueCell);
 		    JSONArray arr = json.getJSONArray("contributors");
 			for (int i = 0; i < arr.length(); i++){
-			    String orcidIdStr = arr.getJSONObject(i).getString("orcid");
+			    String orcidStr = arr.getJSONObject(i).getString("orcid");
 			    String nameStr = arr.getJSONObject(i).getString("name");
 			    String emailStr = arr.getJSONObject(i).getString("email");
 			    String attSeqStr = arr.getJSONObject(i).getString("attributes-sequence");
 			    String attSeqRole = arr.getJSONObject(i).getString("attributes-role");
 			 
 			    Contributor contributor = new Contributor();
+			    ObjectFactory factory = new ObjectFactory();
 			    OrcidId orcidId = new OrcidId();
-			    //TODO
-//			    orcidId.getContent().add(orcidIdStr);
+			    JAXBElement<String> elementOrcidId = factory.createOrcidIdPath(orcidStr);
+			    orcidId.getContent().add(elementOrcidId);
 			    contributor.setContributorOrcid(orcidId);
 			    CreditName creditName = new CreditName();
 			    creditName.setValue(nameStr);
@@ -350,4 +237,6 @@ public class FileService {
 		}
 		return workContributors;
 	}
+	
+	
 }

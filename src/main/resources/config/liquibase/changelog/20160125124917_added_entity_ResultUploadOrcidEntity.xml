@@ -11,11 +11,11 @@
     <property name="autoIncrement" value="true" dbms="mysql,h2,postgresql"/>
     <property name="autoIncrement" value="false" dbms="oracle"/>
     <!--
-        Added the entity ResultOrcidWork.
+        Added the entity ResultUploadOrcidEntity.
     -->
-    <changeSet id="20160120100811" author="jhipster">
-        <createSequence sequenceName="SEQ_RESULTORCIDWORK" startValue="1000" incrementBy="1"/>
-        <createTable tableName="ORCID_RESULT_WORK">
+    <changeSet id="20160125124917" author="jhipster">
+        <createSequence sequenceName="SEQ_RESULTUPLOADORCIDENTITY" startValue="1000" incrementBy="1"/>
+        <createTable tableName="ORCID_RESULT_UPLOAD_ENTITY">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -23,8 +23,9 @@
             <column name="status" type="varchar(255)"/>
             <column name="with_errors" type="bit"/>
             <column name="file_result" type="blob"/>
+            <column name="entity_type" type="varchar(255)"/>
             <column name="application_id" type="bigint"/>
-            <column name="created_by" type="varchar(50)">
+             <column name="created_by" type="varchar(50)">
                 <constraints nullable="false"/>
             </column>
 			<column name="created_date" type="timestamp" defaultValueDate="${now}">
@@ -35,8 +36,8 @@
         </createTable>
         
         <addForeignKeyConstraint baseColumnNames="application_id"
-                                 baseTableName="ORCID_RESULT_WORK"
-                                 constraintName="fk_res_app_id"
+                                 baseTableName="ORCID_RESULT_UPLOAD_ENTITY"
+                                 constraintName="fk_resup_app_id"
                                  referencedColumnNames="id"
                                  referencedTableName="ORCID_APPLICATION"/>
 

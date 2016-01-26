@@ -13,7 +13,7 @@
                 "relPersonApplication": "RelPersonApplication",
                 "envVariable": "EnvVariable",
                 "personBio": "PersonBio",
-                "resultOrcidWork": "ResultOrcidWork",
+                "resultUploadOrcidEntity": "ResultUploadOrcidEntity",
                 "additionalEntity": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

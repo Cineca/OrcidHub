@@ -29,9 +29,9 @@ import org.springframework.web.bind.annotation.*;
 import com.codahale.metrics.annotation.Timed;
 
 import it.cineca.pst.huborcid.domain.Application;
-import it.cineca.pst.huborcid.domain.ResultOrcidWork;
+import it.cineca.pst.huborcid.domain.ResultUploadOrcidEntity;
 import it.cineca.pst.huborcid.repository.ApplicationRepository;
-import it.cineca.pst.huborcid.repository.ResultOrcidWorkRepository;
+import it.cineca.pst.huborcid.repository.ResultUploadOrcidEntityRepository;
 import it.cineca.pst.huborcid.security.SecurityUtils;
 import it.cineca.pst.huborcid.web.rest.util.PaginationUtil;
 
@@ -44,42 +44,42 @@ import javax.inject.Inject;
 
 @RestController
 @RequestMapping("/api")
-public class ReportOrcidWorksResource {
+public class UploadOrcidEntityResource {
 	
 	@Inject
-    private ResultOrcidWorkRepository resultOrcidWorkRepository;
+    private ResultUploadOrcidEntityRepository resultUploadOrcidEntityRepository;
 	    
 	@Inject
     private ApplicationRepository applicationRepository;
 
-	private final Logger log = LoggerFactory.getLogger(ReportOrcidWorksResource.class);
+	private final Logger log = LoggerFactory.getLogger(UploadOrcidEntityResource.class);
 
     
 	/**
-	* GET  /reportOrcidWorks -> get all the resultOrcidWorks of application.
+	* GET  /uploadOrcidEntity 
 	 * @throws URISyntaxException 
 	*/
-    @RequestMapping(value = "/reportOrcidWorks/app", 
+    @RequestMapping(value = "/uploadOrcidEntity/app", 
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<List<ResultOrcidWork>> getAllOfApplication(@RequestParam(value = "page" , required = false) Integer offset,
+    public ResponseEntity<List<ResultUploadOrcidEntity>> getAllOfApplication(@RequestParam(value = "page" , required = false) Integer offset,
                  @RequestParam(value = "per_page", required = false) Integer limit) throws URISyntaxException{
     	String currentLogin =SecurityUtils.getCurrentLogin();
 		Application application = applicationRepository.findOneByApplicationID(currentLogin);
-        log.debug("REST request to get all ResultOrcidWorks of application : {}", currentLogin);
+        log.debug("REST request to get all ResultUploadOrcidEntity of application : {}", currentLogin);
         Sort sort = new Sort(Sort.Direction.DESC, Arrays.asList("createdDate"));
-        Page<ResultOrcidWork> listResultOrcidWork =  resultOrcidWorkRepository.findAllByApplicationIs(application, PaginationUtil.generatePageRequest(offset, limit,sort));
+        Page<ResultUploadOrcidEntity> listResultUploadOrcid =  resultUploadOrcidEntityRepository.findAllByApplicationIs(application, PaginationUtil.generatePageRequest(offset, limit,sort));
         
-    	List<ResultOrcidWork> listReport = new ArrayList<ResultOrcidWork>();
-    	for(int i=0;i<listResultOrcidWork.getContent().size();i++){
-    		ResultOrcidWork resultOrcidWork = listResultOrcidWork.getContent().get(i);
-    		listReport.add(resultOrcidWork);
+    	List<ResultUploadOrcidEntity> listReport = new ArrayList<ResultUploadOrcidEntity>();
+    	for(int i=0;i<listResultUploadOrcid.getContent().size();i++){
+    		ResultUploadOrcidEntity resultUploadOrcid = listResultUploadOrcid.getContent().get(i);
+    		listReport.add(resultUploadOrcid);
     	}
         
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(listResultOrcidWork, "/api/reportOrcidWorks/app", offset, limit);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(listResultUploadOrcid, "/api/uploadOrcidEntity/app", offset, limit);
         
-        return new ResponseEntity<List<ResultOrcidWork>>(listReport, headers, HttpStatus.OK);
+        return new ResponseEntity<List<ResultUploadOrcidEntity>>(listReport, headers, HttpStatus.OK);
     }
 
 }

@@ -195,3 +195,22 @@ ul#strength {
 	padding: 0;
 	float: left;
 }
+
+
+form .progress {
+    line-height: 15px;
+}
+
+.progress {
+    display: inline-block;
+    width: 150px;
+    border: 3px groove #CCC;
+    margin-bottom: 0px; 
+    vertical-align: bottom;
+}
+
+.progress div {
+    font-size: smaller;
+    background: #DFF0D8;
+    width: 0;
+}

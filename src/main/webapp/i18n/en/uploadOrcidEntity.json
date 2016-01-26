@@ -1,10 +1,15 @@
 {
     "huborcidApp": {
-        "reportOrcidWorks" : {
+        "uploadOrcidEntity" : {
             "home": {
-                "title": "Upload file orcid works",
-                "uploadFile":"Upload file"
+                "title": "Carica file Orcid",
+                "descriptionPage":"Using this feature you can load or update works and funding of the researchers of orcid. From the following link you can download the template:",
+                "uploadFileWorks":"Carica file Orcid Works",
+                "downloadTemplateExcelWorks":"Scarica tracciato excel Orcid Works",
+                "uploadFileFunding":"Carica file Orcid Funding",
+                "downloadTemplateExcelFunding":"Scarica tracciato excel Orcid Funding"
             },
+            "entityType":"Entity type",
             "fileNameUpload":"File name",
             "status":"Status",
             "withErrors":"File with errors",

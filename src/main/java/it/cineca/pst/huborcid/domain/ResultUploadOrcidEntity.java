@@ -16,25 +16,26 @@
  */
 package it.cineca.pst.huborcid.domain;
 
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * A ResultOrcidWork.
+ * A ResultUploadOrcidEntity.
  */
 @Entity
-@Table(name = "ORCID_RESULT_WORK")
-public class ResultOrcidWork extends AbstractAuditingEntity implements Serializable {
+@Table(name = "ORCID_RESULT_UPLOAD_ENTITY")
+public class ResultUploadOrcidEntity extends AbstractAuditingEntity implements Serializable {
 
-    /**
+	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 2951046712651694321L;
+	private static final long serialVersionUID = 2049204101831075288L;
 
 	@Id
-	@SequenceGenerator(name="SEQ_RESULTORCIDWORK_ID_GENERATOR", sequenceName="SEQ_RESULTORCIDWORK")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEQ_RESULTORCIDWORK_ID_GENERATOR")
+	@SequenceGenerator(name="SEQ_RESULTUPLOADORCIDENTITY_ID_GENERATOR", sequenceName="SEQ_RESULTUPLOADORCIDENTITY")
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEQ_RESULTUPLOADORCIDENTITY_ID_GENERATOR")
     private Long id;
 
     @Column(name = "file_name_upload")
@@ -50,6 +51,9 @@ public class ResultOrcidWork extends AbstractAuditingEntity implements Serializa
     @Lob
     private byte[] fileResult;
 
+	@Column(name = "entity_type")
+    private String entityType;
+    
     @ManyToOne
     private Application application;
 
@@ -93,6 +97,14 @@ public class ResultOrcidWork extends AbstractAuditingEntity implements Serializa
         this.fileResult = fileResult;
     }
 
+    public String getEntityType() {
+		return entityType;
+	}
+
+	public void setEntityType(String entityType) {
+		this.entityType = entityType;
+	}
+	
     public Application getApplication() {
         return application;
     }
@@ -110,9 +122,9 @@ public class ResultOrcidWork extends AbstractAuditingEntity implements Serializa
             return false;
         }
 
-        ResultOrcidWork resultOrcidWork = (ResultOrcidWork) o;
+        ResultUploadOrcidEntity resultUploadOrcidEntity = (ResultUploadOrcidEntity) o;
 
-        if ( ! Objects.equals(id, resultOrcidWork.id)) return false;
+        if ( ! Objects.equals(id, resultUploadOrcidEntity.id)) return false;
 
         return true;
     }
@@ -124,12 +136,13 @@ public class ResultOrcidWork extends AbstractAuditingEntity implements Serializa
 
     @Override
     public String toString() {
-        return "ResultOrcidWork{" +
+        return "ResultUploadOrcidEntity{" +
                 "id=" + id +
                 ", fileNameUpload='" + fileNameUpload + "'" +
                 ", status='" + status + "'" +
                 ", withErrors='" + withErrors + "'" +
                 ", fileResult='" + fileResult + "'" +
+                ", entityType='" + entityType + "'" +
                 '}';
     }
 }

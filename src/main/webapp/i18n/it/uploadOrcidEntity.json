@@ -1,10 +1,15 @@
 {
     "huborcidApp": {
-        "reportOrcidWorks" : {
+        "uploadOrcidEntity" : {
             "home": {
-                "title": "Carica file orcid works",
-                "uploadFile":"Carica file"
+                "title": "Carica file Orcid",
+                "descriptionPage":" Mediante questa funzionalità è possibile caricare o aggiornare le attività di ricerca sul profilo ORCID dei ricercatori dell'Ateneo/Ente a partire da un tracciato excel predefinito. Dai seguenti link è possibile scaricare il tracciato corretto:",
+                "uploadFileWorks":"Carica file Orcid Works",
+                "downloadTemplateExcelWorks":"Scarica tracciato excel Orcid Works",
+                "uploadFileFunding":"Carica file Orcid Funding",
+                "downloadTemplateExcelFunding":"Scarica tracciato excel Orcid Funding"
             },
+            "entityType":"Tipo entità",
             "fileNameUpload":"Nome file caricato",
             "status":"Stato elaborazione",
             "withErrors":"File con errori",

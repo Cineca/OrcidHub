@@ -1,0 +1,24 @@
+{
+    "huborcidApp": {
+        "resultUploadOrcidEntity" : {
+            "home": {
+                "title": "ResultUploadOrcidEntitys",
+                "createLabel": "Créer un nouveau ResultUploadOrcidEntity",
+                "createOrEditLabel": "Créer ou éditer un ResultUploadOrcidEntity"
+            },
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le ResultUploadOrcidEntity {{ id }} ?"
+            },
+            "detail": {
+                "title": "ResultUploadOrcidEntity"
+            },
+            "fileNameUpload": "FileNameUpload",
+            "status": "Status",
+            "withErrors": "WithErrors",
+            "fileResult": "FileResult",
+            "entityType": "EntityType",
+            "application": "application"
+        }
+    }
+}
+

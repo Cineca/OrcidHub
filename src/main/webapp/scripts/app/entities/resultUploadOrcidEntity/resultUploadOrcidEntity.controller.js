@@ -17,31 +17,31 @@
 'use strict';
 
 angular.module('huborcidApp')
-    .controller('ResultOrcidWorkController', function ($scope, ResultOrcidWork, Application) {
-        $scope.resultOrcidWorks = [];
+    .controller('ResultUploadOrcidEntityController', function ($scope, ResultUploadOrcidEntity, Application) {
+        $scope.resultUploadOrcidEntitys = [];
         $scope.applications = Application.query();
         $scope.loadAll = function() {
-            ResultOrcidWork.query(function(result) {
-               $scope.resultOrcidWorks = result;
+            ResultUploadOrcidEntity.query(function(result) {
+               $scope.resultUploadOrcidEntitys = result;
             });
         };
         $scope.loadAll();
 
         $scope.showUpdate = function (id) {
-            ResultOrcidWork.get({id: id}, function(result) {
-                $scope.resultOrcidWork = result;
-                $('#saveResultOrcidWorkModal').modal('show');
+            ResultUploadOrcidEntity.get({id: id}, function(result) {
+                $scope.resultUploadOrcidEntity = result;
+                $('#saveResultUploadOrcidEntityModal').modal('show');
             });
         };
 
         $scope.save = function () {
-            if ($scope.resultOrcidWork.id != null) {
-                ResultOrcidWork.update($scope.resultOrcidWork,
+            if ($scope.resultUploadOrcidEntity.id != null) {
+                ResultUploadOrcidEntity.update($scope.resultUploadOrcidEntity,
                     function () {
                         $scope.refresh();
                     });
             } else {
-                ResultOrcidWork.save($scope.resultOrcidWork,
+                ResultUploadOrcidEntity.save($scope.resultUploadOrcidEntity,
                     function () {
                         $scope.refresh();
                     });
@@ -49,29 +49,29 @@ angular.module('huborcidApp')
         };
 
         $scope.delete = function (id) {
-            ResultOrcidWork.get({id: id}, function(result) {
-                $scope.resultOrcidWork = result;
-                $('#deleteResultOrcidWorkConfirmation').modal('show');
+            ResultUploadOrcidEntity.get({id: id}, function(result) {
+                $scope.resultUploadOrcidEntity = result;
+                $('#deleteResultUploadOrcidEntityConfirmation').modal('show');
             });
         };
 
         $scope.confirmDelete = function (id) {
-            ResultOrcidWork.delete({id: id},
+            ResultUploadOrcidEntity.delete({id: id},
                 function () {
                     $scope.loadAll();
-                    $('#deleteResultOrcidWorkConfirmation').modal('hide');
+                    $('#deleteResultUploadOrcidEntityConfirmation').modal('hide');
                     $scope.clear();
                 });
         };
 
         $scope.refresh = function () {
             $scope.loadAll();
-            $('#saveResultOrcidWorkModal').modal('hide');
+            $('#saveResultUploadOrcidEntityModal').modal('hide');
             $scope.clear();
         };
 
         $scope.clear = function () {
-            $scope.resultOrcidWork = {fileNameUpload: null, status: null, withErrors: null, fileResult: null, id: null};
+            $scope.resultUploadOrcidEntity = {fileNameUpload: null, status: null, withErrors: null, fileResult: null, entityType: null, id: null};
             $scope.editForm.$setPristine();
             $scope.editForm.$setUntouched();
         };

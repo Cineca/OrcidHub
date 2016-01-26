@@ -18,7 +18,7 @@
 -->
 
 <div>
-    <h2><span translate="huborcidApp.resultOrcidWork.detail.title">ResultOrcidWork</span> {{resultOrcidWork.id}}</h2>
+    <h2><span translate="huborcidApp.resultUploadOrcidEntity.detail.title">ResultUploadOrcidEntity</span> {{resultUploadOrcidEntity.id}}</h2>
     <div class="table-responsive">
         <table class="table table-striped">
             <thead>
@@ -30,42 +30,50 @@
             <tbody>
                 <tr>
                     <td>
-                        <span translate="huborcidApp.resultOrcidWork.fileNameUpload">FileNameUpload</span>
+                        <span translate="huborcidApp.resultUploadOrcidEntity.fileNameUpload">FileNameUpload</span>
                     </td>
                     <td>
-                        <input type="text" class="input-sm form-control" value="{{resultOrcidWork.fileNameUpload}}" readonly>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span translate="huborcidApp.resultOrcidWork.status">Status</span>
-                    </td>
-                    <td>
-                        <input type="text" class="input-sm form-control" value="{{resultOrcidWork.status}}" readonly>
+                        <input type="text" class="input-sm form-control" value="{{resultUploadOrcidEntity.fileNameUpload}}" readonly>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <span translate="huborcidApp.resultOrcidWork.withErrors">WithErrors</span>
+                        <span translate="huborcidApp.resultUploadOrcidEntity.status">Status</span>
                     </td>
                     <td>
-                        <input type="text" class="input-sm form-control" value="{{resultOrcidWork.withErrors}}" readonly>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span translate="huborcidApp.resultOrcidWork.fileResult">FileResult</span>
-                    </td>
-                    <td>
-                        <input type="text" class="input-sm form-control" value="{{resultOrcidWork.fileResult}}" readonly>
+                        <input type="text" class="input-sm form-control" value="{{resultUploadOrcidEntity.status}}" readonly>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <span translate="huborcidApp.resultOrcidWork.application">application</span>
+                        <span translate="huborcidApp.resultUploadOrcidEntity.withErrors">WithErrors</span>
                     </td>
                     <td>
-                        <input type="text" class="input-sm form-control" value="{{resultOrcidWork.application.id}}" readonly>
+                        <input type="text" class="input-sm form-control" value="{{resultUploadOrcidEntity.withErrors}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="huborcidApp.resultUploadOrcidEntity.fileResult">FileResult</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{resultUploadOrcidEntity.fileResult}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="huborcidApp.resultUploadOrcidEntity.entityType">EntityType</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{resultUploadOrcidEntity.entityType}}" readonly>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span translate="huborcidApp.resultUploadOrcidEntity.application">application</span>
+                    </td>
+                    <td>
+                        <input type="text" class="input-sm form-control" value="{{resultUploadOrcidEntity.application.id}}" readonly>
                     </td>
                 </tr>
             </tbody>
@@ -73,7 +81,7 @@
     </div>
 
     <button type="submit"
-            ui-sref="resultOrcidWork"
+            ui-sref="resultUploadOrcidEntity"
             class="btn btn-info">
         <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span translate="entity.action.back"> Back</span>
     </button>

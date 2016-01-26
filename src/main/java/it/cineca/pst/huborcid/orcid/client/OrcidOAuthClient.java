@@ -20,6 +20,8 @@ package it.cineca.pst.huborcid.orcid.client;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Joiner;
 
+import org.orcid.ns.orcid.Funding;
+import org.orcid.ns.orcid.FundingList;
 import org.orcid.ns.orcid.OrcidActivities;
 import org.orcid.ns.orcid.OrcidBio;
 import org.orcid.ns.orcid.OrcidMessage;
@@ -58,6 +60,7 @@ public class OrcidOAuthClient {
 	private static final String TOKEN_ENDPOINT = "/oauth/token";
 	private static final String READ_BIO_ENDPOINT = "/orcid-bio";
 	private static final String WORK_CREATE_ENDPOINT = "/orcid-works";
+	private static final String FUNDING_CREATE_ENDPOINT = "/funding";
 	
 	private static final String SANDBOX_LOGIN_URI = "https://sandbox.orcid.org";
 	private static final String SANDBOX_API_URI_TOKEN = "https://sandbox.orcid.org";
@@ -234,6 +237,7 @@ public class OrcidOAuthClient {
 			Writer writer = new StringWriter();
 			orcidMessageContext.createMarshaller().marshal(orcidMessage, writer);
 			HttpEntity<String> request = new HttpEntity<String>(writer.toString(), headers);
+			log.debug(String.format("Method appendWork, writer=[%s]", writer.toString()));
 			restTemplate.postForObject(url, request, String.class);
 		} catch (RestClientException e) {
 			log.debug(String.format("Method appendWork, exception=[%s]", e.getMessage()));
@@ -242,12 +246,49 @@ public class OrcidOAuthClient {
 		log.debug(String.format("Method appendWork END, token=[%s], orcid=[%s]", token.getAccess_token(), token.getOrcid()));
 	}
 	
+	public void appendFunding(OrcidAccessToken token, Funding funding) throws JAXBException{
+		log.debug(String.format("Method appendFunding START, token=[%s], orcid=[%s]", token.getAccess_token(), token.getOrcid()));
+		
+		RestTemplate restTemplate = new RestTemplate();
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", "Bearer ".concat( token.getAccess_token()) );
+		headers.add("Content-Type", "application/orcid+xml" );
+
+		log.info(token.getAccess_token());
+		try {
+			String url = String.format( "%s/%s%s", apiUriV12, token.getOrcid(), FUNDING_CREATE_ENDPOINT );
+			OrcidMessage orcidMessage = wrapFunding(funding);
+			Writer writer = new StringWriter();
+			orcidMessageContext.createMarshaller().marshal(orcidMessage, writer);
+			HttpEntity<String> request = new HttpEntity<String>(writer.toString(), headers);
+			log.debug(String.format("Method appendFunding, writer=[%s]", writer.toString()));
+			restTemplate.postForObject(url, request, String.class);
+		} catch (RestClientException e) {
+			log.debug(String.format("Method appendFunding, exception=[%s]", e.getMessage()));
+			throw e;
+		} 
+		log.debug(String.format("Method appendFunding END, token=[%s], orcid=[%s]", token.getAccess_token(), token.getOrcid()));
+	}
+	
 	
 	private static OrcidMessage wrapWork(OrcidWork work) {
 		OrcidWorks works = new OrcidWorks();
 		works.getOrcidWork().add(work);
 		OrcidActivities activities = new OrcidActivities();
 		activities.setOrcidWorks(works);
+		OrcidProfile profile = new OrcidProfile();
+		profile.setOrcidActivities(activities);
+		OrcidMessage message = new OrcidMessage();
+		message.setOrcidProfile(profile);
+		message.setMessageVersion("1.2");
+		return message;
+	}
+	
+	private static OrcidMessage wrapFunding(Funding funding) {
+		FundingList fundingList = new FundingList();
+		fundingList.getFunding().add(funding);
+		OrcidActivities activities = new OrcidActivities();
+		activities.setFundingList(fundingList);
 		OrcidProfile profile = new OrcidProfile();
 		profile.setOrcidActivities(activities);
 		OrcidMessage message = new OrcidMessage();
