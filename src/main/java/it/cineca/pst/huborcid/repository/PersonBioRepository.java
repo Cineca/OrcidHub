@@ -25,6 +25,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -33,7 +34,10 @@ import java.util.List;
  */
 public interface PersonBioRepository extends JpaRepository<PersonBio,Long> {
 	
-	Long deleteByPersonIs(Person person);
+	@Modifying
+	@Transactional
+	@Query("delete from PersonBio bio where bio.person = :person")
+	void deleteByPersonIs(@Param("person")Person person);
 	
 	@Query("select bio from RelPersonApplication personApp inner join personApp.person person inner join person.personBio bio where personApp.oauthAccessToken is not null and personApp.application = :application and personApp.last = true") 
 	List<PersonBio> findAllPersonByApplicationIsAndLastIsTrue(@Param("application")Application application, Sort sort);

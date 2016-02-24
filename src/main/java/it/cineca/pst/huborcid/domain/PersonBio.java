@@ -45,7 +45,7 @@ public class PersonBio extends AbstractAuditingEntity implements Serializable {
     @Column(name = "external_identifiers")
     private String external_identifiers;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private Person person;
 
     public Long getId() {

@@ -32,6 +32,7 @@ import it.cineca.pst.huborcid.repository.RelPersonApplicationRepository;
 import it.cineca.pst.huborcid.repository.TokenRepository;
 import it.cineca.pst.huborcid.security.SecurityUtils;
 import it.cineca.pst.huborcid.service.OrcidService;
+import it.cineca.pst.huborcid.service.OrcidServiceAtomic;
 import it.cineca.pst.huborcid.web.rest.dto.AddAppResponseDTO;
 import it.cineca.pst.huborcid.web.rest.dto.ApplicationMinDTO;
 import it.cineca.pst.huborcid.web.rest.dto.DeleteUserIdResponseDTO;
@@ -114,6 +115,9 @@ public class OrcidRestController {
     
     @Inject
     private OrcidService orcidService;
+    
+    @Inject
+    private OrcidServiceAtomic orcidServiceAtomic;
     
     @Autowired
     private Environment env;
@@ -589,7 +593,7 @@ public class OrcidRestController {
         	personRepository.save(person);
         	
         	//async
-        	orcidService.sendNotify(relPersonApplication);
+        	orcidServiceAtomic.sendNotify(relPersonApplication);
         }
         
         List<RelPersonApplication> listApplicationAuth = relPersonApplicationRepository.findAllByTokenIsAndValidIsNull(token);

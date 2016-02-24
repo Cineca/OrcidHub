@@ -91,7 +91,7 @@ public class OrcidService {
 	private EnvVariableRepository envVarRepository;
 	
 	@Inject
-	private PersonBioRepository personBioRepository;
+	private OrcidServiceAtomic orcidServiceAtomic;
 	
 	@Autowired
     private Environment env;
@@ -110,66 +110,7 @@ public class OrcidService {
     }
 
 
-	@Async
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public Future<String> sendNotify(RelPersonApplication relPersonApplication)
-			throws InterruptedException, JsonProcessingException, IOException {
-		// TODO commenti e log
-		Application application = relPersonApplication.getApplication();
-		System.out.println("Looking up " + application.getUrlNotify());
-		HttpHeaders headers = new HttpHeaders();
-		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-		headers.setContentType(MediaType.APPLICATION_JSON);
-		headers.add("Authorization",
-				getBasicAuthHeader(application.getNotifyUsername(), application.getNotifyPassword()));
-		NotifyDTO notifyDTO = new NotifyDTO();
-		notifyDTO.setLocalId(relPersonApplication.getPerson().getLocalID());
-		notifyDTO.setOrcid(relPersonApplication.getPerson().getOrcid());
-		notifyDTO.setOrcidAccessToken(relPersonApplication.getOauthAccessToken());
-		HttpEntity<NotifyDTO> entity = new HttpEntity<NotifyDTO>(notifyDTO, headers);
-		// HttpEntity<MultiValueMap<String, String>> entity = new
-		// HttpEntity<MultiValueMap<String, String>>(map, headers);
-		ResponseEntity<String> result = null;
-		String error = null;
-		if (relPersonApplication.getPerson().getOrcid() != null) {
-			try {
-				result = restTemplate.postForEntity(application.getUrlNotify(), entity, String.class);
-				System.out.println(result.getBody());
-				if (result.getStatusCode().is2xxSuccessful() && (result.getBody().contains("001"))) {
-					error = null;
-				} else {
-					error = result.getStatusCode() + " " + result.getBody();
-				}
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
-				error = e.getMessage();
-
-			}
-		} else {
-			error = "ORCID IS NULL";
-		}
-		updateNotifyOnDb(relPersonApplication, error);
-		
-		return new AsyncResult<String>("OK");
-	}
-
-	private void updateNotifyOnDb(RelPersonApplication relPersonApplication, String error) {
-		if(error==null){
-			relPersonApplication.setNotified(true);
-			relPersonApplication.setErrorNotDescription(null);
-		}else{
-			int maxLength = (error.length() < 3900) ? error.length() : 3900;
-			error = error.substring(0, maxLength);
-			Integer numRetry = (relPersonApplication.getNumRetry() == null) ? 1 : relPersonApplication.getNumRetry() + 1;
-			relPersonApplication.setNumRetry(numRetry);
-			
-			Boolean notify = (relPersonApplication.getNumRetry()>2) ? true : null;
-			relPersonApplication.setErrorNotDescription(error);
-			relPersonApplication.setNotified(notify);
-		}
-		relPersonApplicationRepository.save(relPersonApplication);
-	}
-
+	
 	@Transactional
 	public void deleteUser(Person person) {
 		relPersonApplicationRepository.deleteByPersonIs(person);
@@ -211,7 +152,7 @@ public class OrcidService {
 		for (int i = 0; i < relPersonApp.size(); i++) { 
 			try {
 				System.out.println(i + " Notify: notify " + relPersonApp.get(i).getId());
-				Future<String> result = sendNotify(relPersonApp.get(i));
+				Future<String> result = orcidServiceAtomic.sendNotify(relPersonApp.get(i));
 				result.get();
 				System.out.println(i + " Notify: notified " + relPersonApp.get(i).getId());
 			} catch (Exception e) {
@@ -233,85 +174,22 @@ public class OrcidService {
 	 * @throws JAXBException
 	 * @throws InterruptedException 
 	 */
-	@Scheduled(cron = "0 */5 * * * *")
+	@Scheduled(cron = "0 * * * * *")
+	@Transactional
 	public void populateOrcidBio( ) throws JAXBException, InterruptedException{
-		Random random = new Random();
-		Integer numRandom = random.nextInt(30);
-		wait( numRandom );
+		Random rn = new Random();
+		int n = 20;
+		int i = Math.abs(rn.nextInt() % n);
 		log.debug("Method populateOrcidBio START");
-		Pageable pageable = new PageRequest(0, 200);
+		Pageable pageable = new PageRequest(i,200);
 		List<Person> listPerson = personRepository.findAllByNeedUpdateIsTrue(pageable);
         OrcidOAuthClient clientOrcid = new OrcidOAuthClient(orcidApiType);
 		for(Person person: listPerson){
-			List<RelPersonApplication> listRelPersonApp = relPersonApplicationRepository.findAllByPersonIsAndLastIsTrueAndOauthAccessTokenIsNotNull(person);
-			OrcidBio orcidBio = null;
-			for(RelPersonApplication relPersonApplication: listRelPersonApp){
-				String orcid = relPersonApplication.getPerson().getOrcid();
-				OrcidAccessToken orcidAccessToken = new OrcidAccessToken();
-				orcidAccessToken.setOrcid(orcid);
-				orcidAccessToken.setAccess_token(relPersonApplication.getOauthAccessToken());
-				try {
-					orcidBio = clientOrcid.getOrcidBio(orcidAccessToken);
-
-					manageOrcidBio(person, orcidBio);
-					
-					log.info(String.format("Method populateOrcidBio: save personBio person.id=[%s]", person.getId()));
-					break;
-				} catch (Exception e) {
-					log.info(String.format("Method populateOrcidBio: error personBio person.id=[%s], token=[%s], orcid=[%s]", person.getId(), relPersonApplication.getOauthAccessToken(), orcid));
-				}
-			}
-			person.setNeedUpdate(false);
+			orcidServiceAtomic.processPersonBio(person, clientOrcid);
 		}
 		log.debug("Method populateOrcidBio END");
 	}
-	
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	private void manageOrcidBio(Person person, OrcidBio orcidBio){		
-		log.debug(String.format("Method manageOrcidBio START, person.id=[%s]", person.getId()));
-		
-		StringBuilder urls = new StringBuilder();
-		ResearcherUrls researcherUrls = orcidBio.getResearcherUrls();
-		if( researcherUrls!=null ){
-			List<ResearcherUrl> listUrls = researcherUrls.getResearcherUrl();
-			for(ResearcherUrl researcherUrl : listUrls){
-				String urlName = researcherUrl.getUrlName();
-				String url = researcherUrl.getUrl().getValue();
-				if(urls.length()!=0){
-					urls.append(SEPARATOR);
-				}
-				urls.append(String.format("%s (%s)", urlName, url));
-			}
-		}
 
-		StringBuilder identifiers = new StringBuilder();
-		ExternalIdentifiers externalIdentifiers = orcidBio.getExternalIdentifiers();
-		if( externalIdentifiers!=null ){
-			List<ExternalIdentifier> listExternalIdentifiers = externalIdentifiers.getExternalIdentifier();
-			for(ExternalIdentifier externalIdentifier : listExternalIdentifiers){
-				String commonNameExId = externalIdentifier.getExternalIdCommonName().getContent();
-				String referenceExId = externalIdentifier.getExternalIdReference().getContent();
-				String urlExId = externalIdentifier.getExternalIdUrl().getValue();
-				if(identifiers.length()!=0){
-					identifiers.append(SEPARATOR);
-				}
-				identifiers.append(String.format("%s (%s - %s)", commonNameExId, referenceExId, urlExId));
-			}
-		}
-		
-		personBioRepository.deleteByPersonIs(person);
-		
-		PersonBio personBio = new PersonBio();
-		personBio.setPerson(person);
-		if(orcidBio.getBiography() != null){
-			personBio.setBiography(orcidBio.getBiography().getValue());
-		}
-		personBio.setResearcher_urls(urls.toString());
-		personBio.setExternal_identifiers(identifiers.toString());
-		personBioRepository.save(personBio);
-		
-		log.debug(String.format("Method manageOrcidBio END, person.id=%s", person.getId()));
-	}
 	
 
 }
